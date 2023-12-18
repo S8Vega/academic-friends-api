@@ -1,14 +1,22 @@
-##Spring Configuration
 server:
   port: 8080
+  servlet:
+    context-path: "/ufps/academic-friends-api"
 spring:
   application:
-    name: academic-friends-api
+    name: "academic-friends-api"
   devtools:
     add-properties: false
-  h2:
-    console:
-      enabled: true
-      path: /h2
   profiles:
-    include:
+    active: ${env}
+  datasource:
+    url: ${datasource_url}
+    username: ${datasource_username}
+    password: ${datasource_password}
+    driverClassName: "org.postgresql.Driver"
+  jpa:
+    databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      format-sql: true
