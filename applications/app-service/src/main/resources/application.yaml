@@ -34,3 +34,9 @@ management:
         enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+adapter:
+  aws:
+    s3:
+      bucketName: "test"
+      region: "us-east-1"
+      endpoint: "https://s3.localhost.localstack.cloud:4566"
