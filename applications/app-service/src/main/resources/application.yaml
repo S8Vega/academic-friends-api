@@ -8,15 +8,26 @@ spring:
   devtools:
     add-properties: false
   profiles:
-    active: ${env}
+    active: "${env}"
   datasource:
-    url: ${datasource_url}
-    username: ${datasource_username}
-    password: ${datasource_password}
+    url: "${datasource_url}"
+    username: "${datasource_username}"
+    password: "${datasource_password}"
     driverClassName: "org.postgresql.Driver"
   jpa:
     databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
     hibernate:
-      ddl-auto: update
+      ddl-auto: "update"
       show-sql: true
       format-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
