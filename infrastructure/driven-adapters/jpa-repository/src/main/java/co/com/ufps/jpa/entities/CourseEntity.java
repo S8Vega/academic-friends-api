@@ -2,8 +2,6 @@ package co.com.ufps.jpa.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,13 +13,13 @@ import java.io.Serializable;
 @Setter
 @ToString
 @Entity
-@Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class UserEntity implements Serializable {
+@Table(name = "course")
+public class CourseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
-    private String email;
-    private String name;
     private String code;
-    private String type; // (student, academicFriend, coordinator, director)
+    private String name;
+    private int semester;
+    private int credits;
 }
