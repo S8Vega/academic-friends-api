@@ -3,13 +3,13 @@ package co.com.ufps.jpa;
 import co.com.ufps.jpa.entities.UserEntity;
 import co.com.ufps.jpa.helper.AdapterOperations;
 import co.com.ufps.model.user.User;
+import co.com.ufps.model.user.gateways.UserRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepositoryAdapter extends AdapterOperations<User, UserEntity, String, UserCrudRepository>
-// implements ModelRepository from domain
-{
+        implements UserRepository {
 
     public UserRepositoryAdapter(UserCrudRepository repository, ObjectMapper mapper) {
         /**
