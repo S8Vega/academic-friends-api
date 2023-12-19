@@ -20,6 +20,9 @@ spring:
       ddl-auto: "update"
       show-sql: true
       format-sql: true
+#  sql:
+#    init:
+#      mode: "always"
 management:
   endpoints:
     web:

@@ -1,0 +1,22 @@
+INSERT INTO public.users (email,code,"name","type")
+	VALUES ('brayansebastianvega@ufps.edu.co','1151636','Brayan Sebastian Vega Garcia','student');
+insert into users (email, code, name, type) values ('rmorecombe0@cornell.edu', '0507870700', 'Rockwell Morecombe', 'student');
+insert into users (email, code, name, type) values ('gjumont1@go.com', '6641862968', 'Goldy Jumont', 'student');
+insert into users (email, code, name, type) values ('aseegar2@etsy.com', '7991909611', 'Ara Seegar', 'student');
+insert into users (email, code, name, type) values ('ocorn3@ning.com', '4169259920', 'Ozzy Corn', 'student');
+insert into users (email, code, name, type) values ('cgillicuddy4@weibo.com', '5180343836', 'Cesar Gillicuddy', 'student');
+insert into users (email, code, name, type) values ('kferrige5@salon.com', '0122084934', 'Kettie Ferrige', 'student');
+insert into users (email, code, name, type) values ('cthorbon6@state.gov', '2411039395', 'Coraline Thorbon', 'student');
+insert into users (email, code, name, type) values ('xlife7@51.la', '9038251866', 'Xever Life', 'student');
+insert into users (email, code, name, type) values ('nblankett8@oracle.com', '0049367013', 'Nadia Blankett', 'student');
+insert into users (email, code, name, type) values ('tguinane9@g.co', '2809705623', 'Tye Guinane', 'student');
+insert into users (email, code, name, type) values ('rsorela@gov.uk', '1453076417', 'Roderick Sorel', 'student');
+insert into users (email, code, name, type) values ('dwhyffenb@mit.edu', '2163626962', 'Drucy Whyffen', 'student');
+insert into users (email, code, name, type) values ('mflintoffc@aol.com', '0967485827', 'Maxim Flintoff', 'student');
+insert into users (email, code, name, type) values ('fdorkingd@archive.org', '1735319163', 'Friedrick Dorking', 'student');
+insert into users (email, code, name, type) values ('gvane@bing.com', '5716674992', 'Gayler Van Oord', 'student');
+insert into users (email, code, name, type) values ('pmertgenf@deliciousdays.com', '2748534530', 'Peder Mertgen', 'student');
+insert into users (email, code, name, type) values ('sgaitoneg@globo.com', '3462272942', 'Stacy Gaitone', 'student');
+insert into users (email, code, name, type) values ('lhessentalerh@networkadvertising.org', '7517824740', 'Leesa Hessentaler', 'student');
+insert into users (email, code, name, type) values ('aailwardi@mozilla.com', '2660666938', 'Andrea Ailward', 'student');
+insert into users (email, code, name, type) values ('rsallj@nhs.uk', '2069724786', 'Roberto Sall', 'student');
