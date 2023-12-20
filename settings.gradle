@@ -24,3 +24,5 @@ include ':cognito'
 project(':cognito').projectDir = file('./infrastructure/driven-adapters/cognito')
 include ':security'
 project(':security').projectDir = file('./infrastructure/entry-points/security')
+include ':controller-advice'
+project(':controller-advice').projectDir = file('./infrastructure/entry-points/controller-advice')
