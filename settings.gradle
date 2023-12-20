@@ -20,3 +20,7 @@ include ':health-rest'
 project(':health-rest').projectDir = file('./infrastructure/entry-points/health-rest')
 include ':s3-repository'
 project(':s3-repository').projectDir = file('./infrastructure/driven-adapters/s3-repository')
+include ':cognito'
+project(':cognito').projectDir = file('./infrastructure/driven-adapters/cognito')
+include ':security'
+project(':security').projectDir = file('./infrastructure/entry-points/security')

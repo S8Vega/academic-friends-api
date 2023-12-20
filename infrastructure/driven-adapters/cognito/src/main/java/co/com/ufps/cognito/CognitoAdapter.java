@@ -1,0 +1,106 @@
+package co.com.ufps.cognito;
+
+import co.com.ufps.model.security.gateways.SecurityRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthenticationResultType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.RespondToAuthChallengeRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.RespondToAuthChallengeResponse;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
+@Repository
+@RequiredArgsConstructor
+@Log4j2
+public class CognitoAdapter implements SecurityRepository {
+    private final CognitoIdentityProviderClient cognitoClient;
+    @Value("${cognito_client_id}")
+    private String clientId;
+    @Value("${secret_KEY}")
+    private String secretKey;
+
+    @Override
+    public String login(String email, String password) throws IOException {
+        log.info("Iniciando sesión con el usuario: {}", email);
+        String accessToken = getAccessToken(email, password);
+        if (accessToken.isEmpty()) {
+            return "";
+        }
+        return generateToken(email);
+    }
+
+    private String getAccessToken(String email, String password) {
+        try {
+            Map<String, String> authParams = new HashMap<>();
+            authParams.put("USERNAME", email);
+            authParams.put("PASSWORD", password);
+
+            InitiateAuthRequest authRequest = InitiateAuthRequest.builder()
+                    .clientId(clientId)
+                    .authFlow(AuthFlowType.USER_PASSWORD_AUTH)
+                    .authParameters(authParams)
+                    .build();
+            InitiateAuthResponse initiateAuthResponse = cognitoClient.initiateAuth(authRequest);
+
+            if (initiateAuthResponse.challengeName() != null) {
+                log.info("El usuario {} debe cambiar su contraseña", email);
+                authParams.put("NEW_PASSWORD", password);
+                RespondToAuthChallengeRequest respondToAuthChallengeRequest = RespondToAuthChallengeRequest.builder()
+                        .challengeName("NEW_PASSWORD_REQUIRED")
+                        .clientId(clientId)
+                        .challengeResponses(authParams)
+                        .session(initiateAuthResponse.session())
+                        .build();
+
+                RespondToAuthChallengeResponse respondToAuthChallengeResponse = cognitoClient
+                        .respondToAuthChallenge(respondToAuthChallengeRequest);
+                return respondToAuthChallengeResponse.authenticationResult().accessToken();
+            }
+
+            AuthenticationResultType result = initiateAuthResponse.authenticationResult();
+            return result.accessToken();
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en el inicio de sesión");
+            log.error(e.awsErrorDetails().errorMessage());
+            return "";
+        }
+    }
+
+    private String generateToken(String email) {
+        Instant now = Instant.now();
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plus(1, ChronoUnit.DAYS)))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    @Override
+    public void validate(String token) {
+        Key key = new SecretKeySpec(Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS256.getJcaName());
+        Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+    }
+}
