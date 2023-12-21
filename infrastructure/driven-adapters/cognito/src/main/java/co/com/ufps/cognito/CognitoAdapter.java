@@ -35,7 +35,7 @@ public class CognitoAdapter implements SecurityRepository {
     private final CognitoIdentityProviderClient cognitoClient;
     @Value("${cognito_client_id}")
     private String clientId;
-    @Value("${secret_KEY}")
+    @Value("${secret_key}")
     private String secretKey;
 
     @Override
