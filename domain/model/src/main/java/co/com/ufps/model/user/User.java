@@ -8,9 +8,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
 public class User {
     private String email;
+    private String name;
+    private String code;
+    private String type;
 }

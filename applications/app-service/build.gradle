@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+    implementation project(':director')
     implementation project(':controller-advice')
     implementation project(':security')
     implementation project(':cognito')
