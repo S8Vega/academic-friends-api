@@ -26,3 +26,5 @@ include ':security'
 project(':security').projectDir = file('./infrastructure/entry-points/security')
 include ':controller-advice'
 project(':controller-advice').projectDir = file('./infrastructure/entry-points/controller-advice')
+include ':director'
+project(':director').projectDir = file('./infrastructure/entry-points/director')
