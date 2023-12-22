@@ -32,3 +32,5 @@ include ':student-rest'
 project(':student-rest').projectDir = file('./infrastructure/entry-points/student-rest')
 include ':file-reader'
 project(':file-reader').projectDir = file('./infrastructure/driven-adapters/file-reader')
+include ':user-rest'
+project(':user-rest').projectDir = file('./infrastructure/entry-points/user-rest')

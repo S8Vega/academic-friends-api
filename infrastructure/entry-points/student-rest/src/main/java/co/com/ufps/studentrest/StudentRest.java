@@ -4,6 +4,7 @@ import co.com.ufps.model.student.Student;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import co.com.ufps.usecase.student.StudentUseCase;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/student", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,6 +27,7 @@ public class StudentRest {
     @PostMapping
     public ResponseEntity<List<Student>> save(@RequestParam("file") MultipartFile requestBody,
                                               @RequestHeader("Authorization") String jwt) {
+        log.info("save: {}", requestBody.getOriginalFilename());
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(studentUseCase.save(requestBody));
     }
