@@ -38,3 +38,5 @@ include ':course-rest'
 project(':course-rest').projectDir = file('./infrastructure/entry-points/course-rest')
 include ':coordinator-rest'
 project(':coordinator-rest').projectDir = file('./infrastructure/entry-points/coordinator-rest')
+include ':convocation-rest'
+project(':convocation-rest').projectDir = file('./infrastructure/entry-points/convocation-rest')
