@@ -22,9 +22,9 @@ include ':s3-repository'
 project(':s3-repository').projectDir = file('./infrastructure/driven-adapters/s3-repository')
 include ':cognito'
 project(':cognito').projectDir = file('./infrastructure/driven-adapters/cognito')
-include ':security'
-project(':security').projectDir = file('./infrastructure/entry-points/security')
+include ':security-rest'
+project(':security-rest').projectDir = file('./infrastructure/entry-points/security-rest')
 include ':controller-advice'
 project(':controller-advice').projectDir = file('./infrastructure/entry-points/controller-advice')
-include ':director'
-project(':director').projectDir = file('./infrastructure/entry-points/director')
+include ':director-rest'
+project(':director-rest').projectDir = file('./infrastructure/entry-points/director-rest')
