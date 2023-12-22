@@ -28,3 +28,7 @@ include ':controller-advice'
 project(':controller-advice').projectDir = file('./infrastructure/entry-points/controller-advice')
 include ':director-rest'
 project(':director-rest').projectDir = file('./infrastructure/entry-points/director-rest')
+include ':student-rest'
+project(':student-rest').projectDir = file('./infrastructure/entry-points/student-rest')
+include ':file-reader'
+project(':file-reader').projectDir = file('./infrastructure/driven-adapters/file-reader')
