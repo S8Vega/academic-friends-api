@@ -9,4 +9,8 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class JWTResponseBody {
     private String jwt;
+    private String email;
+    private String name;
+    private String code;
+    private String type;
 }
