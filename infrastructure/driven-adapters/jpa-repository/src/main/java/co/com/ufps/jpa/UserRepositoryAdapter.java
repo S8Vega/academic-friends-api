@@ -19,4 +19,10 @@ public class UserRepositoryAdapter extends AdapterOperations<User, UserEntity, S
          */
         super(repository, mapper, d -> mapper.map(d, User.class));
     }
+
+    @Override
+    public User save(User user) {
+        UserEntity userEntity = mapper.map(user, UserEntity.class);
+        return mapper.map(repository.save(userEntity), User.class);
+    }
 }
