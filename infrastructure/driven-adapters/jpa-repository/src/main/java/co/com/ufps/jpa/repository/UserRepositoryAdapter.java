@@ -1,5 +1,6 @@
-package co.com.ufps.jpa;
+package co.com.ufps.jpa.repository;
 
+import co.com.ufps.jpa.crudrepository.UserCrudRepository;
 import co.com.ufps.jpa.entities.UserEntity;
 import co.com.ufps.jpa.helper.AdapterOperations;
 import co.com.ufps.model.user.User;

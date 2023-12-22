@@ -1,4 +1,4 @@
-package co.com.ufps.jpa;
+package co.com.ufps.jpa.crudrepository;
 
 import co.com.ufps.jpa.entities.UserEntity;
 import org.springframework.data.repository.CrudRepository;
