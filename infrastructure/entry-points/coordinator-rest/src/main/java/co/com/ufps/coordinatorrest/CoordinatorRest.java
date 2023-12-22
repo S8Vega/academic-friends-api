@@ -1,6 +1,6 @@
-package co.com.ufps.director;
+package co.com.ufps.coordinatorrest;
 
-import co.com.ufps.director.requestbody.SaveDirectorRequestBody;
+import co.com.ufps.coordinatorrest.requestbody.SaveCoordinatorRequestBody;
 import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import co.com.ufps.usecase.user.UserUseCase;
@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/director", produces = MediaType.APPLICATION_JSON_VALUE)
-public class DirectorRest {
+@RequestMapping(value = "/coordinator", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CoordinatorRest {
     private final UserUseCase userUseCase;
     private final SecurityUseCase securityUseCase;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestHeader("Authorization") String jwt,
-                                     @RequestBody SaveDirectorRequestBody requestBody) {
-        log.info("save director: {}", requestBody.getEmail());
+                                     @RequestBody SaveCoordinatorRequestBody requestBody) {
+        log.info("save coordinator: {}", requestBody.getEmail());
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(userUseCase.save(requestBody.toUser(), requestBody.getPassword()));
     }
