@@ -1,5 +1,6 @@
 package co.com.ufps.cognito;
 
+import co.com.ufps.model.exceptions.CognitoException;
 import co.com.ufps.model.security.gateways.SecurityRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +10,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthenticationResultType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
@@ -37,6 +41,8 @@ public class CognitoAdapter implements SecurityRepository {
     private String clientId;
     @Value("${secret_key}")
     private String secretKey;
+    @Value("${cognito_user_pool_id}")
+    private String userPoolId;
 
     @Override
     public String login(String email, String password) throws IOException {
@@ -81,7 +87,7 @@ public class CognitoAdapter implements SecurityRepository {
         } catch (CognitoIdentityProviderException e) {
             log.error("Error en el inicio de sesión");
             log.error(e.awsErrorDetails().errorMessage());
-            return "";
+            throw new CognitoException(e);
         }
     }
 
@@ -102,5 +108,26 @@ public class CognitoAdapter implements SecurityRepository {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token);
+    }
+
+    @Override
+    public void save(String email, String password) {
+        log.info("Registrando usuario: {}", email);
+        try {
+            AdminCreateUserRequest createUserRequest = AdminCreateUserRequest.builder()
+                    .userPoolId(userPoolId)
+                    .username(email)
+                    .temporaryPassword(password)
+                    .userAttributes(AttributeType.builder().name("email").value(email).build(),
+                            AttributeType.builder().name("email_verified").value("true").build())
+                    .build();
+
+            AdminCreateUserResponse createUserResponse = cognitoClient.adminCreateUser(createUserRequest);
+            log.info("Usuario registrado: {}", createUserResponse.user().username());
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en el registro de usuario");
+            log.error(e.awsErrorDetails().errorMessage());
+            throw new CognitoException(e);
+        }
     }
 }
