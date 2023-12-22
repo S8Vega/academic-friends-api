@@ -34,3 +34,5 @@ include ':file-reader'
 project(':file-reader').projectDir = file('./infrastructure/driven-adapters/file-reader')
 include ':user-rest'
 project(':user-rest').projectDir = file('./infrastructure/entry-points/user-rest')
+include ':course-rest'
+project(':course-rest').projectDir = file('./infrastructure/entry-points/course-rest')

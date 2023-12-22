@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+    implementation project(':course-rest')
     implementation project(':user-rest')
     implementation project(':file-reader')
     implementation project(':student-rest')
