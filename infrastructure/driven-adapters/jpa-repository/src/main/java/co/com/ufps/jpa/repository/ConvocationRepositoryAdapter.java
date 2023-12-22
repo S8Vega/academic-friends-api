@@ -34,4 +34,10 @@ public class ConvocationRepositoryAdapter extends AdapterOperations<Convocation,
         Iterable<ConvocationEntity> convocationEntities = repository.findAll();
         return List.of(mapper.map(convocationEntities, Convocation[].class));
     }
+
+    @Override
+    public Convocation findById(Long id) {
+        ConvocationEntity convocationEntity = repository.findById(id).orElse(null);
+        return mapper.map(convocationEntity, Convocation.class);
+    }
 }

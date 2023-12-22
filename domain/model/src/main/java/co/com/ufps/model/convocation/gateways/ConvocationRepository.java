@@ -8,4 +8,6 @@ public interface ConvocationRepository {
     Convocation save(Convocation convocation);
 
     List<Convocation> findAll();
+
+    Convocation findById(Long id);
 }

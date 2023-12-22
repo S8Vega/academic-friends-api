@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,5 +39,12 @@ public class ConvocationRest {
         log.info("find all convocation");
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(convocationUseCase.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Convocation> findById(@RequestHeader("Authorization") String jwt, @PathVariable Long id) {
+        log.info("find convocation by id: {}", id);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(convocationUseCase.findById(id));
     }
 }

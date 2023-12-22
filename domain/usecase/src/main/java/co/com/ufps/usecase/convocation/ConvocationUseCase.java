@@ -17,4 +17,8 @@ public class ConvocationUseCase {
     public List<Convocation> findAll() {
         return convocationRepository.findAll();
     }
+
+    public Convocation findById(Long id) {
+        return convocationRepository.findById(id);
+    }
 }
