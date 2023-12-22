@@ -25,4 +25,10 @@ public class UserRepositoryAdapter extends AdapterOperations<User, UserEntity, S
         UserEntity userEntity = mapper.map(user, UserEntity.class);
         return mapper.map(repository.save(userEntity), User.class);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        UserEntity userEntity = repository.findByEmail(email);
+        return mapper.map(userEntity, User.class);
+    }
 }

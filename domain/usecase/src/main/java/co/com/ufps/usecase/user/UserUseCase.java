@@ -15,4 +15,8 @@ public class UserUseCase {
         securityUseCase.save(user.getEmail(), password);
         return response;
     }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
