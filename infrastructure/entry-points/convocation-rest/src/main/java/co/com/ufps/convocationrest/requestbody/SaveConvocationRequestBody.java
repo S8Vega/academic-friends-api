@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class SaveConvocationRequestBody {
+    private Long id;
     private String openingDate;
     private String closingDate;
     private String evaluationDate;
@@ -18,6 +19,7 @@ public class SaveConvocationRequestBody {
 
     public Convocation toConvocation() {
         Convocation convocation = new Convocation();
+        convocation.setId(id);
         convocation.setOpeningDate(LocalDateTime.parse(openingDate));
         convocation.setClosingDate(LocalDateTime.parse(closingDate));
         convocation.setEvaluationDate(LocalDateTime.parse(evaluationDate));
