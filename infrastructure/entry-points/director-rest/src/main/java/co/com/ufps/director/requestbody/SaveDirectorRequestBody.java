@@ -13,11 +13,11 @@ public class SaveDirectorRequestBody {
     private String code;
 
     public User toUser() {
-        return User.builder()
-                .email(email)
-                .name(name)
-                .code(code)
-                .type("director")
-                .build();
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setCode(code);
+        user.setType("director");
+        return user;
     }
 }
