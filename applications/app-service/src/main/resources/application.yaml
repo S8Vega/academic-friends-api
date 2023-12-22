@@ -40,3 +40,7 @@ adapter:
       bucketName: "test"
       region: "us-east-1"
       endpoint: "https://s3.localhost.localstack.cloud:4566"
+
+springdoc:
+  api-docs:
+    path: "/docs"
