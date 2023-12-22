@@ -8,6 +8,8 @@ import co.com.ufps.model.convocation.gateways.ConvocationRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ConvocationRepositoryAdapter extends AdapterOperations<Convocation, ConvocationEntity, Long, ConvocationCrudRepository>
         implements ConvocationRepository {
@@ -25,5 +27,11 @@ public class ConvocationRepositoryAdapter extends AdapterOperations<Convocation,
     public Convocation save(Convocation convocation) {
         ConvocationEntity convocationEntity = mapper.map(convocation, ConvocationEntity.class);
         return mapper.map(repository.save(convocationEntity), Convocation.class);
+    }
+
+    @Override
+    public List<Convocation> findAll() {
+        Iterable<ConvocationEntity> convocationEntities = repository.findAll();
+        return List.of(mapper.map(convocationEntities, Convocation[].class));
     }
 }
