@@ -45,6 +45,6 @@ public class ConvocationRepositoryAdapter extends AdapterOperations<Convocation,
     @Override
     public Convocation findCurrentConvocation() {
         ConvocationEntity convocationEntity = repository.findCurrentConvocation(LocalDateTime.now().toString());
-        return mapper.map(convocationEntity, Convocation.class);
+        return (convocationEntity == null ? null : mapper.map(convocationEntity, Convocation.class));
     }
 }

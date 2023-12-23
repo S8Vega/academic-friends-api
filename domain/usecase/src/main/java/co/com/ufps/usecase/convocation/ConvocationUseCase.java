@@ -11,6 +11,10 @@ public class ConvocationUseCase {
     private final ConvocationRepository convocationRepository;
 
     public Convocation save(Convocation convocation) {
+        Convocation currentConvocation = convocationRepository.findCurrentConvocation();
+        if (convocation.getId() != null && currentConvocation != null) {
+            throw new RuntimeException("Ya existe una convocatoria activa");
+        }
         return convocationRepository.save(convocation);
     }
 
