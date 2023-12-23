@@ -21,4 +21,8 @@ public class ConvocationUseCase {
     public Convocation findById(Long id) {
         return convocationRepository.findById(id);
     }
+
+    public Convocation findCurrentConvocation() {
+        return convocationRepository.findCurrentConvocation();
+    }
 }
