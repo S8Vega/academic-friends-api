@@ -1,5 +1,6 @@
 package co.com.ufps.jpa.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,7 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -21,14 +21,13 @@ import java.util.List;
 @Entity
 @Table(name = "academic_friend")
 @PrimaryKeyJoinColumn(name = "email")
-public class AcademicFriendEntity extends StudentEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class AcademicFriendEntity extends StudentEntity {
 
     private String status; // (pass, pending, rejected)
     private String resume;
     private int score;
     private Double average;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "convocation")
     private ConvocationEntity convocation;
     private String observations;
