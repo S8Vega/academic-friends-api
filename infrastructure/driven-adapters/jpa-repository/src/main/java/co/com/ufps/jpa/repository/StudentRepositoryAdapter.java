@@ -26,4 +26,16 @@ public class StudentRepositoryAdapter extends AdapterOperations<Student, Student
         StudentEntity studentEntity = mapper.map(student, StudentEntity.class);
         return mapper.map(repository.save(studentEntity), Student.class);
     }
+
+    @Override
+    public Student findByEmail(String email) {
+        StudentEntity studentEntity = repository.findByEmail(email);
+        return mapper.map(studentEntity, Student.class);
+    }
+
+    @Override
+    public void remove(String email) {
+        StudentEntity studentEntity = repository.findByEmail(email);
+        repository.delete(studentEntity);
+    }
 }

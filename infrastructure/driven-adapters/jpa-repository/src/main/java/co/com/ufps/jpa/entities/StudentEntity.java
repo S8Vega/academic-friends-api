@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -18,8 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "student")
 @PrimaryKeyJoinColumn(name = "email")
-public class StudentEntity extends UserEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class StudentEntity extends UserEntity {
 
     private int semester;
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
