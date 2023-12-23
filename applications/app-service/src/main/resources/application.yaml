@@ -37,10 +37,15 @@ cors:
 adapter:
   aws:
     s3:
-      bucketName: "test"
+      bucketName: "academic-friends-bucket"
       region: "us-east-1"
-      endpoint: "https://s3.localhost.localstack.cloud:4566"
+      endpoint: "s3.amazonaws.com"
 
 springdoc:
   api-docs:
     path: "/docs"
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug

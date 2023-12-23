@@ -10,4 +10,6 @@ public interface ConvocationRepository {
     List<Convocation> findAll();
 
     Convocation findById(Long id);
+
+    Convocation findCurrentConvocation();
 }

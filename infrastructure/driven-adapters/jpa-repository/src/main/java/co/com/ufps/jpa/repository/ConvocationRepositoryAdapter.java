@@ -8,6 +8,7 @@ import co.com.ufps.model.convocation.gateways.ConvocationRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -38,6 +39,12 @@ public class ConvocationRepositoryAdapter extends AdapterOperations<Convocation,
     @Override
     public Convocation findById(Long id) {
         ConvocationEntity convocationEntity = repository.findById(id).orElse(null);
+        return mapper.map(convocationEntity, Convocation.class);
+    }
+
+    @Override
+    public Convocation findCurrentConvocation() {
+        ConvocationEntity convocationEntity = repository.findCurrentConvocation(LocalDateTime.now().toString());
         return mapper.map(convocationEntity, Convocation.class);
     }
 }

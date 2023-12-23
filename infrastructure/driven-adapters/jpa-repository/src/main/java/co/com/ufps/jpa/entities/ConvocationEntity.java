@@ -1,5 +1,6 @@
 package co.com.ufps.jpa.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,7 +36,7 @@ public class ConvocationEntity implements Serializable {
     private LocalDateTime evaluationDate;
     @Column(name = "results_release_date")
     private LocalDateTime resultsReleaseDate;
-    @OneToMany(mappedBy = "convocation", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "convocation", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @ToString.Exclude
     private List<AcademicFriendEntity> academicFriends;
 }
