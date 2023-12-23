@@ -21,4 +21,12 @@ public class StudentUseCase {
         studentsList.forEach(studentRepository::save);
         return studentsList;
     }
+
+    public Student findByEmail(String email) {
+        return studentRepository.findByEmail(email);
+    }
+
+    public void remove(String email) {
+        studentRepository.remove(email);
+    }
 }
