@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+    implementation project(':academic-friend-rest')
     implementation project(':convocation-rest')
     implementation project(':coordinator-rest')
     implementation project(':course-rest')
