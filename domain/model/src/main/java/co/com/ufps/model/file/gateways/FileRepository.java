@@ -1,8 +1,7 @@
 package co.com.ufps.model.file.gateways;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
 
 public interface FileRepository {
-    List<Map<String, Object>> read(Object file);
+    void save(String name, File file);
 }
