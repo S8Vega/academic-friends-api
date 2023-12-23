@@ -1,6 +1,6 @@
 package co.com.ufps.filereader;
 
-import co.com.ufps.model.file.gateways.FileRepository;
+import co.com.ufps.model.file.gateways.FileReaderRepository;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Log4j2
 @Repository
-public class FileReader implements FileRepository {
+public class FileReaderReader implements FileReaderRepository {
 
     @Override
     public List<Map<String, Object>> read(Object object) {
