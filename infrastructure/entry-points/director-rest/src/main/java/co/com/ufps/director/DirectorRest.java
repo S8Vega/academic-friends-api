@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class DirectorRest {
 
     @PostMapping
     public ResponseEntity<User> save(@RequestHeader("Authorization") String jwt,
-                                     @RequestBody SaveDirectorRequestBody requestBody) {
+                                     @RequestBody SaveDirectorRequestBody requestBody) throws IOException {
         log.info("save director: {}", requestBody.getEmail());
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(userUseCase.save(requestBody.toUser(), requestBody.getPassword()));

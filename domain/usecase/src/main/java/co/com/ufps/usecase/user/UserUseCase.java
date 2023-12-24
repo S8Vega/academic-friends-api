@@ -5,14 +5,17 @@ import co.com.ufps.model.user.gateways.UserRepository;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 public class UserUseCase {
     private final UserRepository userRepository;
     private final SecurityUseCase securityUseCase;
 
-    public User save(User user, String password) {
+    public User save(User user, String password) throws IOException {
         User response = userRepository.save(user);
         securityUseCase.save(user.getEmail(), password);
+        securityUseCase.login(user.getEmail(), password);
         return response;
     }
 
