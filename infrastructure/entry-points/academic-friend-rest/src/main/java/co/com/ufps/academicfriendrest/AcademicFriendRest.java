@@ -1,11 +1,16 @@
 package co.com.ufps.academicfriendrest;
 
+import co.com.ufps.academicfriendrest.responsebody.AcademicFriendResponseBody;
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.usecase.academicfriend.AcademicFriendUseCase;
+import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Log4j2
 @RestController
@@ -23,6 +29,7 @@ import java.io.IOException;
 public class AcademicFriendRest {
     public static final int SIZE_BUFFER = 10000;
     private final AcademicFriendUseCase academicFriendUseCase;
+    private final SecurityUseCase securityUseCase;
 
     public static File convert(MultipartFile multipartFile) throws IOException {
         byte[] content = multipartFile.getBytes();
@@ -39,11 +46,19 @@ public class AcademicFriendRest {
     }
 
     @PostMapping
-    public AcademicFriend save(@RequestPart MultipartFile classSchedule, @RequestPart MultipartFile resume,
-                               @RequestPart String email, @RequestPart String average) throws IOException {
+    public ResponseEntity<AcademicFriendResponseBody> save(@RequestPart MultipartFile classSchedule, @RequestPart MultipartFile resume,
+                                                           @RequestPart String email, @RequestPart String average) throws IOException {
         AcademicFriend academicFriend = new AcademicFriend();
         academicFriend.setEmail(email);
         academicFriend.setAverage(Double.parseDouble(average));
-        return academicFriendUseCase.save(academicFriend, convert(classSchedule), convert(resume));
+        return ResponseEntity.ok(
+                AcademicFriendResponseBody.from(
+                        academicFriendUseCase.save(academicFriend, convert(classSchedule), convert(resume))));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AcademicFriendResponseBody>> findAll(@RequestHeader("Authorization") String jwt) {
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findAll()));
     }
 }

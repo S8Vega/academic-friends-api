@@ -9,6 +9,8 @@ import co.com.ufps.usecase.student.StudentUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class AcademicFriendUseCase {
@@ -39,5 +41,11 @@ public class AcademicFriendUseCase {
 
         studentUseCase.remove(academicFriend.getEmail());
         return academicFriendRepository.save(academicFriend);
+    }
+
+    public List<AcademicFriend> findAll() {
+        List<AcademicFriend> academicFriends = academicFriendRepository.findAll();
+        Collections.sort(academicFriends);
+        return academicFriends;
     }
 }

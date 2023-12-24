@@ -8,6 +8,9 @@ import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicFriend, AcademicFriendEntity, String,
         AcademicFriendCrudRepository>
@@ -26,5 +29,15 @@ public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicF
     public AcademicFriend save(AcademicFriend academicFriend) {
         AcademicFriendEntity academicFriendEntity = mapper.map(academicFriend, AcademicFriendEntity.class);
         return mapper.map(repository.save(academicFriendEntity), AcademicFriend.class);
+    }
+
+    @Override
+    public List<AcademicFriend> findAll() {
+        Iterable<AcademicFriendEntity> academicFriendEntities = repository.findAll();
+        List<AcademicFriend> academicFriends = new ArrayList<>();
+        for (AcademicFriendEntity academicFriendEntity : academicFriendEntities) {
+            academicFriends.add(mapper.map(academicFriendEntity, AcademicFriend.class));
+        }
+        return academicFriends;
     }
 }

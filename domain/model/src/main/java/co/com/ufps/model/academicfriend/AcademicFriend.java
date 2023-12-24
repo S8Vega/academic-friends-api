@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class AcademicFriend extends Student {
+public class AcademicFriend extends Student implements Comparable<AcademicFriend> {
     private String status; // (pass, pending, rejected)
     private String resume;
     private int score;
@@ -21,4 +21,9 @@ public class AcademicFriend extends Student {
     private Convocation convocation;
     private String observations;
     private String classSchedule;
+
+    @Override
+    public int compareTo(AcademicFriend o) {
+        return o.getScore() - this.getScore();
+    }
 }
