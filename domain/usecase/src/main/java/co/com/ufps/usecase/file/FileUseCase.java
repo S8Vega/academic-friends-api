@@ -5,6 +5,7 @@ import co.com.ufps.model.file.gateways.FileRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +20,9 @@ public class FileUseCase {
 
     public void save(String name, File file) {
         fileRepository.save(name, file);
+    }
+
+    public InputStream findByName(String name) {
+        return fileRepository.findByName(name);
     }
 }

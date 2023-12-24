@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
+import java.io.InputStream;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,5 +20,10 @@ public class S3Adapter implements FileRepository {
     @Override
     public void save(String name, File file) {
         s3Operations.uploadObject(properties.getBucketName(), name, file);
+    }
+
+    @Override
+    public InputStream findByName(String name) {
+        return s3Operations.getObject(properties.getBucketName(), name);
     }
 }
