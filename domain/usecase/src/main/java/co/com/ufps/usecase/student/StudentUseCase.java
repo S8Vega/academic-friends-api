@@ -18,7 +18,12 @@ public class StudentUseCase {
         List<Student> studentsList = studentsMap.stream()
                 .map(Student::fromMap)
                 .toList();
-        studentsList.forEach(studentRepository::save);
+        studentsList.forEach(student -> {
+            Student current = findByEmail(student.getEmail());
+            if (current == null) {
+                studentRepository.save(student);
+            }
+        });
         return studentsList;
     }
 

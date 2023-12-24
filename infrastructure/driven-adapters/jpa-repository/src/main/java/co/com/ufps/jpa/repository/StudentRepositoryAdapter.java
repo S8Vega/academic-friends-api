@@ -5,9 +5,11 @@ import co.com.ufps.jpa.entities.StudentEntity;
 import co.com.ufps.jpa.helper.AdapterOperations;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.student.gateways.StudentRepository;
+import lombok.extern.log4j.Log4j2;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+@Log4j2
 @Repository
 public class StudentRepositoryAdapter extends AdapterOperations<Student, StudentEntity, String, StudentCrudRepository>
         implements StudentRepository {
@@ -23,18 +25,21 @@ public class StudentRepositoryAdapter extends AdapterOperations<Student, Student
 
     @Override
     public Student save(Student student) {
+        log.info("Saving student: {}", student.getEmail());
         StudentEntity studentEntity = mapper.map(student, StudentEntity.class);
         return mapper.map(repository.save(studentEntity), Student.class);
     }
 
     @Override
     public Student findByEmail(String email) {
+        log.info("Finding student with email: {}", email);
         StudentEntity studentEntity = repository.findByEmail(email);
-        return mapper.map(studentEntity, Student.class);
+        return (studentEntity == null ? null : mapper.map(studentEntity, Student.class));
     }
 
     @Override
     public void remove(String email) {
+        log.info("Removing student with email: {}", email);
         StudentEntity studentEntity = repository.findByEmail(email);
         repository.delete(studentEntity);
     }
