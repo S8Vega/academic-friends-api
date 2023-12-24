@@ -1,6 +1,7 @@
 package co.com.ufps.academicfriendrest;
 
 import co.com.ufps.academicfriendrest.responsebody.AcademicFriendResponseBody;
+import co.com.ufps.academicfriendrest.responsebody.UpdateAcademicFriendRequestBody;
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.usecase.academicfriend.AcademicFriendUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -61,4 +64,15 @@ public class AcademicFriendRest {
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findAll()));
     }
+
+    @PutMapping
+    public ResponseEntity<AcademicFriendResponseBody> update(
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody UpdateAcademicFriendRequestBody requestBody) {
+        log.info("update: {}", requestBody.getEmail());
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.update(
+                requestBody.getEmail(), requestBody.getScore(), requestBody.getObservations())));
+    }
+
 }

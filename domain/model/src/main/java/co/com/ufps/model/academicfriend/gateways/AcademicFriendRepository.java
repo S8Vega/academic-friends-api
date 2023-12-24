@@ -8,4 +8,6 @@ public interface AcademicFriendRepository {
     AcademicFriend save(AcademicFriend academicFriend);
 
     List<AcademicFriend> findAll();
+
+    AcademicFriend findByEmail(String email);
 }

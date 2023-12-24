@@ -48,4 +48,18 @@ public class AcademicFriendUseCase {
         Collections.sort(academicFriends);
         return academicFriends;
     }
+
+    public AcademicFriend findByEmail(String email) {
+        return academicFriendRepository.findByEmail(email);
+    }
+
+    public AcademicFriend update(String email, int score, String observations) {
+        AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
+        if (academicFriend == null) {
+            throw new RuntimeException("User not found");
+        }
+        academicFriend.setScore(score);
+        academicFriend.setObservations(observations);
+        return academicFriendRepository.save(academicFriend);
+    }
 }
