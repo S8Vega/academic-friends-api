@@ -35,4 +35,5 @@ public class ReportEntity implements Serializable {
     private LocalDateTime date;
     @Column(name = "upload_date")
     private LocalDateTime uploadDate;
+    private String file;
 }
