@@ -44,3 +44,5 @@ include ':academic-friend-rest'
 project(':academic-friend-rest').projectDir = file('./infrastructure/entry-points/academic-friend-rest')
 include ':file-rest'
 project(':file-rest').projectDir = file('./infrastructure/entry-points/file-rest')
+include ':consultancy-rest'
+project(':consultancy-rest').projectDir = file('./infrastructure/entry-points/consultancy-rest')
