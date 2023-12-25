@@ -22,4 +22,8 @@ public class CourseUseCase {
         coursesList.forEach(courseRepository::save);
         return coursesList;
     }
+
+    public List<Course> findByName(String name) {
+        return courseRepository.findByName(name);
+    }
 }

@@ -8,6 +8,9 @@ import co.com.ufps.model.course.gateways.CourseRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class CourseRepositoryAdapter extends AdapterOperations<Course, CourseEntity, String, CourseCrudRepository>
         implements CourseRepository {
@@ -25,5 +28,15 @@ public class CourseRepositoryAdapter extends AdapterOperations<Course, CourseEnt
     public Course save(Course course) {
         CourseEntity courseEntity = mapper.map(course, CourseEntity.class);
         return mapper.map(repository.save(courseEntity), Course.class);
+    }
+
+    @Override
+    public List<Course> findByName(String name) {
+        List<CourseEntity> coursesEntity = repository.findByName(name);
+        List<Course> courses = new ArrayList<>();
+        for (CourseEntity courseEntity : coursesEntity) {
+            courses.add(mapper.map(courseEntity, Course.class));
+        }
+        return courses;
     }
 }
