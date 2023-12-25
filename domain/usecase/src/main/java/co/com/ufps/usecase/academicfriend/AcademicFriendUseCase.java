@@ -1,6 +1,7 @@
 package co.com.ufps.usecase.academicfriend;
 
 import co.com.ufps.model.academicfriend.AcademicFriend;
+import co.com.ufps.model.academicfriend.AcademicFriendConstants;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
@@ -28,9 +29,9 @@ public class AcademicFriendUseCase {
         }
         academicFriend.setName(student.getName());
         academicFriend.setCode(student.getCode());
-        academicFriend.setType("academicFriend");
+        academicFriend.setType(student.getType());
         academicFriend.setSemester(student.getSemester());
-        academicFriend.setStatus("pending");
+        academicFriend.setStatus(AcademicFriendConstants.Status.PENDING);
         academicFriend.setResume(String.format("%s/%s.pdf", RESUME_FOLDER, academicFriend.getEmail()));
         academicFriend.setScore(0);
         academicFriend.setConvocation(convocationUseCase.findCurrentConvocation());
