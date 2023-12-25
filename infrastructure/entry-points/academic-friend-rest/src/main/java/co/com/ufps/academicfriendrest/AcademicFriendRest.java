@@ -71,8 +71,9 @@ public class AcademicFriendRest {
             @RequestBody UpdateAcademicFriendRequestBody requestBody) {
         log.info("update: {}", requestBody.getEmail());
         securityUseCase.validate(jwt);
-        return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.update(
-                requestBody.getEmail(), requestBody.getScore(), requestBody.getObservations())));
+        return ResponseEntity.ok(AcademicFriendResponseBody.from(
+                academicFriendUseCase.update(requestBody.getEmail(), requestBody.getScore(),
+                        requestBody.getObservations(), requestBody.getState())));
     }
 
 }

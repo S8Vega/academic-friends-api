@@ -4,6 +4,7 @@ import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.academicfriend.AcademicFriendConstants;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import co.com.ufps.model.student.Student;
+import co.com.ufps.model.user.UserConstants;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
 import co.com.ufps.usecase.file.FileUseCase;
 import co.com.ufps.usecase.student.StudentUseCase;
@@ -54,13 +55,20 @@ public class AcademicFriendUseCase {
         return academicFriendRepository.findByEmail(email);
     }
 
-    public AcademicFriend update(String email, int score, String observations) {
+    public AcademicFriend update(String email, int score, String observations, String state) {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
             throw new RuntimeException("User not found");
         }
         academicFriend.setScore(score);
         academicFriend.setObservations(observations);
+        if (!AcademicFriendConstants.Status.STATUS.contains(state)) {
+            throw new RuntimeException("Invalid status");
+        }
+        academicFriend.setStatus(state);
+        if (state.equals(AcademicFriendConstants.Status.PASS)) {
+            academicFriend.setType(UserConstants.Type.ACADEMIC_FRIEND);
+        }
         return academicFriendRepository.save(academicFriend);
     }
 }
