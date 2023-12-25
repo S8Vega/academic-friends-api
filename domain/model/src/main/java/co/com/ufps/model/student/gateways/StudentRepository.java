@@ -8,4 +8,6 @@ public interface StudentRepository {
     Student findByEmail(String email);
 
     void remove(String email);
+
+    Student findByCode(String code);
 }

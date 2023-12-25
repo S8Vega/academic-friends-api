@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +32,13 @@ public class StudentRest {
         log.info("save: {}", requestBody.getOriginalFilename());
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(studentUseCase.save(requestBody));
+    }
+
+    @GetMapping("/find-by-code/{code}")
+    public ResponseEntity<Student> findByCode(@RequestHeader("Authorization") String jwt,
+                                              @PathVariable String code) {
+        log.info("findByCode: {}", code);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(studentUseCase.findByCode(code));
     }
 }

@@ -43,4 +43,11 @@ public class StudentRepositoryAdapter extends AdapterOperations<Student, Student
         StudentEntity studentEntity = repository.findByEmail(email);
         repository.delete(studentEntity);
     }
+
+    @Override
+    public Student findByCode(String code) {
+        log.info("Finding student with code: {}", code);
+        StudentEntity studentEntity = repository.findByCode(code);
+        return (studentEntity == null ? null : mapper.map(studentEntity, Student.class));
+    }
 }

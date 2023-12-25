@@ -6,4 +6,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 public interface StudentCrudRepository extends CrudRepository<StudentEntity, String>, QueryByExampleExecutor<StudentEntity> {
     StudentEntity findByEmail(String email);
+
+    StudentEntity findByCode(String code);
 }
