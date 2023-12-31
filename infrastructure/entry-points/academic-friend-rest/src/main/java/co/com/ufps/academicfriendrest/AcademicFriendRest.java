@@ -3,6 +3,7 @@ package co.com.ufps.academicfriendrest;
 import co.com.ufps.academicfriendrest.responsebody.AcademicFriendResponseBody;
 import co.com.ufps.academicfriendrest.responsebody.UpdateAcademicFriendRequestBody;
 import co.com.ufps.model.academicfriend.AcademicFriend;
+import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.academicfriend.AcademicFriendUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.List;
 
 @Log4j2
@@ -60,17 +62,18 @@ public class AcademicFriendRest {
     }
 
     @GetMapping
-    public ResponseEntity<List<AcademicFriendResponseBody>> findAll(@RequestHeader("Authorization") String jwt) {
-        securityUseCase.validate(jwt);
+    public ResponseEntity<List<AcademicFriendResponseBody>> findAll(@RequestHeader("Authorization") String jwt)
+            throws SignatureException {
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findAll()));
     }
 
     @PutMapping
     public ResponseEntity<AcademicFriendResponseBody> update(
             @RequestHeader("Authorization") String jwt,
-            @RequestBody UpdateAcademicFriendRequestBody requestBody) {
+            @RequestBody UpdateAcademicFriendRequestBody requestBody) throws SignatureException {
         log.info("update: {}", requestBody.getEmail());
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(
                 academicFriendUseCase.update(requestBody.getEmail(), requestBody.getScore(),
                         requestBody.getObservations(), requestBody.getState())));

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Log4j2
 @RestController
@@ -26,9 +27,10 @@ public class CoordinatorRest {
 
     @PostMapping
     public ResponseEntity<User> save(@RequestHeader("Authorization") String jwt,
-                                     @RequestBody SaveCoordinatorRequestBody requestBody) throws IOException {
+                                     @RequestBody SaveCoordinatorRequestBody requestBody)
+            throws IOException, SignatureException {
         log.info("save coordinator: {}", requestBody.getEmail());
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
         return ResponseEntity.ok(userUseCase.save(requestBody.toUser(), requestBody.getPassword()));
     }
 }

@@ -2,6 +2,7 @@ package co.com.ufps.consultancyrest;
 
 import co.com.ufps.consultancyrest.requestbody.SaveConsultancyRequestBody;
 import co.com.ufps.consultancyrest.responsebody.SaveConsultancyResponseBody;
+import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.consultancy.ConsultancyUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.SignatureException;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +27,10 @@ public class ConsultancyRest {
 
     @PostMapping
     public ResponseEntity<SaveConsultancyResponseBody> save(@RequestHeader("Authorization") String jwt,
-                                                            @RequestBody SaveConsultancyRequestBody requestBody) {
+                                                            @RequestBody SaveConsultancyRequestBody requestBody)
+            throws SignatureException {
         log.info("save: {}", requestBody);
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
         return ResponseEntity.ok(SaveConsultancyResponseBody.from(
                 consultancyUseCase.save(requestBody.toConsultancy())));
     }

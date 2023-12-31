@@ -1,6 +1,7 @@
 package co.com.ufps.courserest;
 
 import co.com.ufps.model.course.Course;
+import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.course.CourseUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.SignatureException;
 import java.util.List;
 
 @Log4j2
@@ -28,17 +30,18 @@ public class CourseRest {
 
     @PostMapping
     public ResponseEntity<List<Course>> save(@RequestParam("file") MultipartFile requestBody,
-                                             @RequestHeader("Authorization") String jwt) {
+                                             @RequestHeader("Authorization") String jwt)
+            throws SignatureException {
         log.info("save: {}", requestBody.getOriginalFilename());
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
         return ResponseEntity.ok(courseUseCase.save(requestBody));
     }
 
     @GetMapping("/find-by-name/{name}")
     public ResponseEntity<List<Course>> findByName(@RequestHeader("Authorization") String jwt,
-                                                   @PathVariable String name) {
+                                                   @PathVariable String name) throws SignatureException {
         log.info("findByName: {}", name);
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
         return ResponseEntity.ok(courseUseCase.findByName(name));
     }
 }

@@ -1,6 +1,7 @@
 package co.com.ufps.usecase.security;
 
 import co.com.ufps.model.security.gateways.SecurityRepository;
+import co.com.ufps.model.user.User;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class SecurityUseCase {
 
     public void validate(String token, String... roles) throws SignatureException {
         String tokenRole = getTokenRole(token);
+        if (tokenRole.equals(User.Constants.DIRECTOR)) return;
         for (String role : roles) {
             if (tokenRole.equals(role)) {
                 return;
