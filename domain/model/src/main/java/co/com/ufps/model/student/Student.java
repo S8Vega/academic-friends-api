@@ -20,7 +20,7 @@ public class Student extends User {
         student.setEmail((String) map.get("email"));
         student.setName((String) map.get("name"));
         student.setCode(String.valueOf(Double.valueOf(map.get("code").toString()).intValue()));
-        student.setType("student");
+        student.setType(User.Constants.STUDENT);
         student.setSemester(String.valueOf(Double.valueOf(map.get("semester").toString()).intValue()));
         return student;
     }

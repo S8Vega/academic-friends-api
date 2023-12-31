@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,5 +27,13 @@ public class AcademicFriend extends Student implements Comparable<AcademicFriend
     @Override
     public int compareTo(AcademicFriend o) {
         return o.getScore() - this.getScore();
+    }
+
+    public class Constants {
+        public static final String PASS = "pass";
+        public static final String PENDING = "pending";
+        public static final String REJECTED = "rejected";
+
+        public static final List<String> STATUS = List.of(PASS, PENDING, REJECTED);
     }
 }

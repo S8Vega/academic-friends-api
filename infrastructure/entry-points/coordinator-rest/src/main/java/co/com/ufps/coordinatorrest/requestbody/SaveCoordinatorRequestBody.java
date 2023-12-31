@@ -17,7 +17,7 @@ public class SaveCoordinatorRequestBody {
         user.setEmail(email);
         user.setName(name);
         user.setCode(code);
-        user.setType("coordinator");
+        user.setType(User.Constants.COORDINATOR);
         return user;
     }
 }

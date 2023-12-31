@@ -17,7 +17,7 @@ public class SaveDirectorRequestBody {
         user.setEmail(email);
         user.setName(name);
         user.setCode(code);
-        user.setType("director");
+        user.setType(User.Constants.DIRECTOR);
         return user;
     }
 }
