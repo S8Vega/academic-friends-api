@@ -12,4 +12,7 @@ public interface ConsultancyCrudRepository extends CrudRepository<ConsultancyEnt
 
     @Query("SELECT c FROM ConsultancyEntity c WHERE c.student.email = ?1")
     List<ConsultancyEntity> findByStudent(String email);
+
+    @Query("SELECT c FROM ConsultancyEntity c WHERE c.academicFriend.email = ?1")
+    List<ConsultancyEntity> findByAcademicFriend(String email);
 }

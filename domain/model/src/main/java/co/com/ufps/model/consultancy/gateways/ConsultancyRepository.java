@@ -8,4 +8,6 @@ public interface ConsultancyRepository {
     Consultancy save(Consultancy consultancy);
 
     List<Consultancy> findByStudent(String email);
+
+    List<Consultancy> findByAcademicFriend(String email);
 }

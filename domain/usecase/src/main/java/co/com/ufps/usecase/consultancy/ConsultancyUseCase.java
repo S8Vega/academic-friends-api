@@ -44,4 +44,8 @@ public class ConsultancyUseCase {
     public List<Consultancy> findByStudent(String email) {
         return repository.findByStudent(email);
     }
+
+    public List<Consultancy> findByAcademicFriend(String email) {
+        return repository.findByAcademicFriend(email);
+    }
 }

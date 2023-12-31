@@ -40,4 +40,14 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
         }
         return consultancies;
     }
+
+    @Override
+    public List<Consultancy> findByAcademicFriend(String email) {
+        List<ConsultancyEntity> entities = repository.findByAcademicFriend(email);
+        List<Consultancy> consultancies = new ArrayList<>();
+        for (ConsultancyEntity entity : entities) {
+            consultancies.add(this.mapper.map(entity, Consultancy.class));
+        }
+        return consultancies;
+    }
 }

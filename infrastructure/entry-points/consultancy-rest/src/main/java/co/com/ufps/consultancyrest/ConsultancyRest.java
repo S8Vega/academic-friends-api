@@ -39,12 +39,18 @@ public class ConsultancyRest {
     }
 
     @GetMapping("/find-by-student/{email}")
-    public ResponseEntity<List<ConsultancyResponseBody>> findByEmail(@RequestHeader("Authorization") String jwt,
-                                                                     @PathVariable String email)
-            throws SignatureException {
-        log.info("findByEmail: {}", email);
-        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
-        return ResponseEntity.ok(ConsultancyResponseBody.from(
-                consultancyUseCase.findByStudent(email)));
+    public ResponseEntity<List<ConsultancyResponseBody>> findByStudent(@RequestHeader("Authorization") String jwt,
+                                                                       @PathVariable String email) {
+        log.info("findByStudent: {}", email);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByStudent(email)));
+    }
+
+    @GetMapping("/find-by-academic-friend/{email}")
+    public ResponseEntity<List<ConsultancyResponseBody>> findByAcademicFriend(@RequestHeader("Authorization") String jwt,
+                                                                              @PathVariable String email) {
+        log.info("findByAcademicFriend: {}", email);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByAcademicFriend(email)));
     }
 }
