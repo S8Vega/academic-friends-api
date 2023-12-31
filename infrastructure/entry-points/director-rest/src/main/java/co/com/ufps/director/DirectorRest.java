@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Log4j2
 @RestController
@@ -26,9 +27,9 @@ public class DirectorRest {
 
     @PostMapping
     public ResponseEntity<User> save(@RequestHeader("Authorization") String jwt,
-                                     @RequestBody SaveDirectorRequestBody requestBody) throws IOException {
+                                     @RequestBody SaveDirectorRequestBody requestBody) throws IOException, SignatureException {
         log.info("save director: {}", requestBody.getEmail());
-        securityUseCase.validate(jwt);
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR);
         return ResponseEntity.ok(userUseCase.save(requestBody.toUser(), requestBody.getPassword()));
     }
 }

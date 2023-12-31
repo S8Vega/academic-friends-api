@@ -132,4 +132,16 @@ public class CognitoAdapter implements SecurityRepository {
             throw new CognitoException(e);
         }
     }
+
+    @Override
+    public String getTokenRole(String token) {
+        Key key = new SecretKeySpec(Base64.getDecoder().decode(secretKey), SignatureAlgorithm.HS256.getJcaName());
+        String role = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+        return role == null ? "" : role;
+    }
 }

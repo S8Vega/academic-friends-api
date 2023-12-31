@@ -8,4 +8,6 @@ public interface SecurityRepository {
     void validate(String token);
 
     void save(String email, String password, String role);
+
+    String getTokenRole(String token);
 }
