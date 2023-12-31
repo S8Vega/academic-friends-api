@@ -74,4 +74,8 @@ public class AcademicFriendUseCase {
         }
         return academicFriendRepository.save(academicFriend);
     }
+
+    public void resetPassword(String email, String password) throws IOException {
+        securityUseCase.resetPassword(email, password);
+    }
 }

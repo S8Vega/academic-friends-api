@@ -38,4 +38,8 @@ public class SecurityUseCase {
     public String getTokenRole(String token) {
         return securityRepository.getTokenRole(token);
     }
+
+    public void resetPassword(String email, String password) throws IOException {
+        securityRepository.resetPassword(email, password);
+    }
 }

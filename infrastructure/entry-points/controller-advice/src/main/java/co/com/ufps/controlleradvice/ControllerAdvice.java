@@ -1,5 +1,6 @@
 package co.com.ufps.controlleradvice;
 
+import co.com.ufps.model.exceptions.CognitoException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -41,7 +42,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({UnsupportedJwtException.class, MissingRequestHeaderException.class,
             ExpiredJwtException.class, MalformedJwtException.class, SignatureException.class,
-            java.security.SignatureException.class})
+            java.security.SignatureException.class, CognitoException.class})
     public final ResponseEntity<ErrorModel> unauthorized(Exception exception) {
         ErrorModel errorModel = ErrorModel.builder()
                 .code("ADC-601")

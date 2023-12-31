@@ -10,4 +10,6 @@ public interface SecurityRepository {
     void save(String email, String password, String role);
 
     String getTokenRole(String token);
+
+    void resetPassword(String email, String password) throws IOException;
 }

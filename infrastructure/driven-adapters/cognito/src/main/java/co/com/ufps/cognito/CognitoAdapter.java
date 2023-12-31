@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminSetUserPasswordRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminSetUserPasswordResponse;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthenticationResultType;
@@ -143,5 +145,25 @@ public class CognitoAdapter implements SecurityRepository {
                 .getBody()
                 .get("role", String.class);
         return role == null ? "" : role;
+    }
+
+    @Override
+    public void resetPassword(String email, String password) throws IOException {
+        log.info("Reseteando contraseña del usuario: {}", email);
+        try {
+            AdminSetUserPasswordRequest adminSetUserPasswordRequest = AdminSetUserPasswordRequest.builder()
+                    .userPoolId(userPoolId)
+                    .username(email)
+                    .password(password)
+                    .permanent(true)
+                    .build();
+            AdminSetUserPasswordResponse adminSetUserPasswordResponse = cognitoClient
+                    .adminSetUserPassword(adminSetUserPasswordRequest);
+            log.info("Contraseña reseteada del usuario: {}", email);
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en el reseteo de contraseña");
+            log.error(e.awsErrorDetails().errorMessage());
+            throw new CognitoException(e);
+        }
     }
 }
