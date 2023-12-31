@@ -17,7 +17,7 @@ public class SecurityUseCase {
         securityRepository.validate(token);
     }
 
-    public void save(String email, String password) {
-        securityRepository.save(email, password);
+    public void save(String email, String password, String role) {
+        securityRepository.save(email, password, role);
     }
 }

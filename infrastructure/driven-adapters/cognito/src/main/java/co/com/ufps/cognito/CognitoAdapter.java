@@ -111,7 +111,7 @@ public class CognitoAdapter implements SecurityRepository {
     }
 
     @Override
-    public void save(String email, String password) {
+    public void save(String email, String password, String role) {
         log.info("Registrando usuario: {}", email);
         try {
             AdminCreateUserRequest createUserRequest = AdminCreateUserRequest.builder()
@@ -119,7 +119,8 @@ public class CognitoAdapter implements SecurityRepository {
                     .username(email)
                     .temporaryPassword(password)
                     .userAttributes(AttributeType.builder().name("email").value(email).build(),
-                            AttributeType.builder().name("email_verified").value("true").build())
+                            AttributeType.builder().name("email_verified").value("true").build(),
+                            AttributeType.builder().name("custom:role").value(role).build())
                     .build();
 
             AdminCreateUserResponse createUserResponse = cognitoClient.adminCreateUser(createUserRequest);
