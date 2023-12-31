@@ -2,6 +2,9 @@ package co.com.ufps.usecase.academicfriend;
 
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
+import co.com.ufps.model.convocation.Convocation;
+import co.com.ufps.model.exceptions.ConvocationNotFoundException;
+import co.com.ufps.model.exceptions.UserNotFoundException;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.user.UserConstants;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
@@ -28,7 +31,7 @@ public class AcademicFriendUseCase {
     public AcademicFriend save(AcademicFriend academicFriend, File resume) {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
         if (student == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException(String.format("User %s not found", academicFriend.getEmail()));
         }
         academicFriend.setName(student.getName());
         academicFriend.setCode(student.getCode());
@@ -37,7 +40,11 @@ public class AcademicFriendUseCase {
         academicFriend.setStatus(AcademicFriend.Constants.PENDING);
         academicFriend.setResume(String.format("%s/%s.pdf", RESUME_FOLDER, academicFriend.getEmail()));
         academicFriend.setScore(0);
-        academicFriend.setConvocation(convocationUseCase.findCurrentConvocation());
+        Convocation convocation = convocationUseCase.findCurrentConvocation();
+        if (convocation == null) {
+            throw new ConvocationNotFoundException("Convocation not found");
+        }
+        academicFriend.setConvocation(convocation);
         academicFriend.setObservations("");
         fileUseCase.save(academicFriend.getResume(), resume);
 

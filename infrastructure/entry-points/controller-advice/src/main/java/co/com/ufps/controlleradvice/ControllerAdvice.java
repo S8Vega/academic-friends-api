@@ -1,6 +1,8 @@
 package co.com.ufps.controlleradvice;
 
 import co.com.ufps.model.exceptions.CognitoException;
+import co.com.ufps.model.exceptions.ConvocationNotFoundException;
+import co.com.ufps.model.exceptions.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -50,5 +52,15 @@ public class ControllerAdvice {
                 .message(exception.getMessage())
                 .build();
         return processException(errorModel, exception, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({UserNotFoundException.class, ConvocationNotFoundException.class})
+    public final ResponseEntity<ErrorModel> notFound(Exception exception) {
+        ErrorModel errorModel = ErrorModel.builder()
+                .code("ADC-602")
+                .exception(exception.getClass().getName())
+                .message(exception.getMessage())
+                .build();
+        return processException(errorModel, exception, HttpStatus.NOT_FOUND);
     }
 }
