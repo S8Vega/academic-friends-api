@@ -27,7 +27,7 @@ public class AcademicFriendResponseBody {
     private int score;
     private Double average;
     private String observations;
-    private String classSchedule;
+    private String contract;
 
     public static AcademicFriendResponseBody from(AcademicFriend academicFriend) {
         return AcademicFriendResponseBody.builder()
@@ -41,7 +41,7 @@ public class AcademicFriendResponseBody {
                 .score(academicFriend.getScore())
                 .average(academicFriend.getAverage())
                 .observations(academicFriend.getObservations())
-                .classSchedule(academicFriend.getClassSchedule())
+                .contract(academicFriend.getContract())
                 .build();
     }
 

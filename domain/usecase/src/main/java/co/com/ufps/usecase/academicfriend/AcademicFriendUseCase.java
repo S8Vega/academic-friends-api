@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class AcademicFriendUseCase {
-    private static final String CLASS_SCHEDULE_FOLDER = "class-schedule";
+    private static final String CLASS_SCHEDULE_FOLDER = "contract";
     private static final String RESUME_FOLDER = "resume";
     private final AcademicFriendRepository academicFriendRepository;
     private final FileUseCase fileUseCase;
@@ -25,7 +25,7 @@ public class AcademicFriendUseCase {
     private final ConvocationUseCase convocationUseCase;
     private final SecurityUseCase securityUseCase;
 
-    public AcademicFriend save(AcademicFriend academicFriend, File classSchedule, File resume) {
+    public AcademicFriend save(AcademicFriend academicFriend, File resume) {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
         if (student == null) {
             throw new RuntimeException("User not found");
@@ -39,8 +39,6 @@ public class AcademicFriendUseCase {
         academicFriend.setScore(0);
         academicFriend.setConvocation(convocationUseCase.findCurrentConvocation());
         academicFriend.setObservations("");
-        academicFriend.setClassSchedule(String.format("%s/%s.pdf", CLASS_SCHEDULE_FOLDER, academicFriend.getEmail()));
-        fileUseCase.save(academicFriend.getClassSchedule(), classSchedule);
         fileUseCase.save(academicFriend.getResume(), resume);
 
         studentUseCase.remove(academicFriend.getEmail());

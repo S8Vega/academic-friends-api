@@ -52,14 +52,15 @@ public class AcademicFriendRest {
     }
 
     @PostMapping
-    public ResponseEntity<AcademicFriendResponseBody> save(@RequestPart MultipartFile classSchedule, @RequestPart MultipartFile resume,
-                                                           @RequestPart String email, @RequestPart String average) throws IOException {
+    public ResponseEntity<AcademicFriendResponseBody> save(
+            @RequestPart MultipartFile resume, @RequestPart String email, @RequestPart String average)
+            throws IOException {
         AcademicFriend academicFriend = new AcademicFriend();
         academicFriend.setEmail(email);
         academicFriend.setAverage(Double.parseDouble(average));
         return ResponseEntity.ok(
                 AcademicFriendResponseBody.from(
-                        academicFriendUseCase.save(academicFriend, convert(classSchedule), convert(resume))));
+                        academicFriendUseCase.save(academicFriend, convert(resume))));
     }
 
     @GetMapping

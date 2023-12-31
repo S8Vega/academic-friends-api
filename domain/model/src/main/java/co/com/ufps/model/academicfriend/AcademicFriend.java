@@ -22,7 +22,7 @@ public class AcademicFriend extends Student implements Comparable<AcademicFriend
     private Double average;
     private Convocation convocation;
     private String observations;
-    private String classSchedule;
+    private String contract;
 
     @Override
     public int compareTo(AcademicFriend o) {

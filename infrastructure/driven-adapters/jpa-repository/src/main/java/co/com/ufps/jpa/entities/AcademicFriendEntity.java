@@ -1,7 +1,6 @@
 package co.com.ufps.jpa.entities;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -31,8 +30,7 @@ public class AcademicFriendEntity extends StudentEntity {
     @JoinColumn(name = "convocation")
     private ConvocationEntity convocation;
     private String observations;
-    @Column(name = "class_schedule")
-    private String classSchedule;
+    private String contract;
     @OneToMany(mappedBy = "academicFriend", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<ScheduleEntity> schedules;
