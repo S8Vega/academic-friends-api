@@ -71,12 +71,12 @@ public class AcademicFriendRest {
     @PutMapping
     public ResponseEntity<AcademicFriendResponseBody> update(
             @RequestHeader("Authorization") String jwt,
-            @RequestBody UpdateAcademicFriendRequestBody requestBody) throws SignatureException {
+            @RequestBody UpdateAcademicFriendRequestBody requestBody) throws SignatureException, IOException {
         log.info("update: {}", requestBody.getEmail());
         securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(
                 academicFriendUseCase.update(requestBody.getEmail(), requestBody.getScore(),
-                        requestBody.getObservations(), requestBody.getState())));
+                        requestBody.getObservations(), requestBody.getState(), requestBody.getPassword())));
     }
 
 }

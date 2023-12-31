@@ -10,4 +10,5 @@ public class UpdateAcademicFriendRequestBody {
     private int score;
     private String observations;
     private String state;
+    private String password;
 }

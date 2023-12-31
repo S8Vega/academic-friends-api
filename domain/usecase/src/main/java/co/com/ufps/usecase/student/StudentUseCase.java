@@ -16,6 +16,8 @@ public class StudentUseCase {
     public List<Student> save(Object students) {
         List<Map<String, Object>> studentsMap = fileUseCase.read(students);
         List<Student> studentsList = studentsMap.stream()
+                .filter(student -> student.get("email") != null && student.get("name") != null &&
+                        student.get("code") != null && student.get("semester") != null)
                 .map(Student::fromMap)
                 .toList();
         studentsList.forEach(student -> {

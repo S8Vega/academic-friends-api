@@ -1,16 +1,17 @@
 package co.com.ufps.usecase.academicfriend;
 
 import co.com.ufps.model.academicfriend.AcademicFriend;
-import co.com.ufps.model.academicfriend.AcademicFriendConstants;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.user.UserConstants;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
 import co.com.ufps.usecase.file.FileUseCase;
+import co.com.ufps.usecase.security.SecurityUseCase;
 import co.com.ufps.usecase.student.StudentUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class AcademicFriendUseCase {
     private final FileUseCase fileUseCase;
     private final StudentUseCase studentUseCase;
     private final ConvocationUseCase convocationUseCase;
+    private final SecurityUseCase securityUseCase;
 
     public AcademicFriend save(AcademicFriend academicFriend, File classSchedule, File resume) {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
@@ -32,7 +34,7 @@ public class AcademicFriendUseCase {
         academicFriend.setCode(student.getCode());
         academicFriend.setType(student.getType());
         academicFriend.setSemester(student.getSemester());
-        academicFriend.setStatus(AcademicFriendConstants.Status.PENDING);
+        academicFriend.setStatus(AcademicFriend.Constants.PENDING);
         academicFriend.setResume(String.format("%s/%s.pdf", RESUME_FOLDER, academicFriend.getEmail()));
         academicFriend.setScore(0);
         academicFriend.setConvocation(convocationUseCase.findCurrentConvocation());
@@ -55,19 +57,20 @@ public class AcademicFriendUseCase {
         return academicFriendRepository.findByEmail(email);
     }
 
-    public AcademicFriend update(String email, int score, String observations, String state) {
+    public AcademicFriend update(String email, int score, String observations, String state, String password) throws IOException {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
             throw new RuntimeException("User not found");
         }
         academicFriend.setScore(score);
         academicFriend.setObservations(observations);
-        if (!AcademicFriendConstants.Status.STATUS.contains(state)) {
+        if (!AcademicFriend.Constants.STATUS.contains(state)) {
             throw new RuntimeException("Invalid status");
         }
         academicFriend.setStatus(state);
-        if (state.equals(AcademicFriendConstants.Status.PASS)) {
+        if (state.equals(AcademicFriend.Constants.PASS)) {
             academicFriend.setType(UserConstants.Type.ACADEMIC_FRIEND);
+            securityUseCase.save(email, password, UserConstants.Type.ACADEMIC_FRIEND);
         }
         return academicFriendRepository.save(academicFriend);
     }

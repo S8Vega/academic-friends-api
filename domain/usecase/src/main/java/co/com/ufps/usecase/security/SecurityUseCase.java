@@ -30,8 +30,9 @@ public class SecurityUseCase {
         throw new SignatureException("El rol del token no es valido");
     }
 
-    public void save(String email, String password, String role) {
+    public void save(String email, String password, String role) throws IOException {
         securityRepository.save(email, password, role);
+        login(email, password, role);
     }
 
     public String getTokenRole(String token) {

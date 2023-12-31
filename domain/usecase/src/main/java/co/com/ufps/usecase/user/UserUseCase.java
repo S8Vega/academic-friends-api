@@ -15,7 +15,6 @@ public class UserUseCase {
     public User save(User user, String password) throws IOException {
         User response = userRepository.save(user);
         securityUseCase.save(user.getEmail(), password, user.getType());
-        securityUseCase.login(user.getEmail(), password, user.getType());
         return response;
     }
 
