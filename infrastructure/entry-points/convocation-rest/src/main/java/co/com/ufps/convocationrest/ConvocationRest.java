@@ -1,7 +1,7 @@
 package co.com.ufps.convocationrest;
 
 import co.com.ufps.convocationrest.requestbody.SaveConvocationRequestBody;
-import co.com.ufps.model.convocation.Convocation;
+import co.com.ufps.convocationrest.responsebody.ConvocationResponseBody;
 import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -29,27 +29,35 @@ public class ConvocationRest {
     private final SecurityUseCase securityUseCase;
 
     @PostMapping
-    public ResponseEntity<Convocation> save(@RequestHeader("Authorization") String jwt,
-                                            @RequestBody SaveConvocationRequestBody requestBody)
+    public ResponseEntity<ConvocationResponseBody> save(@RequestHeader("Authorization") String jwt,
+                                                        @RequestBody SaveConvocationRequestBody requestBody)
             throws SignatureException {
         log.info("save convocation: {}", requestBody);
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(convocationUseCase.save(requestBody.toConvocation()));
+        return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.save(requestBody.toConvocation())));
     }
 
     @GetMapping
-    public ResponseEntity<List<Convocation>> findAll(@RequestHeader("Authorization") String jwt)
+    public ResponseEntity<List<ConvocationResponseBody>> findAll(@RequestHeader("Authorization") String jwt)
             throws SignatureException {
         log.info("find all convocation");
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(convocationUseCase.findAll());
+        return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Convocation> findById(@RequestHeader("Authorization") String jwt, @PathVariable Long id)
+    public ResponseEntity<ConvocationResponseBody> findById(@RequestHeader("Authorization") String jwt, @PathVariable Long id)
             throws SignatureException {
         log.info("find convocation by id: {}", id);
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(convocationUseCase.findById(id));
+        return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.findById(id)));
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<ConvocationResponseBody> findActive(@RequestHeader("Authorization") String jwt)
+            throws SignatureException {
+        log.info("find active convocation");
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
+        return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.findCurrentConvocation()));
     }
 }
