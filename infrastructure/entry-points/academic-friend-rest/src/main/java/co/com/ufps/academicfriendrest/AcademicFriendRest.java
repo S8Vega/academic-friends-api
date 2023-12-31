@@ -90,4 +90,12 @@ public class AcademicFriendRest {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/contract")
+    public ResponseEntity<AcademicFriendResponseBody> updateContract(
+            @RequestHeader("Authorization") String jwt,
+            @RequestPart MultipartFile contract, @RequestPart String email) throws IOException, SignatureException {
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
+        academicFriendUseCase.addContract(email, convert(contract));
+        return ResponseEntity.ok().build();
+    }
 }

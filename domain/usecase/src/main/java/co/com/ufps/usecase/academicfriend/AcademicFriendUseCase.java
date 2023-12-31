@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class AcademicFriendUseCase {
-    private static final String CLASS_SCHEDULE_FOLDER = "contract";
+    private static final String CONTRACT_FOLDER = "contract";
     private static final String RESUME_FOLDER = "resume";
     private final AcademicFriendRepository academicFriendRepository;
     private final FileUseCase fileUseCase;
@@ -75,5 +75,15 @@ public class AcademicFriendUseCase {
 
     public void resetPassword(String email, String password) throws IOException {
         securityUseCase.resetPassword(email, password);
+    }
+
+    public void addContract(String email, File contract) {
+        AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
+        if (academicFriend == null) {
+            throw new RuntimeException("User not found");
+        }
+        academicFriend.setContract(String.format("%s/%s.pdf", CONTRACT_FOLDER, academicFriend.getEmail()));
+        fileUseCase.save(academicFriend.getContract(), contract);
+        academicFriendRepository.save(academicFriend);
     }
 }
