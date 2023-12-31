@@ -86,4 +86,8 @@ public class AcademicFriendUseCase {
         fileUseCase.save(academicFriend.getContract(), contract);
         academicFriendRepository.save(academicFriend);
     }
+
+    public List<AcademicFriend> findByConvocation(Long id) {
+        return academicFriendRepository.findByConvocation(id);
+    }
 }

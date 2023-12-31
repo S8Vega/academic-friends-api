@@ -10,4 +10,6 @@ public interface AcademicFriendRepository {
     List<AcademicFriend> findAll();
 
     AcademicFriend findByEmail(String email);
+
+    List<AcademicFriend> findByConvocation(Long id);
 }

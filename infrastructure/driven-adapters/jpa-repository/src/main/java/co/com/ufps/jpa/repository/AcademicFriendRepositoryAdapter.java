@@ -55,4 +55,15 @@ public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicF
         }
         return null;
     }
+
+    @Override
+    public List<AcademicFriend> findByConvocation(Long id) {
+        log.info("findByConvocation: {}", id);
+        Iterable<AcademicFriendEntity> academicFriendEntities = repository.findByConvocation(id);
+        List<AcademicFriend> academicFriends = new ArrayList<>();
+        for (AcademicFriendEntity academicFriendEntity : academicFriendEntities) {
+            academicFriends.add(mapper.map(academicFriendEntity, AcademicFriend.class));
+        }
+        return academicFriends;
+    }
 }
