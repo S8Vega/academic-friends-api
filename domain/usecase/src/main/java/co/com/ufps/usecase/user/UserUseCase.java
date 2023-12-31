@@ -13,6 +13,9 @@ public class UserUseCase {
     private final SecurityUseCase securityUseCase;
 
     public User save(User user, String password) throws IOException {
+        if (!user.getEmail().endsWith(User.Constants.EMAIL)) {
+            throw new RuntimeException(String.format("El correo %s no es valido", user.getEmail()));
+        }
         User response = userRepository.save(user);
         securityUseCase.save(user.getEmail(), password, user.getType());
         return response;

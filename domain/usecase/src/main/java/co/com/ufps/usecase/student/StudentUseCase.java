@@ -2,6 +2,7 @@ package co.com.ufps.usecase.student;
 
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.student.gateways.StudentRepository;
+import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.file.FileUseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,11 @@ public class StudentUseCase {
                         student.get("code") != null && student.get("semester") != null)
                 .map(Student::fromMap)
                 .toList();
+        studentsList.forEach(student -> {
+            if (!student.getEmail().endsWith(User.Constants.EMAIL)) {
+                throw new RuntimeException(String.format("El correo %s no es valido", student.getEmail()));
+            }
+        });
         studentsList.forEach(student -> {
             Student current = findByEmail(student.getEmail());
             if (current == null) {
