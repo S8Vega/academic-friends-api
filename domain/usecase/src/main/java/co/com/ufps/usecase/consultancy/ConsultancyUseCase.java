@@ -10,6 +10,8 @@ import co.com.ufps.usecase.course.CourseUseCase;
 import co.com.ufps.usecase.student.StudentUseCase;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class ConsultancyUseCase {
     private final ConsultancyRepository repository;
@@ -35,7 +37,11 @@ public class ConsultancyUseCase {
             throw new RuntimeException("Course not found");
         }
         consultancy.setCourse(course);
-        
+
         return repository.save(consultancy);
+    }
+
+    public List<Consultancy> findByStudent(String email) {
+        return repository.findByStudent(email);
     }
 }

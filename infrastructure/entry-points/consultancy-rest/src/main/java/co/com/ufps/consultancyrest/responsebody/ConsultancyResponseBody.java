@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class SaveConsultancyResponseBody {
+public class ConsultancyResponseBody {
     private String academicFriendEmail;
     private String studentCode;
     private String courseName;
@@ -17,8 +19,8 @@ public class SaveConsultancyResponseBody {
     private String difficultiesEncountered;
     private String aspectsToImprove;
 
-    public static SaveConsultancyResponseBody from(Consultancy consultancy) {
-        SaveConsultancyResponseBody responseBody = new SaveConsultancyResponseBody();
+    public static ConsultancyResponseBody from(Consultancy consultancy) {
+        ConsultancyResponseBody responseBody = new ConsultancyResponseBody();
         responseBody.setAcademicFriendEmail(consultancy.getAcademicFriend().getEmail());
         responseBody.setStudentCode(consultancy.getStudent().getCode());
         responseBody.setCourseName(consultancy.getCourse().getName());
@@ -27,5 +29,9 @@ public class SaveConsultancyResponseBody {
         responseBody.setDifficultiesEncountered(consultancy.getDifficultiesEncountered());
         responseBody.setAspectsToImprove(consultancy.getAspectsToImprove());
         return responseBody;
+    }
+
+    public static List<ConsultancyResponseBody> from(List<Consultancy> consultancies) {
+        return consultancies.stream().map(ConsultancyResponseBody::from).toList();
     }
 }

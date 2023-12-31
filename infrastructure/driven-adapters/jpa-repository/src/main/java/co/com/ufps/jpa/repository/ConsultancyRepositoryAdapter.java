@@ -8,6 +8,9 @@ import co.com.ufps.model.consultancy.gateways.ConsultancyRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy, ConsultancyEntity, Long,
         ConsultancyCrudRepository>
@@ -26,5 +29,15 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
     public Consultancy save(Consultancy consultancy) {
         ConsultancyEntity entity = this.mapper.map(consultancy, ConsultancyEntity.class);
         return this.mapper.map(repository.save(entity), Consultancy.class);
+    }
+
+    @Override
+    public List<Consultancy> findByStudent(String email) {
+        List<ConsultancyEntity> entities = repository.findByStudent(email);
+        List<Consultancy> consultancies = new ArrayList<>();
+        for (ConsultancyEntity entity : entities) {
+            consultancies.add(this.mapper.map(entity, Consultancy.class));
+        }
+        return consultancies;
     }
 }
