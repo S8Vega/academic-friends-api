@@ -9,8 +9,8 @@ import java.io.IOException;
 public class SecurityUseCase {
     private final SecurityRepository securityRepository;
 
-    public String login(String email, String password) throws IOException {
-        return securityRepository.login(email, password);
+    public String login(String email, String password, String role) throws IOException {
+        return securityRepository.login(email, password, role);
     }
 
     public void validate(String token) {

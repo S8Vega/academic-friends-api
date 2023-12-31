@@ -45,13 +45,13 @@ public class CognitoAdapter implements SecurityRepository {
     private String userPoolId;
 
     @Override
-    public String login(String email, String password) throws IOException {
+    public String login(String email, String password, String role) throws IOException {
         log.info("Iniciando sesión con el usuario: {}", email);
         String accessToken = getAccessToken(email, password);
         if (accessToken.isEmpty()) {
             return "";
         }
-        return generateToken(email);
+        return generateToken(email, role);
     }
 
     private String getAccessToken(String email, String password) {
@@ -91,13 +91,14 @@ public class CognitoAdapter implements SecurityRepository {
         }
     }
 
-    private String generateToken(String email) {
+    private String generateToken(String email, String role) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plus(1, ChronoUnit.DAYS)))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
+                .claim("role", role)
                 .compact();
     }
 

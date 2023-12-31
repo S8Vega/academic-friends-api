@@ -24,8 +24,8 @@ public class SecurityRest {
 
     @PostMapping("/login")
     public ResponseEntity<JWTResponseBody> login(@RequestBody LoginRequestBody requestBody) throws IOException {
-        String jwt = securityService.login(requestBody.getEmail(), requestBody.getPassword());
         User user = userService.findByEmail(requestBody.getEmail());
+        String jwt = securityService.login(requestBody.getEmail(), requestBody.getPassword(), user.getType());
         JWTResponseBody jwtResponseBody = JWTResponseBody.builder()
                 .jwt(jwt)
                 .email(user.getEmail())
