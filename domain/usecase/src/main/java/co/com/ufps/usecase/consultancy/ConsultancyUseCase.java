@@ -86,4 +86,11 @@ public class ConsultancyUseCase {
     public List<Consultancy> findByCourse(String courseName) {
         return repository.findByCourse(courseName);
     }
+
+    public List<Consultancy> findByCourseAndBetweenDates(String courseName, LocalDateTime startDate,
+                                                         LocalDateTime endDate) {
+        return findByStartDateBetween(startDate, endDate).stream()
+                .filter(consultancy -> consultancy.getCourse().getName().equals(courseName))
+                .toList();
+    }
 }

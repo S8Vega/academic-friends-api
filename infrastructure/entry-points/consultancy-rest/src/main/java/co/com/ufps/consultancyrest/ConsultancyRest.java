@@ -83,4 +83,16 @@ public class ConsultancyRest {
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByCourse(courseName)));
     }
+
+    @GetMapping("/find-by-course-and-between-dates/{courseName}/{startDate}/{endDate}")
+    public ResponseEntity<List<ConsultancyResponseBody>> findByCourseAndBetweenDates(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable String courseName,
+            @PathVariable String startDate,
+            @PathVariable String endDate) {
+        log.info("findByCourseAndBetweenDates: {} - {} - {}", courseName, startDate, endDate);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByCourseAndBetweenDates(
+                courseName, LocalDateTime.parse(startDate), LocalDateTime.parse(endDate))));
+    }
 }
