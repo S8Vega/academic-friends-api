@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.SignatureException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -61,5 +62,16 @@ public class ConsultancyRest {
         log.info("findByStartDateBetween");
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(consultancyUseCase.countBetweenDateRanges());
+    }
+
+    @GetMapping("/find-between-dates/{startDate}/{endDate}")
+    public ResponseEntity<List<ConsultancyResponseBody>> findBetweenDates(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable String startDate,
+            @PathVariable String endDate) {
+        log.info("findBetweenDates: {} - {}", startDate, endDate);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByStartDateBetween(
+                LocalDateTime.parse(startDate), LocalDateTime.parse(endDate))));
     }
 }
