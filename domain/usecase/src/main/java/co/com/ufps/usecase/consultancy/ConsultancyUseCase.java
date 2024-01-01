@@ -82,4 +82,8 @@ public class ConsultancyUseCase {
                 thisMonth.size(),
                 thisSemester.size());
     }
+
+    public List<Consultancy> findByCourse(String courseName) {
+        return repository.findByCourse(courseName);
+    }
 }

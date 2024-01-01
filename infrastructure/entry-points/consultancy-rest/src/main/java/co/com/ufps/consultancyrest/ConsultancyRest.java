@@ -74,4 +74,13 @@ public class ConsultancyRest {
         return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByStartDateBetween(
                 LocalDateTime.parse(startDate), LocalDateTime.parse(endDate))));
     }
+
+    @GetMapping("/find-by-course/{courseName}")
+    public ResponseEntity<List<ConsultancyResponseBody>> findByCourse(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable String courseName) {
+        log.info("findByCourse: {}", courseName);
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByCourse(courseName)));
+    }
 }

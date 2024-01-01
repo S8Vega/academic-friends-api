@@ -61,4 +61,14 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
         }
         return consultancies;
     }
+
+    @Override
+    public List<Consultancy> findByCourse(String name) {
+        List<ConsultancyEntity> entities = repository.findByCourse(name);
+        List<Consultancy> consultancies = new ArrayList<>();
+        for (ConsultancyEntity entity : entities) {
+            consultancies.add(this.mapper.map(entity, Consultancy.class));
+        }
+        return consultancies;
+    }
 }

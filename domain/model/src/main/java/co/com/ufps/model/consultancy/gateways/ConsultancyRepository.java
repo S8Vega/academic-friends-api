@@ -13,4 +13,6 @@ public interface ConsultancyRepository {
     List<Consultancy> findByAcademicFriend(String email);
 
     List<Consultancy> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Consultancy> findByCourse(String name);
 }

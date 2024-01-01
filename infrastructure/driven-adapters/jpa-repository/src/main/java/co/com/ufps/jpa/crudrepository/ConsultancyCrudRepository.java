@@ -19,4 +19,7 @@ public interface ConsultancyCrudRepository extends CrudRepository<ConsultancyEnt
 
     @Query("SELECT c FROM ConsultancyEntity c WHERE c.startDate BETWEEN ?1 AND ?2")
     List<ConsultancyEntity> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query("SELECT c FROM ConsultancyEntity c WHERE c.course.name = ?1")
+    List<ConsultancyEntity> findByCourse(String name);
 }
