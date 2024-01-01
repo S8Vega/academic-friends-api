@@ -2,6 +2,7 @@ package co.com.ufps.model.consultancy.gateways;
 
 import co.com.ufps.model.consultancy.Consultancy;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConsultancyRepository {
@@ -10,4 +11,6 @@ public interface ConsultancyRepository {
     List<Consultancy> findByStudent(String email);
 
     List<Consultancy> findByAcademicFriend(String email);
+
+    List<Consultancy> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

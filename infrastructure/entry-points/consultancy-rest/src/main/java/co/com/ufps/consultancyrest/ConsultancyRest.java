@@ -2,6 +2,7 @@ package co.com.ufps.consultancyrest;
 
 import co.com.ufps.consultancyrest.requestbody.SaveConsultancyRequestBody;
 import co.com.ufps.consultancyrest.responsebody.ConsultancyResponseBody;
+import co.com.ufps.model.consultancy.CountConsultanciesBetweenDateRanges;
 import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.consultancy.ConsultancyUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -52,5 +53,13 @@ public class ConsultancyRest {
         log.info("findByAcademicFriend: {}", email);
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ConsultancyResponseBody.from(consultancyUseCase.findByAcademicFriend(email)));
+    }
+
+    @GetMapping("/count-between-date-ranges")
+    public ResponseEntity<CountConsultanciesBetweenDateRanges> countBetweenDateRanges(
+            @RequestHeader("Authorization") String jwt) {
+        log.info("findByStartDateBetween");
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(consultancyUseCase.countBetweenDateRanges());
     }
 }

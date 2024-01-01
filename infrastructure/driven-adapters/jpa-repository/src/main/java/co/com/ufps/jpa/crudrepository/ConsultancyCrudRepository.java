@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConsultancyCrudRepository extends CrudRepository<ConsultancyEntity, Long>,
@@ -15,4 +16,7 @@ public interface ConsultancyCrudRepository extends CrudRepository<ConsultancyEnt
 
     @Query("SELECT c FROM ConsultancyEntity c WHERE c.academicFriend.email = ?1")
     List<ConsultancyEntity> findByAcademicFriend(String email);
+
+    @Query("SELECT c FROM ConsultancyEntity c WHERE c.startDate BETWEEN ?1 AND ?2")
+    List<ConsultancyEntity> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -8,6 +8,7 @@ import co.com.ufps.model.consultancy.gateways.ConsultancyRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,16 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
     @Override
     public List<Consultancy> findByAcademicFriend(String email) {
         List<ConsultancyEntity> entities = repository.findByAcademicFriend(email);
+        List<Consultancy> consultancies = new ArrayList<>();
+        for (ConsultancyEntity entity : entities) {
+            consultancies.add(this.mapper.map(entity, Consultancy.class));
+        }
+        return consultancies;
+    }
+
+    @Override
+    public List<Consultancy> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        List<ConsultancyEntity> entities = repository.findByStartDateBetween(startDate, endDate);
         List<Consultancy> consultancies = new ArrayList<>();
         for (ConsultancyEntity entity : entities) {
             consultancies.add(this.mapper.map(entity, Consultancy.class));
