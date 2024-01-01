@@ -166,4 +166,16 @@ public class CognitoAdapter implements SecurityRepository {
             throw new CognitoException(e);
         }
     }
+
+    @Override
+    public void delete(String email) throws IOException {
+        log.info("Eliminando usuario: {}", email);
+        try {
+            cognitoClient.adminDeleteUser(builder -> builder.userPoolId(userPoolId).username(email));
+            log.info("Usuario eliminado: {}", email);
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en la eliminación de usuario");
+            log.error(e.awsErrorDetails().errorMessage());
+        }
+    }
 }

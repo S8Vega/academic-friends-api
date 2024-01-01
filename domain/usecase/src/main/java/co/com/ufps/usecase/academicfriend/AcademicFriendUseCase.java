@@ -62,10 +62,11 @@ public class AcademicFriendUseCase {
         return academicFriendRepository.findByEmail(email);
     }
 
-    public AcademicFriend update(String email, int score, String observations, String state, String password) throws IOException {
+    public AcademicFriend update(String email, int score, String observations, String state, String password)
+            throws IOException {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException(String.format("User %s not found", email));
         }
         academicFriend.setScore(score);
         academicFriend.setObservations(observations);
@@ -76,6 +77,9 @@ public class AcademicFriendUseCase {
         if (state.equals(AcademicFriend.Constants.PASS)) {
             academicFriend.setType(UserConstants.Type.ACADEMIC_FRIEND);
             securityUseCase.save(email, password, UserConstants.Type.ACADEMIC_FRIEND);
+        }
+        if (state.equals(AcademicFriend.Constants.REJECTED)) {
+            securityUseCase.delete(email);
         }
         return academicFriendRepository.save(academicFriend);
     }

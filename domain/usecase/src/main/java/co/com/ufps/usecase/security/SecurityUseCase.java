@@ -42,4 +42,8 @@ public class SecurityUseCase {
     public void resetPassword(String email, String password) throws IOException {
         securityRepository.resetPassword(email, password);
     }
+
+    public void delete(String email) throws IOException {
+        securityRepository.delete(email);
+    }
 }
