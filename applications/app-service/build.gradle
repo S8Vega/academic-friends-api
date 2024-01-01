@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+    implementation project(':report-rest')
     implementation project(':consultancy-rest')
     implementation project(':file-rest')
     implementation project(':academic-friend-rest')
