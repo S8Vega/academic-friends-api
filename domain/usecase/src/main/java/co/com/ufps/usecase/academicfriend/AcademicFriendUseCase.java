@@ -76,6 +76,9 @@ public class AcademicFriendUseCase {
         academicFriend.setStatus(state);
         if (state.equals(AcademicFriend.Constants.PASS)) {
             academicFriend.setType(UserConstants.Type.ACADEMIC_FRIEND);
+            if (password == null || password.isEmpty()) {
+                throw new RuntimeException("Password is required");
+            }
             securityUseCase.save(email, password, UserConstants.Type.ACADEMIC_FRIEND);
         }
         if (state.equals(AcademicFriend.Constants.REJECTED)) {

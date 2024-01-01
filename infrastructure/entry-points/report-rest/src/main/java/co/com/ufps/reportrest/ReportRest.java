@@ -1,6 +1,5 @@
 package co.com.ufps.reportrest;
 
-import co.com.ufps.model.report.Report;
 import co.com.ufps.usecase.report.ReportUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -40,10 +39,10 @@ public class ReportRest {
     }
 
     @PostMapping
-    public ResponseEntity<Report> save(@RequestPart String academicFriend, @RequestPart String type,
-                                       @RequestPart String date, @RequestPart MultipartFile file)
+    public ResponseEntity<ReportResponseBody> save(@RequestPart String academicFriend, @RequestPart String type,
+                                                   @RequestPart String date, @RequestPart MultipartFile file)
             throws IOException {
         log.info("save: {}", academicFriend);
-        return ResponseEntity.ok(reportUseCase.save(academicFriend, type, date, convert(file)));
+        return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.save(academicFriend, type, date, convert(file))));
     }
 }
