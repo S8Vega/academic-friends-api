@@ -44,4 +44,12 @@ public class CourseRest {
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
         return ResponseEntity.ok(courseUseCase.findByName(name));
     }
+
+    @GetMapping
+    public ResponseEntity<List<Course>> findAll(@RequestHeader("Authorization") String jwt)
+            throws SignatureException {
+        log.info("findAll");
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
+        return ResponseEntity.ok(courseUseCase.findAll());
+    }
 }

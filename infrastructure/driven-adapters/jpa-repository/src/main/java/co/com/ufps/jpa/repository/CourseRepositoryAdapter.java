@@ -39,4 +39,14 @@ public class CourseRepositoryAdapter extends AdapterOperations<Course, CourseEnt
         }
         return courses;
     }
+
+    @Override
+    public List<Course> findAll() {
+        Iterable<CourseEntity> coursesEntity = repository.findAll();
+        List<Course> courses = new ArrayList<>();
+        for (CourseEntity courseEntity : coursesEntity) {
+            courses.add(mapper.map(courseEntity, Course.class));
+        }
+        return courses;
+    }
 }

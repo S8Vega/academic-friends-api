@@ -26,4 +26,8 @@ public class CourseUseCase {
     public List<Course> findByName(String name) {
         return courseRepository.findByName(name);
     }
+
+    public List<Course> findAll() {
+        return courseRepository.findAll();
+    }
 }
