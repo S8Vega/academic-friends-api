@@ -27,4 +27,17 @@ public class ScheduleUseCase {
     public List<Schedule> findAll() {
         return scheduleRepository.findAll();
     }
+
+    public Schedule findById(Long id) {
+        return scheduleRepository.findById(id);
+    }
+
+    public Schedule update(Long id, String status) {
+        if (!Schedule.Constants.STATUSES.contains(status)) {
+            throw new IllegalArgumentException("Invalid status");
+        }
+        Schedule schedule = scheduleRepository.findById(id);
+        schedule.setStatus(status);
+        return scheduleRepository.save(schedule);
+    }
 }

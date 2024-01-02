@@ -8,4 +8,6 @@ public interface ScheduleRepository {
     Schedule save(Schedule schedule);
 
     List<Schedule> findAll();
+
+    Schedule findById(Long id);
 }

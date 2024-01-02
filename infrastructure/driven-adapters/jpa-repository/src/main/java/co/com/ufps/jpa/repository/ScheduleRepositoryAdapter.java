@@ -40,4 +40,10 @@ public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, Sched
         }
         return schedules;
     }
+
+    @Override
+    public Schedule findById(Long id) {
+        ScheduleEntity entity = repository.findById(id).orElse(null);
+        return this.mapper.map(entity, Schedule.class);
+    }
 }
