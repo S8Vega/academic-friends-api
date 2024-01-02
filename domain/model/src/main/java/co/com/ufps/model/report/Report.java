@@ -33,5 +33,8 @@ public class Report {
         public static final String STATE_PENDING = "pending";
         public static final String STATE_WITH_CORRECTIONS = "withCorrections";
         public static final String STATE_REJECTED = "rejected";
+
+        public static final List<String> STATES = List.of(STATE_PASS, STATE_PENDING, STATE_WITH_CORRECTIONS,
+                STATE_REJECTED);
     }
 }

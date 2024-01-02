@@ -1,4 +1,4 @@
-package co.com.ufps.reportrest;
+package co.com.ufps.reportrest.responsebody;
 
 import co.com.ufps.model.report.Report;
 import lombok.Getter;

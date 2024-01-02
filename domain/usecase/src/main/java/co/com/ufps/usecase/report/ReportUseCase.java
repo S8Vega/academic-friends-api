@@ -38,4 +38,18 @@ public class ReportUseCase {
     public List<Report> findByAcademicFriend(String academicFriendEmail) {
         return reportRepository.findByAcademicFriend(academicFriendEmail);
     }
+
+    public Report findById(Long id) {
+        return reportRepository.findById(id);
+    }
+
+    public Report update(Long id, String observations, String state) {
+        Report report = findById(id);
+        report.setObservations(observations);
+        if (!Report.Constants.STATES.contains(state)) {
+            throw new RuntimeException("Invalid state");
+        }
+        report.setState(state);
+        return reportRepository.save(report);
+    }
 }

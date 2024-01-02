@@ -40,4 +40,10 @@ public class ReportRepositoryAdapter extends AdapterOperations<Report, ReportEnt
         }
         return reports;
     }
+
+    @Override
+    public Report findById(Long id) {
+        ReportEntity reportEntity = repository.findById(id).orElseThrow();
+        return mapper.map(reportEntity, Report.class);
+    }
 }

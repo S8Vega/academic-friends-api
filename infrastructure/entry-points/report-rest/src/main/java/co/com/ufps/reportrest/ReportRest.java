@@ -1,6 +1,8 @@
 package co.com.ufps.reportrest;
 
 import co.com.ufps.model.user.User;
+import co.com.ufps.reportrest.requestbody.UpdateReportRequestBody;
+import co.com.ufps.reportrest.responsebody.ReportResponseBody;
 import co.com.ufps.usecase.report.ReportUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -63,5 +67,15 @@ public class ReportRest {
         log.info("findByAcademicFriend: {}", academicFriend);
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.findByAcademicFriend(academicFriend)));
+    }
+
+    @PutMapping
+    public ResponseEntity<ReportResponseBody> update(@RequestHeader("Authorization") String jwt,
+                                                     @RequestBody UpdateReportRequestBody requestBody)
+            throws IOException, SignatureException {
+        log.info("update: {}", requestBody);
+        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
+        return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(requestBody.getId(),
+                requestBody.getObservations(), requestBody.getState())));
     }
 }

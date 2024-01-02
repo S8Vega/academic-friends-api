@@ -8,4 +8,6 @@ public interface ReportRepository {
     Report save(Report report);
 
     List<Report> findByAcademicFriend(String academicFriendEmail);
+
+    Report findById(Long id);
 }
