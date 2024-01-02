@@ -8,6 +8,9 @@ import co.com.ufps.model.schedule.gateways.ScheduleRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, ScheduleEntity, Long,
         ScheduleCrudRepository>
@@ -26,5 +29,15 @@ public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, Sched
     public Schedule save(Schedule schedule) {
         ScheduleEntity entity = this.mapper.map(schedule, ScheduleEntity.class);
         return mapper.map(repository.save(entity), Schedule.class);
+    }
+
+    @Override
+    public List<Schedule> findAll() {
+        Iterable<ScheduleEntity> entities = repository.findAll();
+        List<Schedule> schedules = new ArrayList<>();
+        for (ScheduleEntity entity : entities) {
+            schedules.add(this.mapper.map(entity, Schedule.class));
+        }
+        return schedules;
     }
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class ScheduleUseCase {
@@ -21,5 +22,9 @@ public class ScheduleUseCase {
         schedule.setEndTime(LocalTime.parse(endTime));
         schedule.setStatus(Schedule.Constants.STATUS_PENDING);
         return scheduleRepository.save(schedule);
+    }
+
+    public List<Schedule> findAll() {
+        return scheduleRepository.findAll();
     }
 }

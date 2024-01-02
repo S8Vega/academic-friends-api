@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,5 +27,9 @@ public class ScheduleResponseBody {
         scheduleResponseBody.setEndTime(schedule.getEndTime().toString());
         scheduleResponseBody.setStatus(schedule.getStatus());
         return scheduleResponseBody;
+    }
+
+    public static List<ScheduleResponseBody> of(List<Schedule> schedules) {
+        return schedules.stream().map(ScheduleResponseBody::of).toList();
     }
 }
