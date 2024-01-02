@@ -14,6 +14,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -31,8 +32,8 @@ public class ScheduleEntity implements Serializable {
     private AcademicFriendEntity academicFriend;
     private DayOfWeek day;
     @Column(name = "start_time")
-    private String startTime;
+    private LocalTime startTime;
     @Column(name = "end_time")
-    private String endTime;
+    private LocalTime endTime;
     private String status; // (pass, pending, rejected
 }
