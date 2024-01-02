@@ -1,11 +1,13 @@
 package co.com.ufps.model.course;
 
+import co.com.ufps.model.consultancy.Consultancy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -18,6 +20,7 @@ public class Course {
     private String name;
     private int semester;
     private int credits;
+    private List<Consultancy> consultancies;
 
     public static Course fromMap(Map<String, Object> map) {
         return Course.builder()

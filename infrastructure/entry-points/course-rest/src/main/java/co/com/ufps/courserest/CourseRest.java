@@ -1,6 +1,7 @@
 package co.com.ufps.courserest;
 
-import co.com.ufps.model.course.Course;
+import co.com.ufps.courserest.responsebody.CourseCountConsultanciesResponseBody;
+import co.com.ufps.courserest.responsebody.CourseResponseBody;
 import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.course.CourseUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -29,27 +30,37 @@ public class CourseRest {
     private final SecurityUseCase securityUseCase;
 
     @PostMapping
-    public ResponseEntity<List<Course>> save(@RequestParam("file") MultipartFile requestBody,
-                                             @RequestHeader("Authorization") String jwt)
+    public ResponseEntity<List<CourseResponseBody>> save(@RequestParam("file") MultipartFile requestBody,
+                                                         @RequestHeader("Authorization") String jwt)
             throws SignatureException {
         log.info("save: {}", requestBody.getOriginalFilename());
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(courseUseCase.save(requestBody));
+        return ResponseEntity.ok(CourseResponseBody.of(courseUseCase.save(requestBody)));
     }
 
     @GetMapping("/find-by-name/{name}")
-    public ResponseEntity<List<Course>> findByName(@RequestHeader("Authorization") String jwt,
-                                                   @PathVariable String name) throws SignatureException {
+    public ResponseEntity<List<CourseResponseBody>> findByName(@RequestHeader("Authorization") String jwt,
+                                                               @PathVariable String name) throws SignatureException {
         log.info("findByName: {}", name);
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(courseUseCase.findByName(name));
+        return ResponseEntity.ok(CourseResponseBody.of(courseUseCase.findByName(name)));
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> findAll(@RequestHeader("Authorization") String jwt)
+    public ResponseEntity<List<CourseResponseBody>> findAll(@RequestHeader("Authorization") String jwt)
             throws SignatureException {
         log.info("findAll");
         securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(courseUseCase.findAll());
+        return ResponseEntity.ok(CourseResponseBody.of(courseUseCase.findAll()));
+    }
+
+    @GetMapping("/count-consultancies")
+    public ResponseEntity<List<CourseCountConsultanciesResponseBody>> countConsultancies(
+            @RequestHeader("Authorization") String jwt)
+            throws SignatureException {
+        log.info("countConsultancies");
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
+        return ResponseEntity.ok(CourseCountConsultanciesResponseBody.of(courseUseCase.findAll())
+                .stream().sorted().toList());
     }
 }
