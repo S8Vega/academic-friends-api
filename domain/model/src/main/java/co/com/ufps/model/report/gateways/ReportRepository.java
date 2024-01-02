@@ -10,4 +10,6 @@ public interface ReportRepository {
     List<Report> findByAcademicFriend(String academicFriendEmail);
 
     Report findById(Long id);
+
+    List<Report> findAll();
 }

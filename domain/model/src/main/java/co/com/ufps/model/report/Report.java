@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class Report {
+public class Report implements Comparable<Report> {
     private Long id;
     private AcademicFriend academicFriend;
     private String type;
@@ -24,6 +25,11 @@ public class Report {
     private LocalDateTime date;
     private LocalDateTime uploadDate;
     private String file;
+
+    @Override
+    public int compareTo(Report o) {
+        return Comparator.comparing(Report::getUploadDate).reversed().compare(this, o);
+    }
 
     public class Constants {
         public static final String TYPE_MONTHLY = "monthly";

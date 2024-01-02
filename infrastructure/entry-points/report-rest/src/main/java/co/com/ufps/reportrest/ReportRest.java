@@ -78,4 +78,11 @@ public class ReportRest {
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(requestBody.getId(),
                 requestBody.getObservations(), requestBody.getState())));
     }
+
+    @GetMapping
+    public ResponseEntity<List<ReportResponseBody>> findAll(@RequestHeader("Authorization") String jwt) {
+        log.info("findAll");
+        securityUseCase.validate(jwt);
+        return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.findAll()));
+    }
 }

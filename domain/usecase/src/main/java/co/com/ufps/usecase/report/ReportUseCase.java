@@ -36,7 +36,7 @@ public class ReportUseCase {
     }
 
     public List<Report> findByAcademicFriend(String academicFriendEmail) {
-        return reportRepository.findByAcademicFriend(academicFriendEmail);
+        return reportRepository.findByAcademicFriend(academicFriendEmail).stream().sorted().toList();
     }
 
     public Report findById(Long id) {
@@ -51,5 +51,9 @@ public class ReportUseCase {
         }
         report.setState(state);
         return reportRepository.save(report);
+    }
+
+    public List<Report> findAll() {
+        return reportRepository.findAll().stream().sorted().toList();
     }
 }

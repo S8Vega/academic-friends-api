@@ -46,4 +46,14 @@ public class ReportRepositoryAdapter extends AdapterOperations<Report, ReportEnt
         ReportEntity reportEntity = repository.findById(id).orElseThrow();
         return mapper.map(reportEntity, Report.class);
     }
+
+    @Override
+    public List<Report> findAll() {
+        Iterable<ReportEntity> reportEntities = repository.findAll();
+        List<Report> reports = new ArrayList<>();
+        for (ReportEntity reportEntity : reportEntities) {
+            reports.add(mapper.map(reportEntity, Report.class));
+        }
+        return reports;
+    }
 }
