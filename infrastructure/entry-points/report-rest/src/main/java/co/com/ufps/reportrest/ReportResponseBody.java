@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,5 +31,9 @@ public class ReportResponseBody {
         reportResponseBody.setUploadDate(report.getUploadDate().toString());
         reportResponseBody.setFile(report.getFile());
         return reportResponseBody;
+    }
+
+    public static List<ReportResponseBody> of(List<Report> reports) {
+        return reports.stream().map(ReportResponseBody::of).toList();
     }
 }

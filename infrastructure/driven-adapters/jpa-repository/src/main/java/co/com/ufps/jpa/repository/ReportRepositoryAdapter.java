@@ -8,6 +8,9 @@ import co.com.ufps.model.report.gateways.ReportRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class ReportRepositoryAdapter extends AdapterOperations<Report, ReportEntity, Long,
         ReportCrudRepository>
@@ -28,4 +31,13 @@ public class ReportRepositoryAdapter extends AdapterOperations<Report, ReportEnt
         return mapper.map(repository.save(entity), Report.class);
     }
 
+    @Override
+    public List<Report> findByAcademicFriend(String academicFriendEmail) {
+        List<ReportEntity> reportEntities = repository.findByAcademicFriend(academicFriendEmail);
+        List<Report> reports = new ArrayList<>();
+        for (ReportEntity reportEntity : reportEntities) {
+            reports.add(mapper.map(reportEntity, Report.class));
+        }
+        return reports;
+    }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -32,5 +33,9 @@ public class ReportUseCase {
         report.setFile(String.format("%s/%s.%s", REPORT_FOLDER, UUID.randomUUID(), "pdf"));
         fileUseCase.save(report.getFile(), file);
         return reportRepository.save(report);
+    }
+
+    public List<Report> findByAcademicFriend(String academicFriendEmail) {
+        return reportRepository.findByAcademicFriend(academicFriendEmail);
     }
 }
