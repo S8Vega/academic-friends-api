@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Log4j2
 @Repository
-public class FileReaderReader implements FileReaderRepository {
+public class FileReaderAdapter implements FileReaderRepository {
 
     @Override
     public List<Map<String, Object>> read(Object object) {
@@ -61,15 +61,11 @@ public class FileReaderReader implements FileReaderRepository {
     }
 
     private Object getCellValue(Cell cell) {
-        switch (cell.getCellType()) {
-            case STRING:
-                return cell.getStringCellValue();
-            case NUMERIC:
-                return cell.getNumericCellValue();
-            case BOOLEAN:
-                return cell.getBooleanCellValue();
-            default:
-                return null;
-        }
+        return switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case NUMERIC -> cell.getNumericCellValue();
+            case BOOLEAN -> cell.getBooleanCellValue();
+            default -> null;
+        };
     }
 }
