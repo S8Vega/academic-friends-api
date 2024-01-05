@@ -85,4 +85,14 @@ public class ReportRest {
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.findAll()));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ReportResponseBody> updateState(@RequestHeader("Authorization") String jwt,
+                                                          @PathVariable Long id,
+                                                          @RequestPart MultipartFile file)
+            throws IOException, SignatureException {
+        log.info("updateState: {}", id);
+        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
+        return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(id, convert(file))));
+    }
 }
