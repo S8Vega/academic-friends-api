@@ -1,5 +1,5 @@
 FROM amazoncorretto:17-alpine
-MAINTAINER S8Vega
+LABEL maintainer="S8Vega"
 
 COPY *.jar academic-friends-api.jar
 
