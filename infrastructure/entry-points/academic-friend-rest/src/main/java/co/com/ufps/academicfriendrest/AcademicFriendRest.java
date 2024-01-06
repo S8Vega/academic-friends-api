@@ -106,4 +106,11 @@ public class AcademicFriendRest {
         securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findByConvocation(id)));
     }
+
+    @GetMapping("/{code}")
+    public ResponseEntity<AcademicFriendResponseBody> findByCode(@RequestHeader("Authorization") String jwt,
+                                                                 @PathVariable String code) throws SignatureException {
+        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
+        return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findByCode(code)));
+    }
 }

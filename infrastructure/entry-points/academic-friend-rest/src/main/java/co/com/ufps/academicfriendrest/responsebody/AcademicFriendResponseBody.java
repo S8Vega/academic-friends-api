@@ -30,6 +30,9 @@ public class AcademicFriendResponseBody {
     private String contract;
 
     public static AcademicFriendResponseBody from(AcademicFriend academicFriend) {
+        if (academicFriend == null) {
+            return null;
+        }
         return AcademicFriendResponseBody.builder()
                 .email(academicFriend.getEmail())
                 .name(academicFriend.getName())

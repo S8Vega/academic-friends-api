@@ -12,4 +12,6 @@ public interface AcademicFriendRepository {
     AcademicFriend findByEmail(String email);
 
     List<AcademicFriend> findByConvocation(Long id);
+
+    AcademicFriend findByCode(String code);
 }

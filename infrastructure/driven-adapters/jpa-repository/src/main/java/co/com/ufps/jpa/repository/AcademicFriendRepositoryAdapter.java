@@ -66,4 +66,14 @@ public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicF
         }
         return academicFriends;
     }
+
+    @Override
+    public AcademicFriend findByCode(String code) {
+        log.info("findByCode: {}", code);
+        Optional<AcademicFriendEntity> academicFriendEntity = repository.findByCode(code);
+        if (academicFriendEntity.isPresent()) {
+            return mapper.map(academicFriendEntity.get(), AcademicFriend.class);
+        }
+        return null;
+    }
 }

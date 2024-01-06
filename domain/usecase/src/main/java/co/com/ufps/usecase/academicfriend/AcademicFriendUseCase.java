@@ -113,4 +113,8 @@ public class AcademicFriendUseCase {
     public List<AcademicFriend> findByConvocation(Long id) {
         return academicFriendRepository.findByConvocation(id);
     }
+
+    public AcademicFriend findByCode(String code) {
+        return academicFriendRepository.findByCode(code);
+    }
 }
