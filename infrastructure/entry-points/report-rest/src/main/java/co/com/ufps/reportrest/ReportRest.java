@@ -74,7 +74,7 @@ public class ReportRest {
                                                      @RequestBody UpdateReportRequestBody requestBody)
             throws IOException, SignatureException {
         log.info("update: {}", requestBody);
-        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
+        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(requestBody.getId(),
                 requestBody.getObservations(), requestBody.getState())));
     }
