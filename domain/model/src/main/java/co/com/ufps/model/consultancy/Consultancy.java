@@ -5,6 +5,7 @@ import co.com.ufps.model.course.Course;
 import co.com.ufps.model.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@EqualsAndHashCode
 public class Consultancy {
     private Long id;
     private AcademicFriend academicFriend;
