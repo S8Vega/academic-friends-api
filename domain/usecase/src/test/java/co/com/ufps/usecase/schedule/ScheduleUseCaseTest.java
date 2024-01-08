@@ -76,4 +76,16 @@ class ScheduleUseCaseTest {
         verify(scheduleRepository).findById(any(Long.class));
         verify(scheduleRepository).save(any(Schedule.class));
     }
+
+    @Test
+    void findByAcademicFriend() {
+        Schedule schedule = TestBuilder.schedule();
+        schedule.setAcademicFriend(TestBuilder.academicFriend());
+        when(scheduleRepository.findByAcademicFriend(schedule.getAcademicFriend().getEmail())).thenReturn(List.of(schedule));
+
+        List<Schedule> response = scheduleUseCase.findByAcademicFriend(schedule.getAcademicFriend().getEmail());
+
+        assertEquals(List.of(schedule), response);
+        verify(scheduleRepository).findByAcademicFriend(anyString());
+    }
 }

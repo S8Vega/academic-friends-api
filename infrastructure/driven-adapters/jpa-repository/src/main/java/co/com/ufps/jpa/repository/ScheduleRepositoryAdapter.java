@@ -46,4 +46,14 @@ public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, Sched
         ScheduleEntity entity = repository.findById(id).orElse(null);
         return this.mapper.map(entity, Schedule.class);
     }
+
+    @Override
+    public List<Schedule> findByAcademicFriend(String academicFriendEmail) {
+        List<ScheduleEntity> entities = repository.findByAcademicFriendEmail(academicFriendEmail);
+        List<Schedule> schedules = new ArrayList<>();
+        for (ScheduleEntity entity : entities) {
+            schedules.add(this.mapper.map(entity, Schedule.class));
+        }
+        return schedules;
+    }
 }

@@ -40,4 +40,8 @@ public class ScheduleUseCase {
         schedule.setStatus(status);
         return scheduleRepository.save(schedule);
     }
+
+    public List<Schedule> findByAcademicFriend(String academicFriendEmail) {
+        return scheduleRepository.findByAcademicFriend(academicFriendEmail);
+    }
 }

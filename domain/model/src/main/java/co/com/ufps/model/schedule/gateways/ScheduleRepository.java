@@ -10,4 +10,6 @@ public interface ScheduleRepository {
     List<Schedule> findAll();
 
     Schedule findById(Long id);
+
+    List<Schedule> findByAcademicFriend(String academicFriendEmail);
 }
