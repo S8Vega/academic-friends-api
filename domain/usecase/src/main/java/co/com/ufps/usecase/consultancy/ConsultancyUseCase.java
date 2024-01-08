@@ -26,19 +26,19 @@ public class ConsultancyUseCase {
     public Consultancy save(Consultancy consultancy) {
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(consultancy.getAcademicFriend().getEmail());
         if (academicFriend == null) {
-            throw new RuntimeException("Academic friend not found");
+            throw new IllegalArgumentException("Academic friend not found");
         }
         consultancy.setAcademicFriend(academicFriend);
 
         Student student = studentUseCase.findByCode(consultancy.getStudent().getCode());
         if (student == null) {
-            throw new RuntimeException("Student not found");
+            throw new IllegalArgumentException("Student not found");
         }
         consultancy.setStudent(student);
 
         Course course = courseUseCase.findByName(consultancy.getCourse().getName()).get(0);
         if (course == null) {
-            throw new RuntimeException("Course not found");
+            throw new IllegalArgumentException("Course not found");
         }
         consultancy.setCourse(course);
 

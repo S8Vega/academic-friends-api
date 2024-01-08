@@ -23,7 +23,7 @@ public class StudentUseCase {
                 .toList();
         studentsList.forEach(student -> {
             if (!student.getEmail().endsWith(User.Constants.EMAIL)) {
-                throw new RuntimeException(String.format("El correo %s no es valido", student.getEmail()));
+                throw new IllegalArgumentException(String.format("El correo %s no es valido", student.getEmail()));
             }
         });
         studentsList.forEach(student -> {

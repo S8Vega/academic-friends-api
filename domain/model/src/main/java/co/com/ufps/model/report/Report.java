@@ -27,11 +27,29 @@ public class Report implements Comparable<Report> {
     private String file;
 
     @Override
-    public int compareTo(Report o) {
-        return Comparator.comparing(Report::getUploadDate).reversed().compare(this, o);
+    public int compareTo(Report other) {
+        return Comparator.comparing(Report::getUploadDate).reversed().compare(this, other);
     }
 
-    public class Constants {
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Report other) {
+            return this.getId().equals(other.getId()) && this.getAcademicFriend().equals(other.getAcademicFriend())
+                    && this.getType().equals(other.getType()) && this.getObservations().equals(other.getObservations())
+                    && this.getState().equals(other.getState()) && this.getDate().equals(other.getDate())
+                    && this.getUploadDate().equals(other.getUploadDate()) && this.getFile().equals(other.getFile());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode() + this.getAcademicFriend().hashCode() + this.getType().hashCode()
+                + this.getObservations().hashCode() + this.getState().hashCode() + this.getDate().hashCode()
+                + this.getUploadDate().hashCode() + this.getFile().hashCode();
+    }
+
+    public static class Constants {
         public static final String TYPE_MONTHLY = "monthly";
         public static final String TYPE_FINAL = "final";
         public static final List<String> TYPES = List.of(TYPE_MONTHLY, TYPE_FINAL);
@@ -42,5 +60,9 @@ public class Report implements Comparable<Report> {
 
         public static final List<String> STATES = List.of(STATE_PASS, STATE_PENDING, STATE_WITH_CORRECTIONS,
                 STATE_REJECTED);
+
+        private Constants() {
+            throw new IllegalStateException("Utility class");
+        }
     }
 }

@@ -6,7 +6,7 @@ import co.com.ufps.model.convocation.Convocation;
 import co.com.ufps.model.exceptions.ConvocationNotFoundException;
 import co.com.ufps.model.exceptions.UserNotFoundException;
 import co.com.ufps.model.student.Student;
-import co.com.ufps.model.user.UserConstants;
+import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
 import co.com.ufps.usecase.file.FileUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -32,12 +32,12 @@ public class AcademicFriendUseCase {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
         if (student == null) {
             throw new UserNotFoundException(String.format("User %s not found", academicFriend.getEmail()));
-        } else if (student.getType().equals(UserConstants.Type.ACADEMIC_FRIEND)) {
-            academicFriend = buildAcademicFriend(academicFriend, student);
+        } else if (student.getType().equals(User.Constants.ACADEMIC_FRIEND)) {
+            buildAcademicFriend(academicFriend, student);
             fileUseCase.save(academicFriend.getResume(), resume);
             return academicFriendRepository.save(academicFriend);
         }
-        academicFriend = buildAcademicFriend(academicFriend, student);
+        buildAcademicFriend(academicFriend, student);
         fileUseCase.save(academicFriend.getResume(), resume);
 
         studentUseCase.remove(academicFriend.getEmail());
@@ -80,15 +80,15 @@ public class AcademicFriendUseCase {
         academicFriend.setScore(score);
         academicFriend.setObservations(observations);
         if (!AcademicFriend.Constants.STATUS.contains(state)) {
-            throw new RuntimeException("Invalid status");
+            throw new IllegalArgumentException("Invalid status");
         }
         academicFriend.setStatus(state);
         if (state.equals(AcademicFriend.Constants.PASS)) {
-            academicFriend.setType(UserConstants.Type.ACADEMIC_FRIEND);
+            academicFriend.setType(User.Constants.ACADEMIC_FRIEND);
             if (password == null || password.isEmpty()) {
-                throw new RuntimeException("Password is required");
+                throw new IllegalArgumentException("Password is required");
             }
-            securityUseCase.save(email, password, UserConstants.Type.ACADEMIC_FRIEND);
+            securityUseCase.save(email, password, User.Constants.ACADEMIC_FRIEND);
         }
         if (state.equals(AcademicFriend.Constants.REJECTED)) {
             securityUseCase.delete(email);
@@ -103,7 +103,7 @@ public class AcademicFriendUseCase {
     public void addContract(String email, File contract) {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
-            throw new RuntimeException("User not found");
+            throw new IllegalArgumentException("User not found");
         }
         academicFriend.setContract(String.format("%s/%s.pdf", CONTRACT_FOLDER, academicFriend.getEmail()));
         fileUseCase.save(academicFriend.getContract(), contract);

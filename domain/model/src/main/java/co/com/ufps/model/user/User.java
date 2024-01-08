@@ -26,5 +26,9 @@ public class User {
         public static final String EMAIL = "@ufps.edu.co";
 
         public static final List<String> TYPES = List.of(STUDENT, ACADEMIC_FRIEND, COORDINATOR, DIRECTOR);
+
+        private Constants() {
+            throw new IllegalStateException("Utility class");
+        }
     }
 }

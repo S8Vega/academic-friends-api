@@ -30,5 +30,9 @@ public class Schedule {
         public static final String STATUS_REJECTED = "rejected";
 
         public static final List<String> STATUSES = List.of(STATUS_PASS, STATUS_PENDING, STATUS_REJECTED);
+
+        private Constants() {
+            throw new IllegalStateException("Utility class");
+        }
     }
 }

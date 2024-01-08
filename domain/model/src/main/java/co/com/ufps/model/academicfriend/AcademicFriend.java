@@ -37,5 +37,9 @@ public class AcademicFriend extends Student implements Comparable<AcademicFriend
         public static final String REJECTED = "rejected";
 
         public static final List<String> STATUS = List.of(PASS, PENDING, REJECTED);
+
+        private Constants() {
+            throw new IllegalStateException("Utility class");
+        }
     }
 }
