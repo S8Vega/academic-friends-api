@@ -5,7 +5,7 @@ import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import co.com.ufps.model.exceptions.UserNotFoundException;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.user.User;
-import co.com.ufps.usecase.Builder;
+import co.com.ufps.usecase.TestBuilder;
 import co.com.ufps.usecase.convocation.ConvocationUseCase;
 import co.com.ufps.usecase.file.FileUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -47,12 +47,12 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void saveStudent() {
-        AcademicFriend academicFriend = Builder.academicFriend();
-        Student student = Builder.student();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Student student = TestBuilder.student();
         File resume = mock(File.class);
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(student);
         when(academicFriendRepository.save(academicFriend)).thenReturn(academicFriend);
-        when(convocationUseCase.findCurrentConvocation()).thenReturn(Builder.convocation());
+        when(convocationUseCase.findCurrentConvocation()).thenReturn(TestBuilder.convocation());
 
         AcademicFriend response = academicFriendUseCase.save(academicFriend, resume);
 
@@ -66,13 +66,13 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void saveAcademicFriend() {
-        AcademicFriend academicFriend = Builder.academicFriend();
-        Student student = Builder.student();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Student student = TestBuilder.student();
         student.setType(User.Constants.ACADEMIC_FRIEND);
         File resume = mock(File.class);
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(student);
         when(academicFriendRepository.save(academicFriend)).thenReturn(academicFriend);
-        when(convocationUseCase.findCurrentConvocation()).thenReturn(Builder.convocation());
+        when(convocationUseCase.findCurrentConvocation()).thenReturn(TestBuilder.convocation());
 
         AcademicFriend response = academicFriendUseCase.save(academicFriend, resume);
 
@@ -85,7 +85,7 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void saveException() {
-        AcademicFriend academicFriend = Builder.academicFriend();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         File resume = mock(File.class);
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(null);
 
@@ -100,7 +100,7 @@ class AcademicFriendUseCaseTest {
     @Test
     void findAll() {
         List<AcademicFriend> academicFriends = new ArrayList<>();
-        academicFriends.add(Builder.academicFriend());
+        academicFriends.add(TestBuilder.academicFriend());
         when(academicFriendRepository.findAll()).thenReturn(academicFriends);
 
         List<AcademicFriend> response = academicFriendUseCase.findAll();
@@ -111,7 +111,7 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void findByEmail() {
-        AcademicFriend academicFriend = Builder.academicFriend();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
 
         AcademicFriend response = academicFriendUseCase.findByEmail(academicFriend.getEmail());
@@ -122,7 +122,7 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void update() throws IOException {
-        AcademicFriend academicFriend = Builder.academicFriend();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
         when(academicFriendRepository.save(any(AcademicFriend.class))).thenReturn(academicFriend);
 
@@ -145,7 +145,7 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void addContract() {
-        AcademicFriend academicFriend = Builder.academicFriend();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         File contract = mock(File.class);
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
 
@@ -159,7 +159,7 @@ class AcademicFriendUseCaseTest {
     @Test
     void findByConvocation() {
         List<AcademicFriend> academicFriends = new ArrayList<>();
-        academicFriends.add(Builder.academicFriend());
+        academicFriends.add(TestBuilder.academicFriend());
         when(academicFriendRepository.findByConvocation(1L)).thenReturn(academicFriends);
 
         List<AcademicFriend> response = academicFriendUseCase.findByConvocation(1L);
@@ -170,7 +170,7 @@ class AcademicFriendUseCaseTest {
 
     @Test
     void findByCode() {
-        AcademicFriend academicFriend = Builder.academicFriend();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         when(academicFriendRepository.findByCode(academicFriend.getCode())).thenReturn(academicFriend);
 
         AcademicFriend response = academicFriendUseCase.findByCode(academicFriend.getCode());
