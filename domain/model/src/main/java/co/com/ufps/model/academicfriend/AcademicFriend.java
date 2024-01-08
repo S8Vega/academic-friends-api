@@ -4,6 +4,7 @@ import co.com.ufps.model.convocation.Convocation;
 import co.com.ufps.model.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 public class AcademicFriend extends Student implements Comparable<AcademicFriend> {
     private String status; // (pass, pending, rejected)
     private String resume;
