@@ -54,10 +54,8 @@ public class ConvocationRest {
     }
 
     @GetMapping("/active")
-    public ResponseEntity<ConvocationResponseBody> findActive(@RequestHeader("Authorization") String jwt)
-            throws SignatureException {
+    public ResponseEntity<ConvocationResponseBody> findActive(@RequestHeader("Authorization") String jwt) {
         log.info("find active convocation");
-        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
         return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.findCurrentConvocation()));
     }
 }
