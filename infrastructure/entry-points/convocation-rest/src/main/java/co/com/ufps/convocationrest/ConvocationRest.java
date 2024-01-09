@@ -54,7 +54,7 @@ public class ConvocationRest {
     }
 
     @GetMapping("/active")
-    public ResponseEntity<ConvocationResponseBody> findActive(@RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<ConvocationResponseBody> findActive() {
         log.info("find active convocation");
         return ResponseEntity.ok(ConvocationResponseBody.from(convocationUseCase.findCurrentConvocation()));
     }
