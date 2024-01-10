@@ -28,6 +28,86 @@ Para instalar y configurar la aplicación en un entorno local, sigue estos pasos
 9. Consulta la documentación de la API para obtener más detalles sobre los endpoints disponibles
    en `http:localhost:8080/ufps/academic-friends-api/swagger-ui/index.html`.
 
+## Variables de entorno ##
+
+La aplicación utiliza las siguientes variables de entorno:
+
+- `datasource_url`: URL de la base de datos.
+- `datasource_username`: Nombre de usuario de la base de datos.
+- `datasource_password`: Contraseña de la base de datos.
+- `cognito_client_id`: ID del cliente de Cognito.
+- `cognito_user_pool_id`: ID del grupo de usuarios de Cognito.
+- `aws_access_key_id`: ID de la clave de acceso de AWS.
+- `aws_secret_access_key`: Clave de acceso secreta de AWS.
+- `env`: Entorno de ejecución de la aplicación (local, dev, prod).
+- `secret_key`: Clave secreta para la generación de tokens JWT.
+
+## Configuracion y ejecucion de docker ##
+
+Este manual detalla los pasos necesarios para construir y ejecutar la aplicación Academic Friends API mediante Docker.
+Asegúrate de
+tener Docker instalado en tu entorno antes de comenzar.
+
+### Requisitos Previos
+
+- [Docker](https://www.docker.com/) instalado y configurado en tu sistema.
+
+### Pasos para Ejecutar la Aplicación con Docker
+
+1. **Limpieza y Construcción del Proyecto:**
+   Abre una terminal y navega al directorio raíz del proyecto. Ejecuta los siguientes comandos para limpiar y construir
+   el proyecto:
+
+   ```bash
+   ./gradlew clean build
+   ```
+
+2. **Mover el JAR a la Carpeta de Despliegue:**
+   Ejecuta el siguiente comando para mover el archivo JAR generado a la carpeta de despliegue:
+
+   ```bash
+   mv applications/app-service/build/libs/academic-friends-api.jar deployment/
+   ```
+
+3. **Navegar al Directorio de Despliegue:**
+   Cambia al directorio de despliegue con el siguiente comando:
+
+   ```bash
+   cd deployment/
+   ```
+
+4. **Construcción de la Imagen Docker:**
+   Construye la imagen Docker utilizando el siguiente comando:
+
+   ```bash
+   docker build -t <dockerhub_username>/af-image .
+   ```
+
+5. **Subir la Imagen a Docker Hub:**
+   Sube la imagen recién construida a Docker Hub con el siguiente comando: (Opcional)
+
+   ```bash
+   docker push <dockerhub_username>/af-image
+   ```
+
+6. **Ejecutar el Contenedor Docker:**
+   Finalmente, ejecuta el contenedor Docker con el siguiente comando:
+
+   ```bash
+   docker run -p 8080:8080 --name af-container -d \
+   -e academic-friends-bucket=<bucket_name> \
+   -e aws_access_key_id=<aws_access_key_id> \
+   -e aws_secret_access_key=<aws_secret_access_key> \
+   -e cognito_client_id=<cognito_client_id> \
+   -e cognito_user_pool_id=<cognito_user_pool_id> \
+   -e datasource_password=<datasource_password> \
+   -e datasource_url=<datasource_url> \
+   -e datasource_username=<datasource_username> \
+   -e env=local \
+   -e secret_key=<secret_key> \
+   <dockerhub_username>/af-image
+   ```
+
 ## Estructura del proyecto ##
 
 El proyecto sigue una estructura basada en la Arquitectura Limpia (Clean Architecture), dividiéndolo en los siguientes
@@ -42,8 +122,8 @@ componentes:
 - `applications`: Contiene la configuración de la aplicación.
 
 Para más información sobre la Arquitectura Limpia, puedes leer el
-artículo "[Clean Architecture – Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)" (
-en español).
+artículo "[Clean Architecture – Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)"
+(en español).
 
 ## Uso y funcionalidades ##
 
@@ -87,5 +167,4 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 
 ## Contacto ##
 
-Si tienes alguna pregunta o problema relacionado con la aplicación, no dudes en ponerte en contacto con nosotros a
-través de bsebastianvg18@gmail.com. Estaremos encantados de ayudarte.
+Si tienes alguna pregunta o comentario sobre el proyecto, puedes contactarme a través de mi correo electrónico.
