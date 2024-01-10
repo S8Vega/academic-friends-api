@@ -47,10 +47,9 @@ public class CourseRest {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseResponseBody>> findAll(@RequestHeader("Authorization") String jwt)
-            throws SignatureException {
+    public ResponseEntity<List<CourseResponseBody>> findAll(@RequestHeader("Authorization") String jwt) {
         log.info("findAll");
-        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
+        securityUseCase.validate(jwt);
         return ResponseEntity.ok(CourseResponseBody.of(courseUseCase.findAll()));
     }
 
