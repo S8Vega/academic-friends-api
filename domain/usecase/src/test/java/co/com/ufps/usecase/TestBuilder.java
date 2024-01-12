@@ -80,10 +80,10 @@ public class TestBuilder {
     public static Schedule schedule() {
         return Schedule.builder()
                 .id(1L)
+                .academicFriends(new ArrayList<>())
                 .day(DayOfWeek.MONDAY)
-                .startTime(LocalTime.parse("00:00:00"))
-                .endTime(LocalTime.parse("01:00:00"))
-                .status(Schedule.Constants.STATUS_PENDING)
+                .hour(LocalTime.parse("10:00:00"))
+                .classroom("A-101")
                 .build();
     }
 

@@ -30,15 +30,12 @@ class ScheduleUseCaseTest {
     @Test
     void save() {
         Schedule schedule = TestBuilder.schedule();
-        schedule.setAcademicFriend(TestBuilder.academicFriend());
-        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(schedule.getAcademicFriend());
+        schedule.addAcademicFriend(TestBuilder.academicFriend());
         when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
 
-        Schedule response = scheduleUseCase.save(schedule.getAcademicFriend().getEmail(), schedule.getDay().toString(),
-                schedule.getStartTime().toString(), schedule.getEndTime().toString());
+        scheduleUseCase.save(schedule.getClassroom(), schedule.getDay().toString(), schedule.getHour().toString(),
+                schedule.getHour().plusHours(1).toString());
 
-        assertEquals(schedule, response);
-        verify(academicFriendUseCase).findByEmail(anyString());
         verify(scheduleRepository).save(any(Schedule.class));
     }
 
@@ -54,38 +51,30 @@ class ScheduleUseCaseTest {
     }
 
     @Test
-    void findById() {
-        Schedule schedule = TestBuilder.schedule();
-        when(scheduleRepository.findById(schedule.getId())).thenReturn(schedule);
-
-        Schedule response = scheduleUseCase.findById(schedule.getId());
-
-        assertEquals(schedule, response);
-        verify(scheduleRepository).findById(any(Long.class));
-    }
-
-    @Test
-    void update() {
-        Schedule schedule = TestBuilder.schedule();
-        when(scheduleRepository.findById(schedule.getId())).thenReturn(schedule);
-        when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
-
-        Schedule response = scheduleUseCase.update(schedule.getId(), schedule.getStatus());
-
-        assertEquals(schedule, response);
-        verify(scheduleRepository).findById(any(Long.class));
-        verify(scheduleRepository).save(any(Schedule.class));
-    }
-
-    @Test
     void findByAcademicFriend() {
         Schedule schedule = TestBuilder.schedule();
-        schedule.setAcademicFriend(TestBuilder.academicFriend());
-        when(scheduleRepository.findByAcademicFriend(schedule.getAcademicFriend().getEmail())).thenReturn(List.of(schedule));
+        schedule.addAcademicFriend(TestBuilder.academicFriend());
+        when(scheduleRepository.findByAcademicFriend(anyString())).thenReturn(List.of(schedule));
 
-        List<Schedule> response = scheduleUseCase.findByAcademicFriend(schedule.getAcademicFriend().getEmail());
+        List<Schedule> response = scheduleUseCase.findByAcademicFriend(schedule.getAcademicFriends().get(0).getEmail());
 
         assertEquals(List.of(schedule), response);
         verify(scheduleRepository).findByAcademicFriend(anyString());
+    }
+
+    @Test
+    void addAcademicFriend() {
+        Schedule schedule = TestBuilder.schedule();
+        schedule.addAcademicFriend(TestBuilder.academicFriend());
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(schedule.getAcademicFriends().get(0));
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
+        when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
+
+        scheduleUseCase.addAcademicFriend(schedule.getAcademicFriends().get(0).getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+        verify(scheduleRepository).save(any(Schedule.class));
     }
 }
