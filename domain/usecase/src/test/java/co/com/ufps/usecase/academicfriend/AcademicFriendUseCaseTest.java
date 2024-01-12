@@ -134,16 +134,6 @@ class AcademicFriendUseCaseTest {
     }
 
     @Test
-    void resetPassword() throws IOException {
-        String email = "sebas@test.com";
-        String password = "123456";
-
-        academicFriendUseCase.resetPassword(email, password);
-
-        verify(securityUseCase).resetPassword(email, password);
-    }
-
-    @Test
     void addContract() {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         File contract = mock(File.class);

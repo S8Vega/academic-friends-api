@@ -1,6 +1,5 @@
 package co.com.ufps.academicfriendrest;
 
-import co.com.ufps.academicfriendrest.requestbody.ResetPasswordRequestBody;
 import co.com.ufps.academicfriendrest.responsebody.AcademicFriendResponseBody;
 import co.com.ufps.academicfriendrest.responsebody.UpdateAcademicFriendRequestBody;
 import co.com.ufps.model.academicfriend.AcademicFriend;
@@ -80,15 +79,6 @@ public class AcademicFriendRest {
         return ResponseEntity.ok(AcademicFriendResponseBody.from(
                 academicFriendUseCase.update(requestBody.getEmail(), requestBody.getScore(),
                         requestBody.getObservations(), requestBody.getState(), requestBody.getPassword())));
-    }
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<AcademicFriendResponseBody> resetPassword(@RequestHeader("Authorization") String jwt,
-                                                                    @RequestBody ResetPasswordRequestBody requestBody)
-            throws IOException, SignatureException {
-        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
-        academicFriendUseCase.resetPassword(requestBody.getEmail(), requestBody.getPassword());
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/contract")

@@ -96,10 +96,6 @@ public class AcademicFriendUseCase {
         return academicFriendRepository.save(academicFriend);
     }
 
-    public void resetPassword(String email, String password) throws IOException {
-        securityUseCase.resetPassword(email, password);
-    }
-
     public void addContract(String email, File contract) {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
