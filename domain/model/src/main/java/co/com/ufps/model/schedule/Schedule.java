@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class Schedule {
+public class Schedule implements Comparable<Schedule> {
     private Long id;
     private List<AcademicFriend> academicFriends;
     private DayOfWeek day;
@@ -35,5 +35,10 @@ public class Schedule {
             academicFriends = new ArrayList<>();
         }
         academicFriends.add(academicFriend);
+    }
+
+    @Override
+    public int compareTo(Schedule o) {
+        return this.day.compareTo(o.day) == 0 ? this.hour.compareTo(o.hour) : this.day.compareTo(o.day);
     }
 }

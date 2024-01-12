@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,7 @@ public class ScheduleResponseBody {
     }
 
     public static ScheduleResponseBody of(List<Schedule> schedules) {
+        Collections.sort(schedules);
         ScheduleResponseBody response = new ScheduleResponseBody();
         for (Schedule schedule : schedules) {
             response.addSchedule(schedule);
