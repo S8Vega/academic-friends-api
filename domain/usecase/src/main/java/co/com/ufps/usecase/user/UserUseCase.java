@@ -24,4 +24,8 @@ public class UserUseCase {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public void resetPassword(String email, String password) throws IOException {
+        securityUseCase.resetPassword(email, password);
+    }
 }
