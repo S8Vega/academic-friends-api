@@ -13,6 +13,7 @@ import java.util.List;
 public class ConsultancyResponseBody {
     private String academicFriendEmail;
     private String studentCode;
+    private String studentName;
     private String courseName;
     private String startDate;
     private String endDate;
@@ -23,6 +24,7 @@ public class ConsultancyResponseBody {
         ConsultancyResponseBody responseBody = new ConsultancyResponseBody();
         responseBody.setAcademicFriendEmail(consultancy.getAcademicFriend().getEmail());
         responseBody.setStudentCode(consultancy.getStudent().getCode());
+        responseBody.setStudentName(consultancy.getStudent().getName());
         responseBody.setCourseName(consultancy.getCourse().getName());
         responseBody.setStartDate(consultancy.getStartDate().toString());
         responseBody.setEndDate(consultancy.getEndDate().toString());
