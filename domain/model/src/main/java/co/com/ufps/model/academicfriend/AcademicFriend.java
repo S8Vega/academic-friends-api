@@ -26,6 +26,11 @@ public class AcademicFriend extends Student implements Comparable<AcademicFriend
     private String observations;
     private String contract;
 
+
+    public void cleanConvocation() {
+        this.convocation = null;
+    }
+
     @Override
     public int compareTo(AcademicFriend o) {
         return o.getScore() - this.getScore();

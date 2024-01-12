@@ -63,6 +63,7 @@ public class ScheduleUseCase {
                 continue;
             }
             schedule.addAcademicFriend(academicFriend);
+            schedule.cleanAcademicFriends();
             scheduleRepository.save(schedule);
             hour = hour.plusHours(1);
         }

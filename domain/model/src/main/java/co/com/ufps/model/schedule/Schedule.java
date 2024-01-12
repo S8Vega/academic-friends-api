@@ -24,6 +24,12 @@ public class Schedule {
     private LocalTime hour;
     private String classroom;
 
+    public void cleanAcademicFriends() {
+        for (AcademicFriend academicFriend : academicFriends) {
+            academicFriend.cleanConvocation();
+        }
+    }
+
     public void addAcademicFriend(AcademicFriend academicFriend) {
         if (academicFriends == null) {
             academicFriends = new ArrayList<>();
