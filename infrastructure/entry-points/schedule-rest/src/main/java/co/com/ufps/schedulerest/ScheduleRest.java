@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.SignatureException;
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -39,14 +38,14 @@ public class ScheduleRest {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleResponseBody>> findAll(@RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<ScheduleResponseBody> findAll(@RequestHeader("Authorization") String jwt) {
         log.info("findAll");
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.findAll()));
     }
 
     @GetMapping("/find-by-academic-friend/{academicFriendEmail}")
-    public ResponseEntity<List<ScheduleResponseBody>> findByAcademicFriend(
+    public ResponseEntity<ScheduleResponseBody> findByAcademicFriend(
             @RequestHeader("Authorization") String jwt,
             @PathVariable String academicFriendEmail) {
         log.info("findByAcademicFriend: {}", academicFriendEmail);
