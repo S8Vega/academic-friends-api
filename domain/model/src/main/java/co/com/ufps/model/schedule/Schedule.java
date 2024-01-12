@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,21 +19,15 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class Schedule {
     private Long id;
-    private AcademicFriend academicFriend;
+    private List<AcademicFriend> academicFriends;
     private DayOfWeek day;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private String status;
+    private LocalTime hour;
+    private String classroom;
 
-    public class Constants {
-        public static final String STATUS_PASS = "pass";
-        public static final String STATUS_PENDING = "pending";
-        public static final String STATUS_REJECTED = "rejected";
-
-        public static final List<String> STATUSES = List.of(STATUS_PASS, STATUS_PENDING, STATUS_REJECTED);
-
-        private Constants() {
-            throw new IllegalStateException("Utility class");
+    public void addAcademicFriend(AcademicFriend academicFriend) {
+        if (academicFriends == null) {
+            academicFriends = new ArrayList<>();
         }
+        academicFriends.add(academicFriend);
     }
 }

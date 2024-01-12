@@ -1,8 +1,7 @@
 package co.com.ufps.schedulerest;
 
-import co.com.ufps.model.user.User;
+import co.com.ufps.schedulerest.requestbody.AddAcademicFriendRequestBody;
 import co.com.ufps.schedulerest.requestbody.SaveScheduleRequestBody;
-import co.com.ufps.schedulerest.requestbody.UpdateScheduleRequestBody;
 import co.com.ufps.schedulerest.responsebody.ScheduleResponseBody;
 import co.com.ufps.usecase.schedule.ScheduleUseCase;
 import co.com.ufps.usecase.security.SecurityUseCase;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,12 +29,13 @@ public class ScheduleRest {
     private final SecurityUseCase securityUseCase;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseBody> save(@RequestHeader("Authorization") String jwt,
-                                                     @RequestBody SaveScheduleRequestBody requestBody) throws SignatureException {
+    public ResponseEntity<Void> save(@RequestHeader("Authorization") String jwt,
+                                     @RequestBody SaveScheduleRequestBody requestBody) {
         log.info("save: {}", requestBody);
-        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
-        return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.save(requestBody.getAcademicFriendEmail(),
-                requestBody.getDay(), requestBody.getStartTime(), requestBody.getEndTime())));
+        securityUseCase.validate(jwt);
+        scheduleUseCase.save(requestBody.getClassroom(),
+                requestBody.getDay(), requestBody.getStartTime(), requestBody.getEndTime());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -46,15 +45,6 @@ public class ScheduleRest {
         return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.findAll()));
     }
 
-    @PutMapping
-    public ResponseEntity<ScheduleResponseBody> update(@RequestHeader("Authorization") String jwt,
-                                                       @RequestBody UpdateScheduleRequestBody requestBody) throws SignatureException {
-        log.info("update: {}", requestBody);
-        securityUseCase.validate(jwt);
-        return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.update(requestBody.getId(),
-                requestBody.getStatus())));
-    }
-
     @GetMapping("/find-by-academic-friend/{academicFriendEmail}")
     public ResponseEntity<List<ScheduleResponseBody>> findByAcademicFriend(
             @RequestHeader("Authorization") String jwt,
@@ -62,5 +52,16 @@ public class ScheduleRest {
         log.info("findByAcademicFriend: {}", academicFriendEmail);
         securityUseCase.validate(jwt);
         return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.findByAcademicFriend(academicFriendEmail)));
+    }
+
+    @PostMapping("/add-academic-friend")
+    public ResponseEntity<Void> addAcademicFriend(@RequestHeader("Authorization") String jwt,
+                                                  @RequestBody AddAcademicFriendRequestBody requestBody)
+            throws SignatureException {
+        log.info("addAcademicFriend: {}", requestBody);
+        securityUseCase.validate(jwt);
+        scheduleUseCase.addAcademicFriend(requestBody.getAcademicFriendEmail(), requestBody.getDay(),
+                requestBody.getStartHour(), requestBody.getEndHour());
+        return ResponseEntity.ok().build();
     }
 }

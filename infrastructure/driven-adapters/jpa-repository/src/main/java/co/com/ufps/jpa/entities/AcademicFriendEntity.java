@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -28,10 +29,11 @@ public class AcademicFriendEntity extends StudentEntity {
     private Double average;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "convocation")
+    @ToString.Exclude
     private ConvocationEntity convocation;
     private String observations;
     private String contract;
-    @OneToMany(mappedBy = "academicFriend", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicFriends")
     @ToString.Exclude
     private List<ScheduleEntity> schedules;
     @OneToMany(mappedBy = "academicFriend", fetch = FetchType.LAZY)

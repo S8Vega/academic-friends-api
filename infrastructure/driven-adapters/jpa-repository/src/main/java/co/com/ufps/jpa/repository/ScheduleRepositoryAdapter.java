@@ -8,6 +8,8 @@ import co.com.ufps.model.schedule.gateways.ScheduleRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +44,6 @@ public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, Sched
     }
 
     @Override
-    public Schedule findById(Long id) {
-        ScheduleEntity entity = repository.findById(id).orElse(null);
-        return this.mapper.map(entity, Schedule.class);
-    }
-
-    @Override
     public List<Schedule> findByAcademicFriend(String academicFriendEmail) {
         List<ScheduleEntity> entities = repository.findByAcademicFriendEmail(academicFriendEmail);
         List<Schedule> schedules = new ArrayList<>();
@@ -55,5 +51,11 @@ public class ScheduleRepositoryAdapter extends AdapterOperations<Schedule, Sched
             schedules.add(this.mapper.map(entity, Schedule.class));
         }
         return schedules;
+    }
+
+    @Override
+    public Schedule findByDayAndHour(DayOfWeek day, LocalTime hour) {
+        ScheduleEntity entity = repository.findByDayAndHour(day, hour);
+        return (entity == null ? null : this.mapper.map(entity, Schedule.class));
     }
 }
