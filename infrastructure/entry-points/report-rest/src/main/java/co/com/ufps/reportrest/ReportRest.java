@@ -92,7 +92,7 @@ public class ReportRest {
                                                           @RequestPart MultipartFile file)
             throws IOException, SignatureException {
         log.info("updateState: {}", id);
-        securityUseCase.validate(jwt, User.Constants.ACADEMIC_FRIEND);
+        securityUseCase.validate(jwt);
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(id, convert(file))));
     }
 }

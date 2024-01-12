@@ -55,7 +55,6 @@ public class ReportUseCase {
 
     public Report update(Long id, File file) {
         Report report = findById(id);
-        report.setFile(String.format("%s/%s.%s", REPORT_FOLDER, UUID.randomUUID(), "pdf"));
         report.setUploadDate(LocalDateTime.now());
         report.setState(Report.Constants.STATE_PENDING);
         fileUseCase.save(report.getFile(), file);
