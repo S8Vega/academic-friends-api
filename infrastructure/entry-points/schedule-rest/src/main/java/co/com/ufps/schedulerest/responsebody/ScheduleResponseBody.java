@@ -21,7 +21,6 @@ public class ScheduleResponseBody {
     }
 
     public static ScheduleResponseBody of(List<Schedule> schedules) {
-        // TODO: order schedules by day and hour
         ScheduleResponseBody response = new ScheduleResponseBody();
         for (Schedule schedule : schedules) {
             response.addSchedule(schedule);
