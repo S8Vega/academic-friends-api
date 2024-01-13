@@ -25,6 +25,9 @@ public class StudentUseCase {
             if (!student.getEmail().endsWith(User.Constants.EMAIL)) {
                 throw new IllegalArgumentException(String.format("El correo %s no es valido", student.getEmail()));
             }
+            if (!student.getCode().startsWith(User.Constants.CODE)) {
+                throw new IllegalArgumentException(String.format("El codigo %s no es valido", student.getCode()));
+            }
         });
         studentsList.forEach(student -> {
             Student current = findByEmail(student.getEmail());

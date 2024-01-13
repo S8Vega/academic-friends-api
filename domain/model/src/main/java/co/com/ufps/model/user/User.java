@@ -24,6 +24,7 @@ public class User {
         public static final String COORDINATOR = "coordinator";
         public static final String DIRECTOR = "director";
         public static final String EMAIL = "@ufps.edu.co";
+        public static final String CODE = "1151";
 
         public static final List<String> TYPES = List.of(STUDENT, ACADEMIC_FRIEND, COORDINATOR, DIRECTOR);
 
