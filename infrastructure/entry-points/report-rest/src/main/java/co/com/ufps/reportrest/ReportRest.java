@@ -71,10 +71,9 @@ public class ReportRest {
 
     @PutMapping
     public ResponseEntity<ReportResponseBody> update(@RequestHeader("Authorization") String jwt,
-                                                     @RequestBody UpdateReportRequestBody requestBody)
-            throws IOException, SignatureException {
+                                                     @RequestBody UpdateReportRequestBody requestBody) {
         log.info("update: {}", requestBody);
-        securityUseCase.validate(jwt, User.Constants.COORDINATOR, User.Constants.DIRECTOR);
+        securityUseCase.validate(jwt);
         return ResponseEntity.ok(ReportResponseBody.of(reportUseCase.update(requestBody.getId(),
                 requestBody.getObservations(), requestBody.getState())));
     }
