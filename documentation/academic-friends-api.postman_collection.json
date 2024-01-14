@@ -688,6 +688,111 @@
               "body": "{\n    \"email\": \"jorgeomarpp@ufps.edu.co\",\n    \"name\": \"Jorge Perez\",\n    \"code\": \"1151705\",\n    \"type\": \"coordinator\"\n}"
             }
           ]
+        },
+        {
+          "name": "reset password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token-academic-friends}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"julianariveros@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/ufps/academic-friends-api/user/reset-password",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "ufps",
+                "academic-friends-api",
+                "user",
+                "reset-password"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{token-academic-friends}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"julianariveros@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/ufps/academic-friends-api/academic-friend/reset-password",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "ufps",
+                    "academic-friends-api",
+                    "academic-friend",
+                    "reset-password"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "plain",
+              "header": [
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Method"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Headers"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 10 Jan 2024 01:11:49 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            }
+          ]
         }
       ]
     },
@@ -1391,111 +1496,6 @@
               ],
               "cookie": [],
               "body": "{\n    \"email\": \"julianariveros@ufps.edu.co\",\n    \"name\": \"Juliana Riveros Gutierrez\",\n    \"code\": \"234561\",\n    \"type\": \"academicFriend\",\n    \"semester\": \"8\",\n    \"status\": \"pass\",\n    \"resume\": \"resume/julianariveros@ufps.edu.co.pdf\",\n    \"score\": 90,\n    \"average\": 4.32,\n    \"observations\": \"es muy crack\",\n    \"contract\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "reset password",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "{{token-academic-friends}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"email\": \"julianariveros@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/ufps/academic-friends-api/academic-friend/reset-password",
-              "host": [
-                "{{host}}"
-              ],
-              "path": [
-                "ufps",
-                "academic-friends-api",
-                "academic-friend",
-                "reset-password"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "response",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "{{token-academic-friends}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"julianariveros@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{host}}/ufps/academic-friends-api/academic-friend/reset-password",
-                  "host": [
-                    "{{host}}"
-                  ],
-                  "path": [
-                    "ufps",
-                    "academic-friends-api",
-                    "academic-friend",
-                    "reset-password"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "plain",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Length",
-                  "value": "0"
-                },
-                {
-                  "key": "Date",
-                  "value": "Wed, 10 Jan 2024 01:11:49 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": null
             }
           ]
         },
@@ -3143,12 +3143,12 @@
                 {
                   "key": "file",
                   "type": "file",
-                  "src": "postman-cloud:///1eeaf5cd-440e-49a0-a356-f57425ae632f"
+                  "src": "/C:/Users/sebastian.vega_pragm/Downloads/CV .pdf"
                 }
               ]
             },
             "url": {
-              "raw": "{{host}}/ufps/academic-friends-api/report/5",
+              "raw": "{{host}}/ufps/academic-friends-api/report/6",
               "host": [
                 "{{host}}"
               ],
@@ -3156,7 +3156,7 @@
                 "ufps",
                 "academic-friends-api",
                 "report",
-                "5"
+                "6"
               ]
             }
           },
@@ -3653,7 +3653,7 @@
               }
             ],
             "url": {
-              "raw": "{{host}}/ufps/academic-friends-api/file/contract/julianariveros@ufps.edu.co.pdf",
+              "raw": "{{host}}/ufps/academic-friends-api/file/report/109d1345-25b8-49b3-8221-9dd518c98eb9.pdf",
               "host": [
                 "{{host}}"
               ],
@@ -3661,8 +3661,8 @@
                 "ufps",
                 "academic-friends-api",
                 "file",
-                "contract",
-                "julianariveros@ufps.edu.co.pdf"
+                "report",
+                "109d1345-25b8-49b3-8221-9dd518c98eb9.pdf"
               ]
             }
           },
@@ -3933,7 +3933,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"email\": \"santiagoperez@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
+          "raw": "{\r\n  \"email\": \"julianariveros@ufps.edu.co\",\r\n  \"password\": \"hola123mundo\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
