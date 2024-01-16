@@ -58,8 +58,8 @@ public class TestBuilder {
         consultancy.setAcademicFriend(new AcademicFriend());
         consultancy.setStudent(new Student());
         consultancy.setCourse(new Course());
-        consultancy.setStartDate(LocalDateTime.parse("2021-10-10T00:00:00"));
-        consultancy.setEndDate(LocalDateTime.parse("2021-10-10T00:00:00"));
+        consultancy.setStartDate(LocalDateTime.parse("2021-10-10T08:00:00"));
+        consultancy.setEndDate(LocalDateTime.parse("2021-10-10T09:00:00"));
         consultancy.setId(1L);
         consultancy.setAspectsToImprove("Aspectos a mejorar");
         consultancy.setDifficultiesEncountered("Dificultades encontradas");
