@@ -146,7 +146,11 @@ documentación de Swagger en `http:localhost:8080/ufps/academic-friends-api/swag
 ## Pruebas ##
 
 El proyecto incluye pruebas unitarias que cubren el 85% del código. Para ejecutar estas pruebas, puedes usar el
-comando `.\gradlew :usecase:clean :usecase:build :usecase:jacocoTestReport`.
+comando:
+
+```bash
+.\gradlew :usecase:clean :usecase:build :usecase:jacocoTestReport
+```
 
 Después de ejecutar las pruebas, puedes ver el reporte de cobertura de código en el
 archivo `domain/usecase/build/reports/jacocoHtml/index.html`.
