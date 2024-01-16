@@ -28,4 +28,19 @@ public class Consultancy {
     private LocalDateTime endDate;
     private String difficultiesEncountered;
     private String aspectsToImprove;
+
+
+    public boolean validDates() {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
+        return startDate.isBefore(endDate) && validDuration();
+    }
+
+    private boolean validDuration() {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
+        return startDate.plusHours(8).isAfter(endDate);
+    }
 }

@@ -24,6 +24,10 @@ public class ConsultancyUseCase {
     private final CourseUseCase courseUseCase;
 
     public Consultancy save(Consultancy consultancy) {
+        if (!consultancy.validDates()) {
+            throw new IllegalArgumentException("Invalid dates");
+        }
+
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(consultancy.getAcademicFriend().getEmail());
         if (academicFriend == null) {
             throw new IllegalArgumentException("Academic friend not found");
