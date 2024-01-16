@@ -56,7 +56,6 @@ public class ReportUseCase {
     public Report update(Long id, File file) {
         Report report = findById(id);
         report.setUploadDate(LocalDateTime.now());
-        report.setState(Report.Constants.STATE_PENDING);
         fileUseCase.save(report.getFile(), file);
         return reportRepository.save(report);
     }
