@@ -63,4 +63,14 @@ public class ControllerAdvice {
                 .build();
         return processException(errorModel, exception, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public final ResponseEntity<ErrorModel> badRequest(Exception exception) {
+        ErrorModel errorModel = ErrorModel.builder()
+                .code("ADC-603")
+                .exception(exception.getClass().getName())
+                .message(exception.getMessage())
+                .build();
+        return processException(errorModel, exception, HttpStatus.BAD_REQUEST);
+    }
 }
