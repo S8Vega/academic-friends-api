@@ -1,5 +1,6 @@
 package co.com.ufps.usecase.schedule;
 
+import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.schedule.Schedule;
 import co.com.ufps.model.schedule.gateways.ScheduleRepository;
 import co.com.ufps.usecase.TestBuilder;
@@ -64,13 +65,13 @@ class ScheduleUseCaseTest {
 
     @Test
     void addAcademicFriend() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
         Schedule schedule = TestBuilder.schedule();
-        schedule.addAcademicFriend(TestBuilder.academicFriend());
-        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(schedule.getAcademicFriends().get(0));
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
         when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
         when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
 
-        scheduleUseCase.addAcademicFriend(schedule.getAcademicFriends().get(0).getEmail(), schedule.getDay().toString(),
+        scheduleUseCase.addAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
                 schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
 
         verify(academicFriendUseCase).findByEmail(anyString());
