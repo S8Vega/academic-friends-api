@@ -3,7 +3,6 @@ package co.com.ufps.usecase.schedule;
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.schedule.Schedule;
 import co.com.ufps.model.schedule.gateways.ScheduleRepository;
-import co.com.ufps.model.user.User;
 import co.com.ufps.usecase.academicfriend.AcademicFriendUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -65,7 +64,7 @@ public class ScheduleUseCase {
                 hour = hour.plusHours(1);
                 continue;
             }
-            if (schedule.getAcademicFriends().stream().map(User::getEmail).anyMatch(a -> a.equals(academicFriendEmail))) {
+            if (schedule.containsAcademicFriend(academicFriend)) {
                 log.info(String.format("the academic friend %s is already in the schedule for the day %s and hour %s",
                         academicFriendEmail, day, hour));
                 hour = hour.plusHours(1);
@@ -83,7 +82,7 @@ public class ScheduleUseCase {
         }
     }
 
-    public int getHoursPerDay(String academicFriendEmail, DayOfWeek day) {
+    private int getHoursPerDay(String academicFriendEmail, DayOfWeek day) {
         List<Schedule> schedules = findByAcademicFriend(academicFriendEmail);
         int count = 0;
         for (Schedule schedule : schedules) {
@@ -96,5 +95,33 @@ public class ScheduleUseCase {
 
     public Schedule findByDayAndHour(DayOfWeek day, LocalTime hour) {
         return scheduleRepository.findByDayAndHour(day, hour);
+    }
+
+    public void removeAcademicFriend(String academicFriendEmail, String day, String startHour, String endHour) {
+        AcademicFriend academicFriend = academicFriendUseCase.findByEmail(academicFriendEmail);
+        if (academicFriend == null) {
+            throw new IllegalArgumentException("the academic friend does not exist");
+        }
+        LocalTime hour = LocalTime.parse(startHour);
+        LocalTime end = LocalTime.parse(endHour);
+        DayOfWeek dayOfWeek = DayOfWeek.valueOf(day);
+        while (hour.isBefore(end)) {
+            Schedule schedule = findByDayAndHour(dayOfWeek, hour);
+            if (schedule == null) {
+                log.info(String.format("the schedule for the day %s and hour %s does not exist", day, hour));
+                hour = hour.plusHours(1);
+                continue;
+            }
+            if (!schedule.containsAcademicFriend(academicFriend)) {
+                log.info(String.format("the academic friend %s is not in the schedule for the day %s and hour %s",
+                        academicFriendEmail, day, hour));
+                hour = hour.plusHours(1);
+                continue;
+            }
+            schedule.removeAcademicFriend(academicFriend);
+            schedule.cleanAcademicFriends();
+            scheduleRepository.save(schedule);
+            hour = hour.plusHours(1);
+        }
     }
 }

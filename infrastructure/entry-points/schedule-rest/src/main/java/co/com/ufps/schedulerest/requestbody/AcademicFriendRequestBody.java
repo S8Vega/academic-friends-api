@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class AddAcademicFriendRequestBody {
+public class AcademicFriendRequestBody {
     private String academicFriendEmail;
     private String day;
     private String startHour;

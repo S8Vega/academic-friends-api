@@ -1,6 +1,6 @@
 package co.com.ufps.schedulerest;
 
-import co.com.ufps.schedulerest.requestbody.AddAcademicFriendRequestBody;
+import co.com.ufps.schedulerest.requestbody.AcademicFriendRequestBody;
 import co.com.ufps.schedulerest.requestbody.SaveScheduleRequestBody;
 import co.com.ufps.schedulerest.responsebody.ScheduleResponseBody;
 import co.com.ufps.usecase.schedule.ScheduleUseCase;
@@ -55,11 +55,22 @@ public class ScheduleRest {
 
     @PostMapping("/add-academic-friend")
     public ResponseEntity<Void> addAcademicFriend(@RequestHeader("Authorization") String jwt,
-                                                  @RequestBody AddAcademicFriendRequestBody requestBody)
+                                                  @RequestBody AcademicFriendRequestBody requestBody)
             throws SignatureException {
         log.info("addAcademicFriend: {}", requestBody);
         securityUseCase.validate(jwt);
         scheduleUseCase.addAcademicFriend(requestBody.getAcademicFriendEmail(), requestBody.getDay(),
+                requestBody.getStartHour(), requestBody.getEndHour());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/remove-academic-friend")
+    public ResponseEntity<Void> removeAcademicFriend(@RequestHeader("Authorization") String jwt,
+                                                     @RequestBody AcademicFriendRequestBody requestBody)
+            throws SignatureException {
+        log.info("removeAcademicFriend: {}", requestBody);
+        securityUseCase.validate(jwt);
+        scheduleUseCase.removeAcademicFriend(requestBody.getAcademicFriendEmail(), requestBody.getDay(),
                 requestBody.getStartHour(), requestBody.getEndHour());
         return ResponseEntity.ok().build();
     }

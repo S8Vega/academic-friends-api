@@ -37,6 +37,20 @@ public class Schedule implements Comparable<Schedule> {
         academicFriends.add(academicFriend);
     }
 
+    public void removeAcademicFriend(AcademicFriend academicFriend) {
+        if (academicFriends == null) {
+            academicFriends = new ArrayList<>();
+        }
+        academicFriends.removeIf(af -> af.getEmail().equals(academicFriend.getEmail()));
+    }
+
+    public boolean containsAcademicFriend(AcademicFriend academicFriend) {
+        if (academicFriends == null) {
+            academicFriends = new ArrayList<>();
+        }
+        return academicFriends.stream().anyMatch(af -> af.getEmail().equals(academicFriend.getEmail()));
+    }
+
     @Override
     public int compareTo(Schedule o) {
         return this.day.compareTo(o.day) == 0 ? this.hour.compareTo(o.hour) : this.day.compareTo(o.day);
