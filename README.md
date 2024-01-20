@@ -145,7 +145,7 @@ documentación de Swagger en `http:localhost:8080/ufps/academic-friends-api/swag
 
 ## Pruebas ##
 
-El proyecto incluye pruebas unitarias que cubren el 85% del código. Para ejecutar estas pruebas, puedes usar el
+El proyecto incluye pruebas unitarias que cubren el 90% del código. Para ejecutar estas pruebas, puedes usar el
 comando:
 
 ```bash

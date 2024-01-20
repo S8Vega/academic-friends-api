@@ -134,6 +134,57 @@ class AcademicFriendUseCaseTest {
     }
 
     @Test
+    void updateWithoutAcademicFriend() throws IOException {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
+                    AcademicFriend.Constants.PASS, "123456");
+        });
+
+        assertEquals(String.format("User %s not found", academicFriend.getEmail()), exception.getMessage());
+    }
+
+    @Test
+    void updateWithInvalidStatus() throws IOException {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
+                    "Invalid status", "123456");
+        });
+
+        assertEquals("Invalid status", exception.getMessage());
+    }
+
+    @Test
+    void updateWithEmptyPassword() throws IOException {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
+                    AcademicFriend.Constants.PASS, "");
+        });
+
+        assertEquals("Password is required", exception.getMessage());
+    }
+
+    @Test
+    void updateWithStatusRejected() throws IOException {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
+        when(academicFriendRepository.save(any(AcademicFriend.class))).thenReturn(academicFriend);
+
+        AcademicFriend response = academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
+                AcademicFriend.Constants.REJECTED, "123456");
+
+        assertEquals(academicFriend, response);
+        verify(academicFriendRepository).findByEmail(academicFriend.getEmail());
+    }
+
+    @Test
     void addContract() {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         File contract = mock(File.class);
