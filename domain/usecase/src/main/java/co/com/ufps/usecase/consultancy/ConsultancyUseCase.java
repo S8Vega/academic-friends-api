@@ -40,11 +40,11 @@ public class ConsultancyUseCase {
         }
         consultancy.setStudent(student);
 
-        Course course = courseUseCase.findByName(consultancy.getCourse().getName()).get(0);
-        if (course == null) {
+        List<Course> courses = courseUseCase.findByName(consultancy.getCourse().getName());
+        if (courses.isEmpty()) {
             throw new IllegalArgumentException("Course not found");
         }
-        consultancy.setCourse(course);
+        consultancy.setCourse(courses.get(0));
 
         return repository.save(consultancy);
     }
