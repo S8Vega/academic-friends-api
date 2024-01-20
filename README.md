@@ -153,7 +153,11 @@ comando:
 ```
 
 Después de ejecutar las pruebas, puedes ver el reporte de cobertura de código en el
-archivo `domain/usecase/build/reports/jacocoHtml/index.html`.
+archivo `domain/usecase/build/reports/jacocoHtml/index.html`, o ejecutando el siguiente comando:
+
+```bash
+Invoke-Item domain/usecase/build/reports/jacocoHtml/index.html
+```
 
 ## Contribución ##
 
