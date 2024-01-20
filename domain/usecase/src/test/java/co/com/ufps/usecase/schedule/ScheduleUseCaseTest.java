@@ -78,4 +78,21 @@ class ScheduleUseCaseTest {
         verify(scheduleRepository).findByDayAndHour(any(), any());
         verify(scheduleRepository).save(any(Schedule.class));
     }
+
+    @Test
+    void removeAcademicFriend() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        schedule.addAcademicFriend(academicFriend);
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
+        when(scheduleRepository.save(any(Schedule.class))).thenReturn(schedule);
+
+        scheduleUseCase.removeAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+        verify(scheduleRepository).save(any(Schedule.class));
+    }
 }
