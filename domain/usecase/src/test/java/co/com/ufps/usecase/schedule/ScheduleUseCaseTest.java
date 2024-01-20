@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -94,5 +95,96 @@ class ScheduleUseCaseTest {
         verify(academicFriendUseCase).findByEmail(anyString());
         verify(scheduleRepository).findByDayAndHour(any(), any());
         verify(scheduleRepository).save(any(Schedule.class));
+    }
+
+    @Test
+    void addAcademicFriendWithScheduleNull() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(null);
+
+        scheduleUseCase.addAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+    }
+
+    @Test
+    void addAcademicFriendWithAcademicFriendOnSchedule() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        schedule.addAcademicFriend(academicFriend);
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
+
+        scheduleUseCase.addAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+    }
+
+    @Test
+    void addAcademicFriendWithMaxHoursPerDay() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
+        when(scheduleRepository.findByAcademicFriend(anyString()))
+                .thenReturn(List.of(schedule, schedule, schedule, schedule));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            scheduleUseCase.addAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                    schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+        });
+
+        assertEquals("the academic friend " + academicFriend.getEmail() + " has already 4 hours in the day "
+                + schedule.getDay(), exception.getMessage());
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+        verify(scheduleRepository).findByAcademicFriend(anyString());
+    }
+
+    @Test
+    void removeAcademicFriendWithAcademicFriendNull() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            scheduleUseCase.removeAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                    schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+        });
+
+        assertEquals("the academic friend does not exist", exception.getMessage());
+    }
+
+    @Test
+    void removeAcademicFriendWithScheduleNull() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(null);
+
+        scheduleUseCase.removeAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
+    }
+
+    @Test
+    void removeAcademicFriendWithAcademicFriendNotOnSchedule() {
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Schedule schedule = TestBuilder.schedule();
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(scheduleRepository.findByDayAndHour(any(), any())).thenReturn(schedule);
+
+        scheduleUseCase.removeAcademicFriend(academicFriend.getEmail(), schedule.getDay().toString(),
+                schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
+
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(scheduleRepository).findByDayAndHour(any(), any());
     }
 }
