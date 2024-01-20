@@ -1,8 +1,11 @@
 package co.com.ufps.usecase.consultancy;
 
+import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.consultancy.Consultancy;
 import co.com.ufps.model.consultancy.CountConsultanciesBetweenDateRanges;
 import co.com.ufps.model.consultancy.gateways.ConsultancyRepository;
+import co.com.ufps.model.course.Course;
+import co.com.ufps.model.student.Student;
 import co.com.ufps.usecase.TestBuilder;
 import co.com.ufps.usecase.academicfriend.AcademicFriendUseCase;
 import co.com.ufps.usecase.course.CourseUseCase;
@@ -18,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -51,6 +55,73 @@ class ConsultancyUseCaseTest {
 
         assertEquals(consultancy, response);
         verify(consultancyRepository).save(any(Consultancy.class));
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(studentUseCase).findByCode(anyString());
+        verify(courseUseCase).findByName(anyString());
+    }
+
+    @Test
+    void saveInvalidDates() {
+        Consultancy consultancy = TestBuilder.consultancy();
+        consultancy.setStartDate(LocalDateTime.now().plusDays(1));
+        consultancy.setEndDate(LocalDateTime.now());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            consultancyUseCase.save(consultancy);
+        });
+
+        assertEquals("Invalid dates", exception.getMessage());
+    }
+
+    @Test
+    void saveAcademicFriendNotFound() {
+        Consultancy consultancy = TestBuilder.consultancy();
+        consultancy.getAcademicFriend().setEmail("test@test.com");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            consultancyUseCase.save(consultancy);
+        });
+
+        assertEquals("Academic friend not found", exception.getMessage());
+        verify(academicFriendUseCase).findByEmail(anyString());
+    }
+
+    @Test
+    void saveStudentNotFound() {
+        Consultancy consultancy = TestBuilder.consultancy();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Student student = TestBuilder.student();
+        consultancy.setAcademicFriend(academicFriend);
+        consultancy.setStudent(student);
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            consultancyUseCase.save(consultancy);
+        });
+
+        assertEquals("Student not found", exception.getMessage());
+        verify(academicFriendUseCase).findByEmail(anyString());
+        verify(studentUseCase).findByCode(anyString());
+    }
+
+    @Test
+    void saveCourseNotFound() {
+        Consultancy consultancy = TestBuilder.consultancy();
+        AcademicFriend academicFriend = TestBuilder.academicFriend();
+        Student student = TestBuilder.student();
+        Course course = TestBuilder.course();
+        consultancy.setAcademicFriend(academicFriend);
+        consultancy.setStudent(student);
+        consultancy.setCourse(course);
+        when(academicFriendUseCase.findByEmail(anyString())).thenReturn(academicFriend);
+        when(studentUseCase.findByCode(anyString())).thenReturn(student);
+        when(courseUseCase.findByName(anyString())).thenReturn(Collections.emptyList());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            consultancyUseCase.save(consultancy);
+        });
+
+        assertEquals("Course not found", exception.getMessage());
         verify(academicFriendUseCase).findByEmail(anyString());
         verify(studentUseCase).findByCode(anyString());
         verify(courseUseCase).findByName(anyString());
