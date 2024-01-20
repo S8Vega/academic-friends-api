@@ -30,21 +30,22 @@ public class AcademicFriendUseCase {
 
     public AcademicFriend save(AcademicFriend academicFriend, File resume) {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
+
         if (student == null) {
             throw new UserNotFoundException(String.format("User %s not found", academicFriend.getEmail()));
-        } else if (student.getType().equals(User.Constants.ACADEMIC_FRIEND)) {
-            buildAcademicFriend(academicFriend, student);
-            fileUseCase.save(academicFriend.getResume(), resume);
-            return academicFriendRepository.save(academicFriend);
         }
+
         buildAcademicFriend(academicFriend, student);
         fileUseCase.save(academicFriend.getResume(), resume);
 
-        studentUseCase.remove(academicFriend.getEmail());
+        if (!student.getType().equals(User.Constants.ACADEMIC_FRIEND)) {
+            studentUseCase.remove(academicFriend.getEmail());
+        }
+
         return academicFriendRepository.save(academicFriend);
     }
 
-    private AcademicFriend buildAcademicFriend(AcademicFriend academicFriend, Student student) {
+    private void buildAcademicFriend(AcademicFriend academicFriend, Student student) {
         academicFriend.setName(student.getName());
         academicFriend.setCode(student.getCode());
         academicFriend.setType(student.getType());
@@ -58,7 +59,6 @@ public class AcademicFriendUseCase {
         }
         academicFriend.setConvocation(convocation);
         academicFriend.setObservations("");
-        return academicFriend;
     }
 
     public List<AcademicFriend> findAll() {
