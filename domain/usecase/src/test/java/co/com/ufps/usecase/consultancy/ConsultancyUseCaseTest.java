@@ -70,7 +70,7 @@ class ConsultancyUseCaseTest {
             consultancyUseCase.save(consultancy);
         });
 
-        assertEquals("Invalid dates", exception.getMessage());
+        assertEquals("Fechas invalidas", exception.getMessage());
     }
 
     @Test
@@ -82,7 +82,7 @@ class ConsultancyUseCaseTest {
             consultancyUseCase.save(consultancy);
         });
 
-        assertEquals("Academic friend not found", exception.getMessage());
+        assertEquals("El amigo academico no existe", exception.getMessage());
         verify(academicFriendUseCase).findByEmail(anyString());
     }
 
@@ -99,7 +99,7 @@ class ConsultancyUseCaseTest {
             consultancyUseCase.save(consultancy);
         });
 
-        assertEquals("Student not found", exception.getMessage());
+        assertEquals("El estudiante no existe", exception.getMessage());
         verify(academicFriendUseCase).findByEmail(anyString());
         verify(studentUseCase).findByCode(anyString());
     }
@@ -121,7 +121,7 @@ class ConsultancyUseCaseTest {
             consultancyUseCase.save(consultancy);
         });
 
-        assertEquals("Course not found", exception.getMessage());
+        assertEquals("El curso no existe", exception.getMessage());
         verify(academicFriendUseCase).findByEmail(anyString());
         verify(studentUseCase).findByCode(anyString());
         verify(courseUseCase).findByName(anyString());

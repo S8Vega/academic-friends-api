@@ -140,8 +140,8 @@ class ScheduleUseCaseTest {
                     schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
         });
 
-        assertEquals("the academic friend " + academicFriend.getEmail() + " has already 4 hours in the day "
-                + schedule.getDay(), exception.getMessage());
+        assertEquals("El amigo academico sebas@test.com supera la cantidad de horas diaras permitidas," +
+                " ya tiene 4 horas el dia lunes", exception.getMessage());
         verify(academicFriendUseCase).findByEmail(anyString());
         verify(scheduleRepository).findByDayAndHour(any(), any());
         verify(scheduleRepository).findByAcademicFriend(anyString());
@@ -157,7 +157,7 @@ class ScheduleUseCaseTest {
                     schedule.getHour().toString(), schedule.getHour().plusHours(1).toString());
         });
 
-        assertEquals("the academic friend does not exist", exception.getMessage());
+        assertEquals("El amigo academico no existe", exception.getMessage());
     }
 
     @Test

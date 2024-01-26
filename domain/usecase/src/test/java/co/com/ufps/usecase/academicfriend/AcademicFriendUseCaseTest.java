@@ -93,7 +93,7 @@ class AcademicFriendUseCaseTest {
             academicFriendUseCase.save(academicFriend, resume);
         });
 
-        assertEquals(String.format("User %s not found", academicFriend.getEmail()), exception.getMessage());
+        assertEquals("El usuario sebas@test.com no existe", exception.getMessage());
         verify(studentUseCase).findByEmail(academicFriend.getEmail());
     }
 
@@ -142,7 +142,7 @@ class AcademicFriendUseCaseTest {
                     AcademicFriend.Constants.PASS, "123456");
         });
 
-        assertEquals(String.format("User %s not found", academicFriend.getEmail()), exception.getMessage());
+        assertEquals("El usuario sebas@test.com no existe", exception.getMessage());
     }
 
     @Test
@@ -155,7 +155,7 @@ class AcademicFriendUseCaseTest {
                     "Invalid status", "123456");
         });
 
-        assertEquals("Invalid status", exception.getMessage());
+        assertEquals("Estado no valido", exception.getMessage());
     }
 
     @Test
@@ -168,7 +168,7 @@ class AcademicFriendUseCaseTest {
                     AcademicFriend.Constants.PASS, "");
         });
 
-        assertEquals("Password is required", exception.getMessage());
+        assertEquals("La contraseña es obligatoria", exception.getMessage());
     }
 
     @Test
