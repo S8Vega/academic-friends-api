@@ -25,24 +25,24 @@ public class ConsultancyUseCase {
 
     public Consultancy save(Consultancy consultancy) {
         if (!consultancy.validDates()) {
-            throw new IllegalArgumentException("Invalid dates");
+            throw new IllegalArgumentException("Fechas invalidas");
         }
 
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(consultancy.getAcademicFriend().getEmail());
         if (academicFriend == null) {
-            throw new IllegalArgumentException("Academic friend not found");
+            throw new IllegalArgumentException("El amigo academico no existe");
         }
         consultancy.setAcademicFriend(academicFriend);
 
         Student student = studentUseCase.findByCode(consultancy.getStudent().getCode());
         if (student == null) {
-            throw new IllegalArgumentException("Student not found");
+            throw new IllegalArgumentException("El estudiante no existe");
         }
         consultancy.setStudent(student);
 
         List<Course> courses = courseUseCase.findByName(consultancy.getCourse().getName());
         if (courses.isEmpty()) {
-            throw new IllegalArgumentException("Course not found");
+            throw new IllegalArgumentException("El curso no existe");
         }
         consultancy.setCourse(courses.get(0));
 
