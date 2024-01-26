@@ -24,7 +24,7 @@ public class ReportUseCase {
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(academicFriendEmail);
         report.setAcademicFriend(academicFriend);
         if (!Report.Constants.TYPES.contains(type)) {
-            throw new IllegalArgumentException("Invalid type");
+            throw new IllegalArgumentException("Tipo de informe invalido");
         }
         report.setType(type);
         report.setState(Report.Constants.STATE_PENDING);
@@ -47,7 +47,7 @@ public class ReportUseCase {
         Report report = findById(id);
         report.setObservations(observations);
         if (!Report.Constants.STATES.contains(state)) {
-            throw new IllegalArgumentException("Invalid state");
+            throw new IllegalArgumentException("Estado invalido");
         }
         report.setState(state);
         return reportRepository.save(report);
