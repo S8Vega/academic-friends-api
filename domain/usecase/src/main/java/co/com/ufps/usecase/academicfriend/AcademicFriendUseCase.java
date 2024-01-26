@@ -22,6 +22,7 @@ import java.util.List;
 public class AcademicFriendUseCase {
     private static final String CONTRACT_FOLDER = "contract";
     private static final String RESUME_FOLDER = "resume";
+    private static final String USER_NOT_FOUND = "El usuario %s no existe";
     private final AcademicFriendRepository academicFriendRepository;
     private final FileUseCase fileUseCase;
     private final StudentUseCase studentUseCase;
@@ -32,7 +33,7 @@ public class AcademicFriendUseCase {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
 
         if (student == null) {
-            throw new UserNotFoundException(String.format("User %s not found", academicFriend.getEmail()));
+            throw new UserNotFoundException(String.format(USER_NOT_FOUND, academicFriend.getEmail()));
         }
 
         buildAcademicFriend(academicFriend, student);
@@ -55,7 +56,7 @@ public class AcademicFriendUseCase {
         academicFriend.setScore(0);
         Convocation convocation = convocationUseCase.findCurrentConvocation();
         if (convocation == null) {
-            throw new ConvocationNotFoundException("Convocation not found");
+            throw new ConvocationNotFoundException("La convocatoria no existe");
         }
         academicFriend.setConvocation(convocation);
         academicFriend.setObservations("");
@@ -75,18 +76,18 @@ public class AcademicFriendUseCase {
             throws IOException {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
-            throw new UserNotFoundException(String.format("User %s not found", email));
+            throw new UserNotFoundException(String.format(USER_NOT_FOUND, email));
         }
         academicFriend.setScore(score);
         academicFriend.setObservations(observations);
         if (!AcademicFriend.Constants.STATUS.contains(state)) {
-            throw new IllegalArgumentException("Invalid status");
+            throw new IllegalArgumentException("Estado no valido");
         }
         academicFriend.setStatus(state);
         if (state.equals(AcademicFriend.Constants.PASS)) {
             academicFriend.setType(User.Constants.ACADEMIC_FRIEND);
             if (password == null || password.isEmpty()) {
-                throw new IllegalArgumentException("Password is required");
+                throw new IllegalArgumentException("La contraseña es obligatoria");
             }
             securityUseCase.save(email, password, User.Constants.ACADEMIC_FRIEND);
         }
@@ -99,7 +100,7 @@ public class AcademicFriendUseCase {
     public void addContract(String email, File contract) {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
-            throw new IllegalArgumentException("User not found");
+            throw new IllegalArgumentException("El usuario no existe");
         }
         academicFriend.setContract(String.format("%s/%s.pdf", CONTRACT_FOLDER, academicFriend.getEmail()));
         fileUseCase.save(academicFriend.getContract(), contract);
