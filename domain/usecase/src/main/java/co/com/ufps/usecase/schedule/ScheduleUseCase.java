@@ -11,11 +11,15 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Log
 @RequiredArgsConstructor
 public class ScheduleUseCase {
     private static final int MAX_HOURS_PER_DAY = 4;
+    private static final String ACADEMIC_FRIEND_EXCEEDS_DAILY_ALLOWABLE_HOURS = "El amigo academico %s supera la " +
+            "cantidad de horas diaras permitidas, ya tiene %d horas el dia %s";
+    private static final String ACADEMIC_FRIEND_DOES_NOT_EXIST = "El amigo academico no existe";
     private final ScheduleRepository scheduleRepository;
     private final AcademicFriendUseCase academicFriendUseCase;
 
@@ -51,7 +55,7 @@ public class ScheduleUseCase {
     public void addAcademicFriend(String academicFriendEmail, String day, String startHour, String endHour) {
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(academicFriendEmail);
         if (academicFriend == null) {
-            throw new IllegalArgumentException("the academic friend does not exist");
+            throw new IllegalArgumentException(ACADEMIC_FRIEND_DOES_NOT_EXIST);
         }
         LocalTime hour = LocalTime.parse(startHour);
         LocalTime end = LocalTime.parse(endHour);
@@ -71,8 +75,10 @@ public class ScheduleUseCase {
                 continue;
             }
             if (hoursPerDay >= MAX_HOURS_PER_DAY) {
-                throw new IllegalArgumentException(String.format("the academic friend %s has already %d hours in the day %s",
-                        academicFriendEmail, MAX_HOURS_PER_DAY, day));
+                String spanishDay = dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL,
+                        new Locale("es", "ES"));
+                throw new IllegalArgumentException(String.format(ACADEMIC_FRIEND_EXCEEDS_DAILY_ALLOWABLE_HOURS,
+                        academicFriendEmail, MAX_HOURS_PER_DAY, spanishDay));
             }
             schedule.addAcademicFriend(academicFriend);
             schedule.cleanAcademicFriends();
@@ -100,7 +106,7 @@ public class ScheduleUseCase {
     public void removeAcademicFriend(String academicFriendEmail, String day, String startHour, String endHour) {
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(academicFriendEmail);
         if (academicFriend == null) {
-            throw new IllegalArgumentException("the academic friend does not exist");
+            throw new IllegalArgumentException(ACADEMIC_FRIEND_DOES_NOT_EXIST);
         }
         LocalTime hour = LocalTime.parse(startHour);
         LocalTime end = LocalTime.parse(endHour);
