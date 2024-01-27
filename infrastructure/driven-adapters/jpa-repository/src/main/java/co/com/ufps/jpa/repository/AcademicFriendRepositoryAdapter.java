@@ -5,8 +5,12 @@ import co.com.ufps.jpa.entities.AcademicFriendEntity;
 import co.com.ufps.jpa.helper.AdapterOperations;
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
+import co.com.ufps.model.consultancy.Consultancy;
+import co.com.ufps.model.consultancy.gateways.ConsultancyRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -19,6 +23,9 @@ public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicF
         AcademicFriendCrudRepository>
         implements AcademicFriendRepository {
 
+    @Autowired
+    private ConsultancyRepository consultancyRepository;
+
     public AcademicFriendRepositoryAdapter(AcademicFriendCrudRepository repository, ObjectMapper mapper) {
         /**
          *  Could be use mapper.mapBuilder if your domain model implement builder pattern
@@ -29,8 +36,26 @@ public class AcademicFriendRepositoryAdapter extends AdapterOperations<AcademicF
     }
 
     @Override
-    public AcademicFriend save(AcademicFriend academicFriend) {
-        log.info("save: {}", academicFriend.getEmail());
+    @Transactional
+    public AcademicFriend apply(AcademicFriend academicFriend) {
+        log.info("apply: {}", academicFriend.getEmail());
+
+        List<Consultancy> consultanciesReceived = academicFriend.getConsultanciesReceived();
+        academicFriend.setConsultanciesReceived(null);
+
+        AcademicFriendEntity academicFriendEntity = mapper.map(academicFriend, AcademicFriendEntity.class);
+        AcademicFriend academicFriendSaved = mapper.map(repository.save(academicFriendEntity), AcademicFriend.class);
+
+        consultancyRepository.save(consultanciesReceived);
+
+        academicFriendSaved.setConsultanciesReceived(consultanciesReceived);
+        return academicFriendSaved;
+    }
+
+    @Override
+    @Transactional
+    public AcademicFriend update(AcademicFriend academicFriend) {
+        log.info("update: {}", academicFriend.getEmail());
         AcademicFriendEntity academicFriendEntity = mapper.map(academicFriend, AcademicFriendEntity.class);
         return mapper.map(repository.save(academicFriendEntity), AcademicFriend.class);
     }

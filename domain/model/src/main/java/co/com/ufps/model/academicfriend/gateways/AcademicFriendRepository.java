@@ -5,7 +5,9 @@ import co.com.ufps.model.academicfriend.AcademicFriend;
 import java.util.List;
 
 public interface AcademicFriendRepository {
-    AcademicFriend save(AcademicFriend academicFriend);
+    AcademicFriend apply(AcademicFriend academicFriend);
+
+    AcademicFriend update(AcademicFriend academicFriend);
 
     List<AcademicFriend> findAll();
 
