@@ -1,16 +1,3 @@
--- clean database
-SET CONSTRAINTS ALL DEFERRED;
-TRUNCATE TABLE public.convocation CASCADE;
-TRUNCATE TABLE public.users CASCADE;
-TRUNCATE TABLE public.student CASCADE;
-TRUNCATE TABLE public.academic_friend CASCADE;
-TRUNCATE TABLE public.schedule CASCADE;
-TRUNCATE TABLE public.academic_friend_has_schedule CASCADE;
-TRUNCATE TABLE public.report CASCADE;
-TRUNCATE TABLE public.course CASCADE;
-TRUNCATE TABLE public.consultancy CASCADE;
-SET CONSTRAINTS ALL IMMEDIATE;
-
 -- convocation
 INSERT INTO public.convocation (closing_date,evaluation_date,opening_date,results_release_date) VALUES
 	 ('2024-02-25 00:00:00.000','2024-03-10 00:00:00.000','2024-01-05 00:00:00.000','2024-03-20 00:00:00.000');

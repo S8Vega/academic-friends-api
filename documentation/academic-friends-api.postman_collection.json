@@ -1201,7 +1201,7 @@
                 },
                 {
                   "key": "email",
-                  "value": "julianariveros@ufps.edu.co",
+                  "value": "danielavargas@ufps.edu.co",
                   "type": "text"
                 },
                 {
@@ -3544,7 +3544,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"academicFriendEmail\": \"julianariveros@ufps.edu.co\",\r\n  \"day\": \"WEDNESDAY\",\r\n  \"startHour\": \"10:00\",\r\n  \"endHour\": \"13:00\"\r\n}",
+              "raw": "{\r\n  \"academicFriendEmail\": \"julianariveros@ufps.edu.co\",\r\n  \"day\": \"TUESDAY\",\r\n  \"startHour\": \"08:00\",\r\n  \"endHour\": \"10:00\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3758,7 +3758,7 @@
               }
             ],
             "url": {
-              "raw": "{{host}}/ufps/academic-friends-api/file/report/109d1345-25b8-49b3-8221-9dd518c98eb9.pdf",
+              "raw": "{{host}}/ufps/academic-friends-api/file/template/report.docx",
               "host": [
                 "{{host}}"
               ],
@@ -3766,8 +3766,8 @@
                 "ufps",
                 "academic-friends-api",
                 "file",
-                "report",
-                "109d1345-25b8-49b3-8221-9dd518c98eb9.pdf"
+                "template",
+                "report.docx"
               ]
             }
           },
@@ -3956,6 +3956,21 @@
     },
     {
       "name": "health",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Ejemplo de prueba simple\r",
+              "pm.test(\"La respuesta debe tener un código de estado 200\", function () {\r",
+              "  pm.response.to.have.status(200);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
