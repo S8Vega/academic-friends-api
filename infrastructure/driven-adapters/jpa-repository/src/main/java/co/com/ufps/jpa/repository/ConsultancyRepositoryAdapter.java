@@ -33,6 +33,15 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
     }
 
     @Override
+    public List<Consultancy> save(List<Consultancy> consultancies) {
+        List<Consultancy> consultanciesSaved = new ArrayList<>();
+        for (Consultancy consultancy : consultancies) {
+            consultanciesSaved.add(this.save(consultancy));
+        }
+        return consultanciesSaved;
+    }
+
+    @Override
     public List<Consultancy> findByStudent(String email) {
         List<ConsultancyEntity> entities = repository.findByStudent(email);
         List<Consultancy> consultancies = new ArrayList<>();
@@ -70,5 +79,13 @@ public class ConsultancyRepositoryAdapter extends AdapterOperations<Consultancy,
             consultancies.add(this.mapper.map(entity, Consultancy.class));
         }
         return consultancies;
+    }
+
+    @Override
+    public void delete(List<Consultancy> consultancies) {
+        for (Consultancy consultancy : consultancies) {
+            ConsultancyEntity entity = this.mapper.map(consultancy, ConsultancyEntity.class);
+            repository.delete(entity);
+        }
     }
 }

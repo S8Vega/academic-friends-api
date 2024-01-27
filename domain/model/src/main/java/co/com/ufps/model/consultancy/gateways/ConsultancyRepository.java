@@ -8,6 +8,8 @@ import java.util.List;
 public interface ConsultancyRepository {
     Consultancy save(Consultancy consultancy);
 
+    List<Consultancy> save(List<Consultancy> consultancies);
+
     List<Consultancy> findByStudent(String email);
 
     List<Consultancy> findByAcademicFriend(String email);
@@ -15,4 +17,6 @@ public interface ConsultancyRepository {
     List<Consultancy> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     List<Consultancy> findByCourse(String name);
+
+    void delete(List<Consultancy> consultancies);
 }
