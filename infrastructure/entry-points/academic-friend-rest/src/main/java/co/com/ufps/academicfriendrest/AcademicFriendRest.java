@@ -60,7 +60,7 @@ public class AcademicFriendRest {
         academicFriend.setAverage(Double.parseDouble(average));
         return ResponseEntity.ok(
                 AcademicFriendResponseBody.from(
-                        academicFriendUseCase.save(academicFriend, convert(resume))));
+                        academicFriendUseCase.apply(academicFriend, convert(resume))));
     }
 
     @GetMapping
