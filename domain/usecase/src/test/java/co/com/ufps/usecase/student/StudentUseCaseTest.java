@@ -57,10 +57,11 @@ class StudentUseCaseTest {
     @Test
     void remove() {
         Student student = TestBuilder.student();
+        when(studentRepository.findByEmail(anyString())).thenReturn(student);
 
         studentUseCase.remove(student.getEmail());
 
-        verify(studentRepository).remove(anyString());
+        verify(studentRepository).remove(student);
     }
 
     @Test

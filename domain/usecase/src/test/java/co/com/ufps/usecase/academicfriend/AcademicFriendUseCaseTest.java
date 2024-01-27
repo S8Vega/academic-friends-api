@@ -51,17 +51,17 @@ class AcademicFriendUseCaseTest {
         Student student = TestBuilder.student();
         File resume = mock(File.class);
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(student);
-        when(academicFriendRepository.save(academicFriend)).thenReturn(academicFriend);
+        when(academicFriendRepository.apply(academicFriend)).thenReturn(academicFriend);
         when(convocationUseCase.findCurrentConvocation()).thenReturn(TestBuilder.convocation());
 
-        AcademicFriend response = academicFriendUseCase.save(academicFriend, resume);
+        AcademicFriend response = academicFriendUseCase.apply(academicFriend, resume);
 
         assertEquals(academicFriend, response);
         verify(studentUseCase).findByEmail(academicFriend.getEmail());
         verify(fileUseCase).save(academicFriend.getResume(), resume);
         verify(studentUseCase).remove(academicFriend.getEmail());
         verify(convocationUseCase).findCurrentConvocation();
-        verify(academicFriendRepository).save(academicFriend);
+        verify(academicFriendRepository).apply(academicFriend);
     }
 
     @Test
@@ -71,16 +71,16 @@ class AcademicFriendUseCaseTest {
         student.setType(User.Constants.ACADEMIC_FRIEND);
         File resume = mock(File.class);
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(student);
-        when(academicFriendRepository.save(academicFriend)).thenReturn(academicFriend);
+        when(academicFriendRepository.apply(academicFriend)).thenReturn(academicFriend);
         when(convocationUseCase.findCurrentConvocation()).thenReturn(TestBuilder.convocation());
 
-        AcademicFriend response = academicFriendUseCase.save(academicFriend, resume);
+        AcademicFriend response = academicFriendUseCase.apply(academicFriend, resume);
 
         assertEquals(academicFriend, response);
         verify(studentUseCase).findByEmail(academicFriend.getEmail());
         verify(fileUseCase).save(academicFriend.getResume(), resume);
         verify(convocationUseCase).findCurrentConvocation();
-        verify(academicFriendRepository).save(academicFriend);
+        verify(academicFriendRepository).apply(academicFriend);
     }
 
     @Test
@@ -90,7 +90,7 @@ class AcademicFriendUseCaseTest {
         when(studentUseCase.findByEmail(academicFriend.getEmail())).thenReturn(null);
 
         Exception exception = assertThrows(UserNotFoundException.class, () -> {
-            academicFriendUseCase.save(academicFriend, resume);
+            academicFriendUseCase.apply(academicFriend, resume);
         });
 
         assertEquals("El usuario sebas@test.com no existe", exception.getMessage());
@@ -124,7 +124,7 @@ class AcademicFriendUseCaseTest {
     void update() throws IOException {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
-        when(academicFriendRepository.save(any(AcademicFriend.class))).thenReturn(academicFriend);
+        when(academicFriendRepository.update(any(AcademicFriend.class))).thenReturn(academicFriend);
 
         AcademicFriend response = academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
                 AcademicFriend.Constants.PASS, "123456");
@@ -175,7 +175,7 @@ class AcademicFriendUseCaseTest {
     void updateWithStatusRejected() throws IOException {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);
-        when(academicFriendRepository.save(any(AcademicFriend.class))).thenReturn(academicFriend);
+        when(academicFriendRepository.update(any(AcademicFriend.class))).thenReturn(academicFriend);
 
         AcademicFriend response = academicFriendUseCase.update(academicFriend.getEmail(), 100, "Observations",
                 AcademicFriend.Constants.REJECTED, "123456");
@@ -194,7 +194,7 @@ class AcademicFriendUseCaseTest {
 
         verify(academicFriendRepository).findByEmail(academicFriend.getEmail());
         verify(fileUseCase).save(academicFriend.getContract(), contract);
-        verify(academicFriendRepository).save(academicFriend);
+        verify(academicFriendRepository).update(academicFriend);
     }
 
     @Test
