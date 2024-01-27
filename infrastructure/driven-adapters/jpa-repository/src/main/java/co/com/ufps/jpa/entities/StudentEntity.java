@@ -22,5 +22,5 @@ public class StudentEntity extends UserEntity {
     private int semester;
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<ConsultancyEntity> consultancies;
+    private List<ConsultancyEntity> consultanciesReceived;
 }

@@ -41,5 +41,5 @@ public class AcademicFriendEntity extends StudentEntity {
     private List<ReportEntity> reports;
     @OneToMany(mappedBy = "academicFriend", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<ConsultancyEntity> consultancies;
+    private List<ConsultancyEntity> consultanciesGiven;
 }
