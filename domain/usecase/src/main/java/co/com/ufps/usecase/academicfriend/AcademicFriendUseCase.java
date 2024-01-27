@@ -29,7 +29,7 @@ public class AcademicFriendUseCase {
     private final ConvocationUseCase convocationUseCase;
     private final SecurityUseCase securityUseCase;
 
-    public AcademicFriend save(AcademicFriend academicFriend, File resume) {
+    public AcademicFriend apply(AcademicFriend academicFriend, File resume) {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
 
         if (student == null) {
@@ -43,7 +43,7 @@ public class AcademicFriendUseCase {
             studentUseCase.remove(academicFriend.getEmail());
         }
 
-        return academicFriendRepository.save(academicFriend);
+        return academicFriendRepository.apply(academicFriend);
     }
 
     private void buildAcademicFriend(AcademicFriend academicFriend, Student student) {
@@ -54,6 +54,7 @@ public class AcademicFriendUseCase {
         academicFriend.setStatus(AcademicFriend.Constants.PENDING);
         academicFriend.setResume(String.format("%s/%s.pdf", RESUME_FOLDER, academicFriend.getEmail()));
         academicFriend.setScore(0);
+        academicFriend.setConsultanciesReceived(student.getConsultanciesReceived());
         Convocation convocation = convocationUseCase.findCurrentConvocation();
         if (convocation == null) {
             throw new ConvocationNotFoundException("La convocatoria no existe");
@@ -94,7 +95,7 @@ public class AcademicFriendUseCase {
         if (state.equals(AcademicFriend.Constants.REJECTED)) {
             securityUseCase.delete(email);
         }
-        return academicFriendRepository.save(academicFriend);
+        return academicFriendRepository.update(academicFriend);
     }
 
     public void addContract(String email, File contract) {
@@ -104,7 +105,7 @@ public class AcademicFriendUseCase {
         }
         academicFriend.setContract(String.format("%s/%s.pdf", CONTRACT_FOLDER, academicFriend.getEmail()));
         fileUseCase.save(academicFriend.getContract(), contract);
-        academicFriendRepository.save(academicFriend);
+        academicFriendRepository.update(academicFriend);
     }
 
     public List<AcademicFriend> findByConvocation(Long id) {
