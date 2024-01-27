@@ -3,7 +3,6 @@ package co.com.ufps.usecase.academicfriend;
 import co.com.ufps.model.academicfriend.AcademicFriend;
 import co.com.ufps.model.academicfriend.gateways.AcademicFriendRepository;
 import co.com.ufps.model.convocation.Convocation;
-import co.com.ufps.model.exceptions.ConvocationNotFoundException;
 import co.com.ufps.model.exceptions.UserNotFoundException;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.user.User;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AcademicFriendUseCase {
     private static final String CONTRACT_FOLDER = "contract";
-    private static final String RESUME_FOLDER = "resume";
     private static final String USER_NOT_FOUND = "El usuario %s no existe";
     private final AcademicFriendRepository academicFriendRepository;
     private final FileUseCase fileUseCase;
@@ -36,7 +34,8 @@ public class AcademicFriendUseCase {
             throw new UserNotFoundException(String.format(USER_NOT_FOUND, academicFriend.getEmail()));
         }
 
-        buildAcademicFriend(academicFriend, student);
+        Convocation convocation = convocationUseCase.findCurrentConvocation();
+        academicFriend.merge(student, convocation);
         fileUseCase.save(academicFriend.getResume(), resume);
 
         if (!student.getType().equals(User.Constants.ACADEMIC_FRIEND)) {
@@ -44,23 +43,6 @@ public class AcademicFriendUseCase {
         }
 
         return academicFriendRepository.apply(academicFriend);
-    }
-
-    private void buildAcademicFriend(AcademicFriend academicFriend, Student student) {
-        academicFriend.setName(student.getName());
-        academicFriend.setCode(student.getCode());
-        academicFriend.setType(student.getType());
-        academicFriend.setSemester(student.getSemester());
-        academicFriend.setStatus(AcademicFriend.Constants.PENDING);
-        academicFriend.setResume(String.format("%s/%s.pdf", RESUME_FOLDER, academicFriend.getEmail()));
-        academicFriend.setScore(0);
-        academicFriend.setConsultanciesReceived(student.getConsultanciesReceived());
-        Convocation convocation = convocationUseCase.findCurrentConvocation();
-        if (convocation == null) {
-            throw new ConvocationNotFoundException("La convocatoria no existe");
-        }
-        academicFriend.setConvocation(convocation);
-        academicFriend.setObservations("");
     }
 
     public List<AcademicFriend> findAll() {
