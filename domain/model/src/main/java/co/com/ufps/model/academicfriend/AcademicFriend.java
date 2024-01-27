@@ -1,5 +1,6 @@
 package co.com.ufps.model.academicfriend;
 
+import co.com.ufps.model.consultancy.Consultancy;
 import co.com.ufps.model.convocation.Convocation;
 import co.com.ufps.model.student.Student;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,8 @@ public class AcademicFriend extends Student implements Comparable<AcademicFriend
     private Convocation convocation;
     private String observations;
     private String contract;
+
+    private List<Consultancy> consultanciesGiven;
 
 
     public void cleanConvocation() {
