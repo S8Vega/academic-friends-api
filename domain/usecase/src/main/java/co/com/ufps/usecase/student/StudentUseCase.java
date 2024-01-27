@@ -43,7 +43,7 @@ public class StudentUseCase {
     }
 
     public void remove(String email) {
-        studentRepository.remove(email);
+        studentRepository.remove(findByEmail(email));
     }
 
     public Student findByCode(String code) {

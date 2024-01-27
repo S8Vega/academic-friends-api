@@ -3,16 +3,22 @@ package co.com.ufps.jpa.repository;
 import co.com.ufps.jpa.crudrepository.StudentCrudRepository;
 import co.com.ufps.jpa.entities.StudentEntity;
 import co.com.ufps.jpa.helper.AdapterOperations;
+import co.com.ufps.model.consultancy.gateways.ConsultancyRepository;
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.student.gateways.StudentRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Log4j2
 @Repository
 public class StudentRepositoryAdapter extends AdapterOperations<Student, StudentEntity, String, StudentCrudRepository>
         implements StudentRepository {
+
+    @Autowired
+    private ConsultancyRepository consultancyRepository;
 
     public StudentRepositoryAdapter(StudentCrudRepository repository, ObjectMapper mapper) {
         /**
@@ -38,9 +44,12 @@ public class StudentRepositoryAdapter extends AdapterOperations<Student, Student
     }
 
     @Override
-    public void remove(String email) {
-        log.info("Removing student with email: {}", email);
-        StudentEntity studentEntity = repository.findByEmail(email);
+    @Transactional
+    public void remove(Student student) {
+        log.info("Removing student with email: {}", student.getEmail());
+        consultancyRepository.delete(student.getConsultanciesReceived());
+        student.setConsultanciesReceived(null);
+        StudentEntity studentEntity = mapper.map(student, StudentEntity.class);
         repository.delete(studentEntity);
     }
 

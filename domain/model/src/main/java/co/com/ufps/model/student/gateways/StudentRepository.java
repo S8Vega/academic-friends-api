@@ -7,7 +7,7 @@ public interface StudentRepository {
 
     Student findByEmail(String email);
 
-    void remove(String email);
+    void remove(Student student);
 
     Student findByCode(String code);
 }
