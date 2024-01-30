@@ -19,4 +19,10 @@ public class Convocation {
     private LocalDateTime closingDate;
     private LocalDateTime evaluationDate;
     private LocalDateTime resultsReleaseDate;
+
+    public boolean isValid() {
+        return openingDate != null && closingDate != null && evaluationDate != null && resultsReleaseDate != null &&
+                openingDate.isBefore(closingDate) && closingDate.isBefore(evaluationDate) &&
+                evaluationDate.isBefore(resultsReleaseDate);
+    }
 }

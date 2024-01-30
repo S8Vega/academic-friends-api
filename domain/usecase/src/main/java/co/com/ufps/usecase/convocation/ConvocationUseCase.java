@@ -15,6 +15,9 @@ public class ConvocationUseCase {
         if (convocation.getId() == null && currentConvocation != null) {
             throw new IllegalArgumentException("Ya existe una convocatoria activa");
         }
+        if (convocation.isValid()) {
+            throw new IllegalArgumentException("Las fechas no son válidas");
+        }
         return convocationRepository.save(convocation);
     }
 
