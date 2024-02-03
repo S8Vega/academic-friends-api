@@ -42,7 +42,7 @@ Resources:
   UserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: "academic-friends-cognito"
+      UserPoolName: academic-friends-cognito
       UsernameAttributes:
       - email
       AdminCreateUserConfig:
@@ -68,6 +68,10 @@ Resources:
       ExplicitAuthFlows:
       - ALLOW_REFRESH_TOKEN_AUTH
       - ALLOW_USER_PASSWORD_AUTH
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: academic-friends-bucket
 
 Outputs:
   AccessKey:
