@@ -39,6 +39,35 @@ Resources:
     Type: AWS::IAM::AccessKey
     Properties:
       UserName: !Ref "User"
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: "academic-friends-cognito"
+      UsernameAttributes:
+      - email
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+      AutoVerifiedAttributes: [ ]
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      Schema:
+      - Name: role
+        Required: false
+        Mutable: true
+        AttributeDataType: String
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+        - Name: verified_email
+          Priority: 1
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: academic-friends-app-client
+      UserPoolId: !Ref UserPool
+      ExplicitAuthFlows:
+      - ALLOW_REFRESH_TOKEN_AUTH
+      - ALLOW_USER_PASSWORD_AUTH
 
 Outputs:
   AccessKey:
@@ -47,3 +76,9 @@ Outputs:
   SecretKey:
     Value: !GetAtt [ Keys, SecretAccessKey ]
     Description: AWSSecretAccessKey of new user
+  UserPoolId:
+    Value: !Ref "UserPool"
+    Description: UserPoolId of new user
+  UserPoolClientId:
+    Value: !Ref "UserPoolClient"
+    Description: UserPoolClientId of new user
