@@ -136,10 +136,40 @@ Resources:
       CapacityProviders:
       - FARGATE
       - FARGATE_SPOT
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service: "ecs-tasks.amazonaws.com"
+          Action: "sts:AssumeRole"
+      Policies:
+      - PolicyName: "ecs-service"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+            - "ecr:GetAuthorizationToken"
+            - "ecr:BatchCheckLayerAvailability"
+            - "ecr:GetDownloadUrlForLayer"
+            - "ecr:BatchGetImage"
+            - "logs:CreateLogStream"
+            - "logs:PutLogEvents"
+            Resource: "*"
+  MyLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: academic-friends-log-group
+      RetentionInDays: 7
   MyTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: academic-friends-family-task
+      ExecutionRoleArn: !GetAtt ExecutionRole.Arn
       NetworkMode: awsvpc
       RequiresCompatibilities:
       - FARGATE
@@ -180,6 +210,12 @@ Resources:
           Value: "local"
         - Name: "secret_key"
           Value: !Ref SecretKey
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref MyLogGroup
+            awslogs-region: !Ref "AWS::Region"
+            awslogs-stream-prefix: academic-friends
   MyService:
     Type: AWS::ECS::Service
     Condition: DeployEcsServiceCondition
