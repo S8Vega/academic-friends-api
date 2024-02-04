@@ -23,6 +23,11 @@ Parameters:
   VPC:
     Type: AWS::EC2::VPC::Id
     Description: VPC ID
+  SecretKey:
+    NoEcho: "true"
+    Type: String
+    Description: Secret key for the application
+    MinLength: 8
 
 Resources:
   AdminGroup:
@@ -107,6 +112,46 @@ Resources:
       VPCSecurityGroups:
       - !GetAtt MySecurityGroup.GroupId
       DBName: academic_friends_db_rds
+  MyECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: academic-friends-cluster
+  MyTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: academic-friends-service
+      ContainerDefinitions:
+      - Name: my-container
+        Image: "s8vega/af-image"
+        Memory: 3072
+        PortMappings:
+        - Name: "af-container-port"
+          ContainerPort: 8080
+          HostPort: 8080
+          Protocol: tcp
+          AppProtocol: http
+        Essential: true
+        Environment:
+        - Name: "datasource_url"
+          Value: !Join [ "", [ "jdbc:postgresql://", !GetAtt [ MyDB, Endpoint.Address ], ":", !GetAtt [ MyDB, Endpoint.Port ] ,"/", !GetAtt [ MyDB, DBName ] ] ]
+        - Name: "datasource_username"
+          Value: !GetAtt [ MyDB, MasterUsername ]
+        - Name: "datasource_password"
+          Value: !Ref DBPassword
+        - Name: "aws_access_key_id"
+          Value: !Ref "Keys"
+        - Name: "aws_secret_access_key"
+          Value: !GetAtt [ Keys, SecretAccessKey ]
+        - Name: "cognito_user_pool_id"
+          Value: !Ref "UserPool"
+        - Name: "cognito_client_id"
+          Value: !Ref "UserPoolClient"
+        - Name: "academic-friends-bucket"
+          Value: !Ref "MyBucket"
+        - Name: "env"
+          Value: "local"
+        - Name: "secret_key"
+          Value: !Ref SecretKey
 
 Outputs:
   AwsAccessKey:
