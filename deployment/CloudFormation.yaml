@@ -109,30 +109,30 @@ Resources:
       DBName: academic_friends_db_rds
 
 Outputs:
-  AccessKey:
+  AwsAccessKey:
     Value: !Ref "Keys"
     Description: AWSAccessKeyId of new user
-  SecretKey:
+  AwsSecretAccessKey:
     Value: !GetAtt [ Keys, SecretAccessKey ]
     Description: AWSSecretAccessKey of new user
-  UserPoolId:
+  CognitoUserPoolId:
     Value: !Ref "UserPool"
     Description: UserPoolId of new user
-  UserPoolClientId:
+  CognitoClientId:
     Value: !Ref "UserPoolClient"
     Description: UserPoolClientId of new user
-  DBEndpoint:
+  DataSourceHost:
     Value: !GetAtt [ MyDB, Endpoint.Address ]
     Description: DBEndpoint of new user
-  DBPort:
+  DataSourcePort:
     Value: !GetAtt [ MyDB, Endpoint.Port ]
     Description: DBPort of new user
-  DBName:
+  DataSourceName:
     Value: !GetAtt [ MyDB, DBName ]
     Description: DBName of new user
-  DBUsername:
+  DataSourceUsername:
     Value: !GetAtt [ MyDB, MasterUsername ]
     Description: DBUsername of new user
-  DBPassword:
+  DataSourcePassword:
     Value: !Ref "DBPassword"
     Description: DBPassword of new user
