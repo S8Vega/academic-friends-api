@@ -28,6 +28,23 @@ Parameters:
     Type: String
     Description: Secret key for the application
     MinLength: 8
+  DeployEcsService:
+    Type: String
+    Default: "false"
+    AllowedValues: [ "true", "false" ]
+    Description: Deploy ECS service
+  ContainerImage:
+    Type: String
+    Description: Container image
+    MinLength: 1
+    MaxLength: 255
+    Default: "s8vega/af-image"
+  Subnet:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subnet ID
+
+Conditions:
+  DeployEcsServiceCondition: !Equals [ !Ref DeployEcsService, "true" ]
 
 Resources:
   AdminGroup:
@@ -116,14 +133,21 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: academic-friends-cluster
+      CapacityProviders:
+      - FARGATE
+      - FARGATE_SPOT
   MyTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: academic-friends-service
+      Family: academic-friends-family-task
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+      - FARGATE
+      Memory: 3072
+      Cpu: 1024
       ContainerDefinitions:
-      - Name: my-container
-        Image: "s8vega/af-image"
-        Memory: 3072
+      - Name: academic-friends-container
+        Image: !Ref ContainerImage
         PortMappings:
         - Name: "af-container-port"
           ContainerPort: 8080
@@ -131,6 +155,10 @@ Resources:
           Protocol: tcp
           AppProtocol: http
         Essential: true
+        LinuxParameters:
+          Capabilities:
+            Add:
+            - SYS_PTRACE
         Environment:
         - Name: "datasource_url"
           Value: !Join [ "", [ "jdbc:postgresql://", !GetAtt [ MyDB, Endpoint.Address ], ":", !GetAtt [ MyDB, Endpoint.Port ] ,"/", !GetAtt [ MyDB, DBName ] ] ]
@@ -152,6 +180,25 @@ Resources:
           Value: "local"
         - Name: "secret_key"
           Value: !Ref SecretKey
+  MyService:
+    Type: AWS::ECS::Service
+    Condition: DeployEcsServiceCondition
+    Properties:
+      Cluster: !Ref MyECSCluster
+      ServiceName: academic-friends-service
+      DesiredCount: 1
+      TaskDefinition: !Ref MyTaskDefinition
+      LaunchType: FARGATE
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+          - !GetAtt MySecurityGroup.GroupId
+          Subnets:
+          - !Ref Subnet
 
 Outputs:
   AwsAccessKey:
@@ -162,22 +209,22 @@ Outputs:
     Description: AWSSecretAccessKey of new user
   CognitoUserPoolId:
     Value: !Ref "UserPool"
-    Description: UserPoolId of new user
+    Description: UserPoolId of cognito
   CognitoClientId:
     Value: !Ref "UserPoolClient"
-    Description: UserPoolClientId of new user
+    Description: UserPoolClientId of cognito
   DataSourceHost:
     Value: !GetAtt [ MyDB, Endpoint.Address ]
-    Description: DBEndpoint of new user
+    Description: Endpoint of the database
   DataSourcePort:
     Value: !GetAtt [ MyDB, Endpoint.Port ]
-    Description: DBPort of new user
+    Description: Port of the database
   DataSourceName:
     Value: !GetAtt [ MyDB, DBName ]
-    Description: DBName of new user
+    Description: Database name
   DataSourceUsername:
     Value: !GetAtt [ MyDB, MasterUsername ]
-    Description: DBUsername of new user
+    Description: Database username
   DataSourcePassword:
     Value: !Ref "DBPassword"
-    Description: DBPassword of new user
+    Description: Database password
