@@ -14,6 +14,15 @@ Parameters:
     Description: New account password
     MinLength: 8
     MaxLength: 20
+  DBPassword:
+    NoEcho: "true"
+    Type: String
+    Description: database password
+    MinLength: 8
+    MaxLength: 20
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID
 
 Resources:
   AdminGroup:
@@ -72,6 +81,32 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: academic-friends-bucket
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "academic-friends-security-group"
+      GroupDescription: Allow all traffic
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        IpProtocol: -1
+      SecurityGroupEgress:
+      - CidrIp: 0.0.0.0/0
+        IpProtocol: -1
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      EngineVersion: 15.4
+      MasterUsername: postgres
+      MasterUserPassword: !Ref DBPassword
+      DBInstanceIdentifier: academic-friends-db-id
+      PubliclyAccessible: true
+      VPCSecurityGroups:
+      - !GetAtt MySecurityGroup.GroupId
+      DBName: academic_friends_db_rds
 
 Outputs:
   AccessKey:
@@ -86,3 +121,18 @@ Outputs:
   UserPoolClientId:
     Value: !Ref "UserPoolClient"
     Description: UserPoolClientId of new user
+  DBEndpoint:
+    Value: !GetAtt [ MyDB, Endpoint.Address ]
+    Description: DBEndpoint of new user
+  DBPort:
+    Value: !GetAtt [ MyDB, Endpoint.Port ]
+    Description: DBPort of new user
+  DBName:
+    Value: !GetAtt [ MyDB, DBName ]
+    Description: DBName of new user
+  DBUsername:
+    Value: !GetAtt [ MyDB, MasterUsername ]
+    Description: DBUsername of new user
+  DBPassword:
+    Value: !Ref "DBPassword"
+    Description: DBPassword of new user
