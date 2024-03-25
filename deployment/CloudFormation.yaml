@@ -28,7 +28,7 @@ Parameters:
     Type: String
     Description: Secret key for the application
     MinLength: 8
-  DeployEcsService:
+  DeployEcs:
     Type: String
     Default: "false"
     AllowedValues: [ "true", "false" ]
@@ -44,7 +44,7 @@ Parameters:
     Description: Subnet ID
 
 Conditions:
-  DeployEcsServiceCondition: !Equals [ !Ref DeployEcsService, "true" ]
+  DeployEcsCondition: !Equals [ !Ref DeployEcs, "true" ]
 
 Resources:
   AdminGroup:
@@ -131,6 +131,7 @@ Resources:
       DBName: academic_friends_db_rds
   MyECSCluster:
     Type: AWS::ECS::Cluster
+    Condition: DeployEcsCondition
     Properties:
       ClusterName: academic-friends-cluster
       CapacityProviders:
@@ -138,6 +139,7 @@ Resources:
       - FARGATE_SPOT
   ExecutionRole:
     Type: AWS::IAM::Role
+    Condition: DeployEcsCondition
     Properties:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
@@ -162,11 +164,13 @@ Resources:
             Resource: "*"
   MyLogGroup:
     Type: AWS::Logs::LogGroup
+    Condition: DeployEcsCondition
     Properties:
       LogGroupName: academic-friends-log-group
       RetentionInDays: 7
   MyTaskDefinition:
     Type: AWS::ECS::TaskDefinition
+    Condition: DeployEcsCondition
     Properties:
       Family: academic-friends-family-task
       ExecutionRoleArn: !GetAtt ExecutionRole.Arn
@@ -218,7 +222,7 @@ Resources:
             awslogs-stream-prefix: academic-friends
   MyService:
     Type: AWS::ECS::Service
-    Condition: DeployEcsServiceCondition
+    Condition: DeployEcsCondition
     Properties:
       Cluster: !Ref MyECSCluster
       ServiceName: academic-friends-service
