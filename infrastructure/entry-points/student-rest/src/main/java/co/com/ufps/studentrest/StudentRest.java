@@ -2,6 +2,7 @@ package co.com.ufps.studentrest;
 
 import co.com.ufps.model.student.Student;
 import co.com.ufps.model.user.User;
+import co.com.ufps.studentrest.responsebody.StudentResponseBody;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import co.com.ufps.usecase.student.StudentUseCase;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +38,10 @@ public class StudentRest {
     }
 
     @GetMapping("/find-by-code/{code}")
-    public ResponseEntity<Student> findByCode(@RequestHeader("Authorization") String jwt,
-                                              @PathVariable String code) {
+    public ResponseEntity<StudentResponseBody> findByCode(@RequestHeader("Authorization") String jwt,
+                                                          @PathVariable String code) {
         log.info("findByCode: {}", code);
         securityUseCase.validate(jwt);
-        return ResponseEntity.ok(studentUseCase.findByCode(code));
+        return ResponseEntity.ok(StudentResponseBody.of(studentUseCase.findByCode(code)));
     }
 }
