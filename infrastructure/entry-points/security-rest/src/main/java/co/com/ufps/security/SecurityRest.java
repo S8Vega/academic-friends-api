@@ -1,7 +1,9 @@
 package co.com.ufps.security;
 
 import co.com.ufps.model.user.User;
+import co.com.ufps.security.requestbody.EmailRequestBody;
 import co.com.ufps.security.requestbody.LoginRequestBody;
+import co.com.ufps.security.requestbody.ResetPasswordRequestBody;
 import co.com.ufps.security.responsebody.JWTResponseBody;
 import co.com.ufps.usecase.security.SecurityUseCase;
 import co.com.ufps.usecase.user.UserUseCase;
@@ -34,5 +36,17 @@ public class SecurityRest {
                 .type(user.getType())
                 .build();
         return ResponseEntity.ok(jwtResponseBody);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody EmailRequestBody requestBody) throws IOException {
+        securityService.forgotPassword(requestBody.getEmail());
+        return ResponseEntity.ok("Se ha enviado un correo para restablecer la contraseña");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestBody requestBody) throws IOException {
+        securityService.resetPassword(requestBody.getEmail(), requestBody.getPassword(), requestBody.getCode());
+        return ResponseEntity.ok("Se ha restablecido la contraseña");
     }
 }
