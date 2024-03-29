@@ -40,7 +40,6 @@ public class ScheduleRest {
     @GetMapping
     public ResponseEntity<ScheduleResponseBody> findAll(@RequestHeader("Authorization") String jwt) {
         log.info("findAll");
-        securityUseCase.validate(jwt);
         return ResponseEntity.ok(ScheduleResponseBody.of(scheduleUseCase.findAll()));
     }
 
