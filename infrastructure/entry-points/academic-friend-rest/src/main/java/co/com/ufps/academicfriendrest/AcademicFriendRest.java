@@ -100,7 +100,7 @@ public class AcademicFriendRest {
     @GetMapping("/{code}")
     public ResponseEntity<AcademicFriendResponseBody> findByCode(@RequestHeader("Authorization") String jwt,
                                                                  @PathVariable String code) throws SignatureException {
-        securityUseCase.validate(jwt, User.Constants.DIRECTOR, User.Constants.COORDINATOR);
+        securityUseCase.validate(jwt);
         return ResponseEntity.ok(AcademicFriendResponseBody.from(academicFriendUseCase.findByCode(code)));
     }
 }
