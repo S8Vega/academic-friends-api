@@ -44,12 +44,13 @@ public class TestBuilder {
     }
 
     public static Convocation convocation() {
+        LocalDateTime today = LocalDateTime.now();
         return Convocation.builder()
                 .id(1L)
-                .closingDate(LocalDateTime.parse("2021-10-10T00:00:00"))
-                .openingDate(LocalDateTime.parse("2021-09-10T00:00:00"))
-                .evaluationDate(LocalDateTime.parse("2021-11-10T00:00:00"))
-                .resultsReleaseDate(LocalDateTime.parse("2021-12-10T00:00:00"))
+                .openingDate(today.minusDays(20))
+                .closingDate(today.minusDays(10))
+                .evaluationDate(today.plusDays(10))
+                .resultsReleaseDate(today.plusDays(20))
                 .build();
     }
 
