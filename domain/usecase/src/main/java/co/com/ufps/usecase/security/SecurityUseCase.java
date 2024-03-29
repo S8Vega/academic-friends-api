@@ -43,6 +43,14 @@ public class SecurityUseCase {
         securityRepository.resetPassword(email, password);
     }
 
+    public void resetPassword(String email, String newPassword, String code) throws IOException {
+        securityRepository.resetPassword(email, newPassword, code);
+    }
+
+    public void forgotPassword(String email) throws IOException {
+        securityRepository.forgotPassword(email);
+    }
+
     public void delete(String email) throws IOException {
         securityRepository.delete(email);
     }
