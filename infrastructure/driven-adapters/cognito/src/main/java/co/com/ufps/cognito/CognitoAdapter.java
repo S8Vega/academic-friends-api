@@ -18,6 +18,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeTy
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthenticationResultType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.ConfirmForgotPasswordRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthResponse;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.RespondToAuthChallengeRequest;
@@ -162,6 +163,38 @@ public class CognitoAdapter implements SecurityRepository {
             log.info("Contraseña reseteada del usuario: {}", email);
         } catch (CognitoIdentityProviderException e) {
             log.error("Error en el reseteo de contraseña");
+            log.error(e.awsErrorDetails().errorMessage());
+            throw new CognitoException(e);
+        }
+    }
+
+    @Override
+    public void resetPassword(String email, String newPassword, String code) throws IOException {
+        log.info("Reseteando contraseña del usuario: {}", email);
+        try {
+            ConfirmForgotPasswordRequest confirmForgotPasswordRequest = ConfirmForgotPasswordRequest.builder()
+                    .clientId(clientId)
+                    .username(email)
+                    .confirmationCode(code)
+                    .password(newPassword)
+                    .build();
+            cognitoClient.confirmForgotPassword(confirmForgotPasswordRequest);
+            log.info("Contraseña reseteada del usuario: {}", email);
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en el reseteo de contraseña");
+            log.error(e.awsErrorDetails().errorMessage());
+            throw new CognitoException(e);
+        }
+    }
+
+    @Override
+    public void forgotPassword(String email) throws IOException {
+        log.info("Olvidó su contraseña el usuario: {}", email);
+        try {
+            cognitoClient.adminResetUserPassword(builder -> builder.userPoolId(userPoolId).username(email));
+            log.info("Se envió el correo de recuperación de contraseña al usuario: {}", email);
+        } catch (CognitoIdentityProviderException e) {
+            log.error("Error en el envío de correo de recuperación de contraseña");
             log.error(e.awsErrorDetails().errorMessage());
             throw new CognitoException(e);
         }

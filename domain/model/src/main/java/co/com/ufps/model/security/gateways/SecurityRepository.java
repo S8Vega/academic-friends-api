@@ -13,5 +13,9 @@ public interface SecurityRepository {
 
     void resetPassword(String email, String password) throws IOException;
 
+    void resetPassword(String email, String newPassword, String code) throws IOException;
+
+    void forgotPassword(String email) throws IOException;
+
     void delete(String email) throws IOException;
 }
