@@ -42,9 +42,15 @@ Parameters:
   Subnet:
     Type: AWS::EC2::Subnet::Id
     Description: Subnet ID
+  DeployDatabase:
+    Type: String
+    Default: "true"
+    AllowedValues: [ "true", "false" ]
+    Description: Deploy RDS database
 
 Conditions:
-  DeployEcsCondition: !Equals [ !Ref DeployEcs, "true" ]
+  DeployDatabaseCondition: !Equals [ !Ref DeployDatabase, "true" ]
+  DeployEcsCondition: !And [ !Equals [ !Ref DeployEcs, "true" ], !Equals [ !Ref DeployDatabase, "true" ] ]
 
 Resources:
   AdminGroup:
@@ -105,6 +111,7 @@ Resources:
       BucketName: academic-friends-bucket
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
+    Condition: DeployDatabaseCondition
     Properties:
       GroupName: "academic-friends-security-group"
       GroupDescription: Allow all traffic
@@ -117,6 +124,7 @@ Resources:
         IpProtocol: -1
   MyDB:
     Type: AWS::RDS::DBInstance
+    Condition: DeployDatabaseCondition
     Properties:
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
@@ -254,15 +262,19 @@ Outputs:
     Value: !Ref "UserPoolClient"
     Description: UserPoolClientId of cognito
   DataSourceHost:
+    Condition: DeployDatabaseCondition
     Value: !GetAtt [ MyDB, Endpoint.Address ]
     Description: Endpoint of the database
   DataSourcePort:
+    Condition: DeployDatabaseCondition
     Value: !GetAtt [ MyDB, Endpoint.Port ]
     Description: Port of the database
   DataSourceName:
+    Condition: DeployDatabaseCondition
     Value: !GetAtt [ MyDB, DBName ]
     Description: Database name
   DataSourceUsername:
+    Condition: DeployDatabaseCondition
     Value: !GetAtt [ MyDB, MasterUsername ]
     Description: Database username
   DataSourcePassword:
