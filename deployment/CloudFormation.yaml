@@ -139,7 +139,7 @@ Resources:
     Condition: DeployDatabaseCondition
     Properties:
       AllocatedStorage: 20
-      DBInstanceClass: db.t3.micro
+      DBInstanceClass: db.t4g.micro
       Engine: postgres
       EngineVersion: 15.4
       MasterUsername: postgres
@@ -197,8 +197,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
       - FARGATE
-      Memory: 3072
-      Cpu: 1024
+      Memory: 512
+      Cpu: 256
       ContainerDefinitions:
       - Name: academic-friends-container
         Image: !Ref ContainerImage
