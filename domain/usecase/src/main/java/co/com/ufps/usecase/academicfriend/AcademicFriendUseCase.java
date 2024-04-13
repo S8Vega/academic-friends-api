@@ -27,7 +27,7 @@ public class AcademicFriendUseCase {
     private final ConvocationUseCase convocationUseCase;
     private final SecurityUseCase securityUseCase;
 
-    public AcademicFriend apply(AcademicFriend academicFriend, File resume) {
+    public AcademicFriend apply(AcademicFriend academicFriend, File resume) throws IOException {
         Student student = studentUseCase.findByEmail(academicFriend.getEmail());
 
         if (student == null) {
@@ -80,7 +80,7 @@ public class AcademicFriendUseCase {
         return academicFriendRepository.update(academicFriend);
     }
 
-    public void addContract(String email, File contract) {
+    public void addContract(String email, File contract) throws IOException {
         AcademicFriend academicFriend = academicFriendRepository.findByEmail(email);
         if (academicFriend == null) {
             throw new IllegalArgumentException("El usuario no existe");

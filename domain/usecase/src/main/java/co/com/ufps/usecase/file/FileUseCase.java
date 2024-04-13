@@ -5,6 +5,7 @@ import co.com.ufps.model.file.gateways.FileRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class FileUseCase {
         return excelRepository.read(file);
     }
 
-    public void save(String name, File file) {
+    public void save(String name, File file) throws IOException {
         fileRepository.save(name, file);
     }
 

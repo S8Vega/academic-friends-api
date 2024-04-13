@@ -8,6 +8,7 @@ import co.com.ufps.usecase.file.FileUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class ReportUseCase {
     private final AcademicFriendUseCase academicFriendUseCase;
     private final FileUseCase fileUseCase;
 
-    public Report save(String academicFriendEmail, String type, String date, File file) {
+    public Report save(String academicFriendEmail, String type, String date, File file) throws IOException {
         Report report = new Report();
         AcademicFriend academicFriend = academicFriendUseCase.findByEmail(academicFriendEmail);
         report.setAcademicFriend(academicFriend);
@@ -53,7 +54,7 @@ public class ReportUseCase {
         return reportRepository.save(report);
     }
 
-    public Report update(Long id, File file) {
+    public Report update(Long id, File file) throws IOException {
         Report report = findById(id);
         report.setUploadDate(LocalDateTime.now());
         fileUseCase.save(report.getFile(), file);

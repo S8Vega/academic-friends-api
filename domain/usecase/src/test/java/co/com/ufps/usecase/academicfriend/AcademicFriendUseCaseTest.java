@@ -46,7 +46,7 @@ class AcademicFriendUseCaseTest {
 
 
     @Test
-    void saveStudent() {
+    void saveStudent() throws IOException {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         Student student = TestBuilder.student();
         File resume = mock(File.class);
@@ -65,7 +65,7 @@ class AcademicFriendUseCaseTest {
     }
 
     @Test
-    void saveAcademicFriend() {
+    void saveAcademicFriend() throws IOException {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         Student student = TestBuilder.student();
         student.setType(User.Constants.ACADEMIC_FRIEND);
@@ -185,7 +185,7 @@ class AcademicFriendUseCaseTest {
     }
 
     @Test
-    void addContract() {
+    void addContract() throws IOException {
         AcademicFriend academicFriend = TestBuilder.academicFriend();
         File contract = mock(File.class);
         when(academicFriendRepository.findByEmail(academicFriend.getEmail())).thenReturn(academicFriend);

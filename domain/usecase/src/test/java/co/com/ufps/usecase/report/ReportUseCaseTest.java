@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,7 @@ class ReportUseCaseTest {
     private FileUseCase fileUseCase;
 
     @Test
-    void save() {
+    void save() throws IOException {
         Report report = TestBuilder.report();
         report.setAcademicFriend(TestBuilder.academicFriend());
         File file = mock(File.class);
@@ -85,7 +86,7 @@ class ReportUseCaseTest {
     }
 
     @Test
-    void testUpdate() {
+    void testUpdate() throws IOException {
         Report report = TestBuilder.report();
         File file = mock(File.class);
         when(reportRepository.save(any(Report.class))).thenReturn(report);
