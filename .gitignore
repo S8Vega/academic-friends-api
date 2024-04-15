@@ -336,3 +336,5 @@ gradle-app.setting
 
 /.run/local.run.xml
 /.run/test.run.xml
+
+.env
