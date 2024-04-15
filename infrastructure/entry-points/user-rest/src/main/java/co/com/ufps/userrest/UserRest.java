@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Log4j2
 @RestController
@@ -37,7 +38,7 @@ public class UserRest {
     @PostMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@RequestHeader("Authorization") String jwt,
                                               @RequestBody ResetPasswordRequestBody requestBody)
-            throws IOException {
+            throws IOException, SignatureException {
         securityUseCase.validate(jwt);
         userUseCase.resetPassword(requestBody.getEmail(), requestBody.getPassword());
         return ResponseEntity.ok().build();

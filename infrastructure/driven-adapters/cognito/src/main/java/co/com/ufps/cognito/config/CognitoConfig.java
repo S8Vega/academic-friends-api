@@ -12,9 +12,9 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 @Configuration
 @RequiredArgsConstructor
 public class CognitoConfig {
-    @Value("${aws_access_key_id}")
+    @Value("${aws_access_key_id:test}")
     private String awsAccessKeyId;
-    @Value("${aws_secret_access_key}")
+    @Value("${aws_secret_access_key:test}")
     private String awsSecretAccessKey;
 
     public AwsBasicCredentials awsCredentials() {

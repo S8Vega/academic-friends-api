@@ -39,15 +39,15 @@ public class SecurityUseCase {
         return securityRepository.getTokenRole(token);
     }
 
-    public void resetPassword(String email, String password) throws IOException {
+    public void resetPassword(String email, String password) throws IOException, SignatureException {
         securityRepository.resetPassword(email, password);
     }
 
-    public void resetPassword(String email, String newPassword, String code) throws IOException {
+    public void resetPassword(String email, String newPassword, String code) throws IOException, SignatureException {
         securityRepository.resetPassword(email, newPassword, code);
     }
 
-    public void forgotPassword(String email) throws IOException {
+    public void forgotPassword(String email) throws IOException, SignatureException {
         securityRepository.forgotPassword(email);
     }
 

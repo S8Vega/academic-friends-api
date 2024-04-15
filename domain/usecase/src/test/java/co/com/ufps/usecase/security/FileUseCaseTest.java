@@ -79,7 +79,7 @@ class FileUseCaseTest {
     }
 
     @Test
-    void resetPassword() throws IOException {
+    void resetPassword() throws IOException, SignatureException {
         String email = "email";
         String password = "password";
 

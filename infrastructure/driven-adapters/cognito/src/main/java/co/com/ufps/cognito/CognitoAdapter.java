@@ -40,11 +40,11 @@ import java.util.Map;
 @Log4j2
 public class CognitoAdapter implements SecurityRepository {
     private final CognitoIdentityProviderClient cognitoClient;
-    @Value("${cognito_client_id}")
+    @Value("${cognito_client_id:test}")
     private String clientId;
-    @Value("${secret_key}")
+    @Value("${secret_key:test}")
     private String secretKey;
-    @Value("${cognito_user_pool_id}")
+    @Value("${cognito_user_pool_id:test}")
     private String userPoolId;
 
     @Override

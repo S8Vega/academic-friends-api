@@ -6,6 +6,7 @@ import co.com.ufps.usecase.security.SecurityUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @RequiredArgsConstructor
 public class UserUseCase {
@@ -25,7 +26,7 @@ public class UserUseCase {
         return userRepository.findByEmail(email);
     }
 
-    public void resetPassword(String email, String password) throws IOException {
+    public void resetPassword(String email, String password) throws IOException, SignatureException {
         securityUseCase.resetPassword(email, password);
     }
 }

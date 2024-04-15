@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,13 +40,13 @@ public class SecurityRest {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody EmailRequestBody requestBody) throws IOException {
+    public ResponseEntity<String> forgotPassword(@RequestBody EmailRequestBody requestBody) throws IOException, SignatureException {
         securityService.forgotPassword(requestBody.getEmail());
         return ResponseEntity.ok("Se ha enviado un correo para restablecer la contraseña");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestBody requestBody) throws IOException {
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestBody requestBody) throws IOException, SignatureException {
         securityService.resetPassword(requestBody.getEmail(), requestBody.getPassword(), requestBody.getCode());
         return ResponseEntity.ok("Se ha restablecido la contraseña");
     }
