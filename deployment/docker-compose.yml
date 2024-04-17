@@ -1,14 +1,5 @@
 version: '3'
 services:
-  af-db:
-    image: postgres
-    ports:
-    - "1801:5432"
-    environment:
-      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
-      POSTGRES_DB: ${DATASOURCE_NAME}
-    networks:
-    - af-network
 
   af-back:
     image: s8vega/af-image
@@ -16,12 +7,10 @@ services:
     - "1800:8080"
     environment:
       datasource_password: ${DATASOURCE_PASSWORD}
-      datasource_url: jdbc:postgresql://af-db:5432/${DATASOURCE_NAME}
+      datasource_url: ${DATASOURCE_URL}
       datasource_username: ${DATASOURCE_USERNAME}
       env: ${ENV}
       secret_key: ${SECRET_KEY}
-    networks:
-    - af-network
 
   af-front:
     image: s8vega/academicfriendsfront
@@ -29,12 +18,3 @@ services:
     - "1802:80"
     environment:
       API_URL: http://${API_HOST}/ufps/academic-friends-api
-    networks:
-    - af-network
-
-networks:
-  #  af-network:
-  #    driver: bridge
-  af-network:
-    external:
-      name: af-network
