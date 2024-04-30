@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: "/ufps/academic-friends-api"
+    context-path: "/academic-friends-api"
 spring:
   application:
     name: "academic-friends-api"
